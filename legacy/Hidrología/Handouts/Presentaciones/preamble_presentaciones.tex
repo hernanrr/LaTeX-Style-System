@@ -1,0 +1,141 @@
+\usepackage{fontspec}
+\setmainfont{TeX Gyre Pagella}
+\setsansfont{TeX Gyre Heros}
+\usepackage[spanish,es-noshorthands]{babel}
+\decimalpoint
+\usepackage{geometry}
+\geometry{letterpaper, top=2.4cm, bottom=2.4cm, left=2.7cm, right=2.7cm}
+\usepackage[expansion=false]{microtype}
+\usepackage{parskip}
+\setlength{\parskip}{6pt}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{caption}
+\usepackage[dvipsnames,table]{xcolor}
+\usepackage{enumitem}
+\setlist[itemize]{topsep=2pt, itemsep=2pt, parsep=0pt}
+\setlist[enumerate]{topsep=2pt, itemsep=2pt, parsep=0pt}
+\usepackage{fancyhdr}
+\usepackage[hidelinks,pdfencoding=auto]{hyperref}
+\usepackage{titlesec}
+\usepackage{tcolorbox}
+\tcbuselibrary{breakable}
+\usepackage{tabularx}
+\usepackage{makecell}
+\usepackage{ragged2e}
+\usepackage{csquotes}
+\usepackage[backend=biber,style=apa,sorting=nyt,sortcites=true,language=spanish]{biblatex}
+\DeclareLanguageMapping{spanish}{spanish-apa}
+\addbibresource{referencias_presentaciones.bib}
+
+\definecolor{darkblue}{HTML}{174A63}
+\definecolor{medblue}{HTML}{2E7896}
+\definecolor{lightblue}{HTML}{DCEEF4}
+\definecolor{teal}{HTML}{1B7F79}
+\definecolor{lightteal}{HTML}{D7EFEC}
+\definecolor{lightgrey}{HTML}{F5F7F8}
+\definecolor{midgrey}{HTML}{5B6770}
+\definecolor{warnyellow}{HTML}{FFF4CC}
+
+\titleformat{\section}
+{\large\bfseries\color{darkblue}}
+{\thesection}{0.75em}{}[{\color{medblue}\titlerule[0.8pt]}]
+\titleformat{\subsection}
+{\normalsize\bfseries\color{darkblue}}
+{\thesubsection}{0.75em}{}
+\titleformat{\subsubsection}
+{\normalsize\bfseries\color{medblue}}
+{\thesubsubsection}{0.75em}{}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{midgrey}ICV-342-T Hidrología}
+\fancyhead[R]{\small\color{midgrey}\DocShort}
+\fancyfoot[C]{\small\color{midgrey}\thepage}
+\setlength{\headheight}{14pt}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\rowcolors{2}{lightgrey}{white}
+\renewcommand{\arraystretch}{1.18}
+\newcolumntype{Y}{>{\RaggedRight\arraybackslash}X}
+
+\newtcolorbox{infobox}{
+  breakable,
+  colback=lightblue,
+  colframe=medblue,
+  boxrule=0.8pt,
+  arc=3pt,
+  left=8pt,
+  right=8pt,
+  top=7pt,
+  bottom=7pt
+}
+
+\newtcolorbox{warnbox}{
+  breakable,
+  colback=warnyellow,
+  colframe=orange!70!black,
+  boxrule=0.8pt,
+  arc=3pt,
+  left=8pt,
+  right=8pt,
+  top=7pt,
+  bottom=7pt
+}
+
+\newcommand{\doccover}[2]{
+  \begin{center}
+  {\small\color{midgrey}Pontificia Universidad Católica Madre y Maestra\\Escuela de Ingeniería Civil y Ambiental}
+
+  \vspace{1.0cm}
+  {\color{medblue}\rule{\linewidth}{2pt}}
+  \vspace{0.3cm}
+
+  {\Large\bfseries\color{darkblue}ICV-342-T Hidrología}\\[0.35em]
+  {\LARGE\bfseries\color{darkblue}#1}
+
+  \vspace{0.3cm}
+  {\color{medblue}\rule{\linewidth}{2pt}}
+  \vspace{0.9cm}
+  \end{center}
+
+  \begin{center}
+  \begin{tabular}{ll}
+  \toprule
+  \textbf{Asignatura} & ICV-342-T Hidrología \\
+  \textbf{Profesor} & Ricardo Rafael Hernández Moreira, PhD \\
+  \textbf{Periodo académico} & Mayo--agosto de 2026 \\
+  \textbf{Versión} & #2 \\
+  \bottomrule
+  \end{tabular}
+  \end{center}
+
+  \vspace{0.4cm}
+}
+
+\newcommand{\unitbox}[3]{
+  \begin{tcolorbox}[
+    breakable,
+    colback=lightteal,
+    colframe=teal,
+    boxrule=0.8pt,
+    arc=3pt,
+    title=\textbf{#1}
+  ]
+  \textbf{Enfoque de la exposición.} #2
+
+  \vspace{0.5\baselineskip}
+  \textbf{Apoyo bibliográfico sugerido.} #3
+  \end{tcolorbox}
+}
+
+\AtBeginDocument{
+  \hypersetup{
+    pdftitle={\DocShort},
+    pdfauthor={Ricardo Rafael Hernández Moreira},
+    pdfsubject={ICV-342-T Hidrología}
+  }
+}

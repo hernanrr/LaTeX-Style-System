@@ -1,0 +1,112 @@
+\documentclass[12pt]{article}
+\newcommand{\DocShort}{Conducción presurizada}
+\input{preamble_assignment.tex}
+
+\begin{document}
+\doccover{Revisión y retrabajo del ejemplo de diseño de conducción presurizada de Simón Arocha}{2026-06}
+\introbox{Analizar el ejemplo de diseño de una conducción presurizada presentado por Arocha y evaluar el efecto de dos decisiones metodológicas: el uso de Hazen-Williams y el redondeo del exponente de \num{1.85} a \num{2}.}{Rehacer el ejemplo con criterios hidráulicos consistentes, comparar resultados con Darcy-Weisbach y redactar una conclusión técnica clara sobre el impacto de las simplificaciones adoptadas por el autor.}
+
+\section{Referencia}
+Simón, A. R. (1980). \emph{Abastecimientos de Agua Teoría y Diseño}. Ediciones Vega SRL.
+
+\section{Contexto}
+En clase se revisó el ejemplo desarrollado por Arocha (1980, p.~110), en el cual se determinan diámetros y clases de tubería para una conducción presurizada por gravedad. Durante la discusión surgieron dudas sobre dos supuestos del autor: la selección de la ecuación de Hazen-Williams como base del diseño y el uso de un exponente redondeado de \num{2} en lugar del valor habitual de \num{1.85}.
+
+\section{Objetivo}
+El objetivo de esta asignación es investigar el efecto de:
+\begin{enumerate}
+\item usar la ecuación de Hazen-Williams para el diseño en vez de la ecuación de Darcy-Weisbach;
+\item redondear el exponente de Hazen-Williams de \num{1.85} a \num{2}.
+\end{enumerate}
+
+\section{Instrucciones}
+Se requiere retrabajar el ejemplo dos veces:
+\begin{enumerate}
+\item una vez utilizando la ecuación de Hazen-Williams correctamente;
+\item una segunda vez utilizando la ecuación de Darcy-Weisbach.
+\end{enumerate}
+
+Con los resultados obtenidos, evalúe:
+\begin{itemize}
+\item el impacto del redondeo del exponente de Hazen-Williams;
+\item la diferencia de resultados al usar Darcy-Weisbach;
+\item la conveniencia técnica de cada criterio de diseño para este caso.
+\end{itemize}
+
+Mantenga los mismos datos base del ejemplo original para caudal, longitudes, desniveles, materiales y valores de la constante $C$ de Hazen-Williams que el autor asumió en su solución.
+
+\section{Supuestos de trabajo}
+\begin{itemize}
+\item Suponer los valores de $C$ de Hazen-Williams iguales a los supuestos en el ejemplo.
+\item La figura 99 del texto original muestra la cota del punto A como \num{322.5}; sin embargo, el resto del ejercicio la adopta como \num{325.5}. Para esta memoria se utilizará \num{325.5}.
+\item Suponer la rugosidad absoluta de las tuberías para la determinación del factor de fricción de Darcy:
+\begin{itemize}
+\item Hierro galvanizado: \SI{0.15}{\milli\meter}.
+\item Asbesto-cemento para presión: \SI{0.07}{\milli\meter}.
+\end{itemize}
+\end{itemize}
+
+\textit{Nota:} hoy en día estos materiales ya no se fabrican ni se especifican para construcciones nuevas, por consideraciones de salud ocupacional.
+
+\section{Entregables}
+\subsection{Archivos requeridos}
+La entrega consistirá en una memoria de cálculo en PDF, debidamente redactada y justificada, con un resumen ejecutivo integrado al inicio que responda explícitamente las preguntas de la evaluación de resultados.
+
+\subsection{Contenido mínimo}
+El trabajo deberá incluir, como mínimo:
+\begin{itemize}
+\item transcripción clara de los datos originales del ejemplo;
+\item retrabajo completo con Hazen-Williams;
+\item retrabajo completo con Darcy-Weisbach;
+\item comparación numérica entre ambas soluciones;
+\item discusión del efecto del redondeo del exponente;
+\item conclusión técnica final sobre la pertinencia del método.
+\end{itemize}
+
+\section{Criterios de evaluación}
+\begin{center}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{0.28\textwidth} >{\raggedright\arraybackslash}X >{\raggedleft\arraybackslash}p{0.12\textwidth}}
+\toprule
+\textbf{Criterio} & \textbf{Descripción} & \textbf{Puntos} \\
+\midrule
+Retrabajo con Hazen-Williams & Aplica correctamente la ecuación y mantiene trazabilidad de datos, supuestos y resultados. & 30 \\
+Retrabajo con Darcy-Weisbach & Formula correctamente el cálculo, el factor de fricción y la comparación de pérdidas. & 30 \\
+Comparación y análisis & Evalúa el redondeo del exponente y contrasta ambas soluciones con criterio ingenieril. & 25 \\
+Presentación y redacción & El documento es claro, ordenado, coherente y usa notación técnica consistente. & 15 \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\begin{warnbox}
+\textbf{Observaciones de evaluación.}
+\begin{itemize}
+\item No existe una única respuesta correcta.
+\item Se valorará más el razonamiento técnico que la coincidencia exacta de cifras.
+\item La comparación debe explicar por qué las diferencias son relevantes para el diseño.
+\end{itemize}
+\end{warnbox}
+
+\section{Checklist de revisión rápida}
+\begin{longtable}{p{0.95\textwidth}}
+\toprule
+\textbf{Trazabilidad y datos} \\
+\midrule
+$\square$ Se transcriben correctamente los datos del ejemplo original. \\
+$\square$ Se distinguen claramente datos, supuestos y resultados calculados. \\
+$\square$ Las unidades se escriben con formato consistente. \\
+\midrule
+\textbf{Cálculo hidráulico} \\
+\midrule
+$\square$ Hazen-Williams se aplica con el exponente correcto de \num{1.85}. \\
+$\square$ Darcy-Weisbach se resuelve con un factor de fricción justificado. \\
+$\square$ Las pérdidas y los diámetros se comparan de manera explícita. \\
+\midrule
+\textbf{Análisis y cierre} \\
+\midrule
+$\square$ Se explica el efecto del redondeo del exponente. \\
+$\square$ Se justifica cuál método resulta más apropiado para el caso. \\
+$\square$ La conclusión responde a la intención de la asignación. \\
+\bottomrule
+\end{longtable}
+
+\end{document}

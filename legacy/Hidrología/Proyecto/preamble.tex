@@ -1,0 +1,145 @@
+% ============================================================
+%  PREÁMBULO COMPARTIDO — ICV 342 Hidrología (XeLaTeX Fixed)
+%  Incluir con \input{preamble}
+% ============================================================
+
+% --- 1. Encoding & Fonts (XeLaTeX Compatible) ---
+\usepackage{fontspec}              % Replaces fontenc & inputenc
+\usepackage[spanish,es-noshorthands]{babel}
+\decimalpoint
+
+% --- 2. Page Layout ---
+\usepackage{geometry}
+\geometry{letterpaper, top=2.5cm, bottom=2.5cm, left=2.8cm, right=2.8cm}
+\usepackage[expansion=false]{microtype}
+\usepackage{parskip}
+\setlength{\parskip}{6pt}
+
+% --- 3. Math & Tables ---
+\usepackage{amsmath,amssymb}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{caption}
+
+% --- 4. Colors ---
+\usepackage[dvipsnames,table]{xcolor}
+\definecolor{darkblue}{HTML}{1B3A5C}
+\definecolor{medblue}{HTML}{2E6DA4}
+\definecolor{lightblue}{HTML}{D6E8F7}
+\definecolor{teal}{HTML}{1A7A6E}
+\definecolor{lightteal}{HTML}{D0EDEA}
+\definecolor{olive}{HTML}{4A6A1E}
+\definecolor{lightolive}{HTML}{E2EDD0}
+\definecolor{lightgrey}{HTML}{F5F5F5}
+\definecolor{midgrey}{HTML}{AAAAAA}
+\definecolor{warnyellow}{HTML}{FFF3CD}
+\definecolor{warnorange}{HTML}{7B3F00}
+
+% --- 5. Boxes (tcolorbox) ---
+\usepackage{tcolorbox}
+\tcbuselibrary{most}               % Loads skins, breakable, etc.
+\usepackage{mdframed}
+
+% --- 6. Lists & Headers ---
+\usepackage{enumitem}
+\setlist[itemize]{topsep=2pt, itemsep=2pt, parsep=0pt}
+\setlist[enumerate]{topsep=2pt, itemsep=2pt, parsep=0pt}
+\usepackage{fancyhdr}
+\usepackage[hidelinks, pdfencoding=auto]{hyperref}
+\usepackage{titlesec}
+\author{Dr.\ Ricardo Hernández Moreira}
+
+% --- 7. Section Formatting ---
+\titleformat{\section}
+{\large\bfseries\color{darkblue}}
+{Parte \thesection.}{0.7em}{}[{\color{medblue}\titlerule[1pt]}]
+\titleformat{\subsection}
+{\normalsize\bfseries\color{darkblue}}  
+{\thesubsection.}{0.5em}{}
+\titleformat{\subsubsection}
+{\normalsize\bfseries\color{medblue}}   
+{}{0em}{}
+
+% --- 8. Header / Footer ---
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{midgrey}ICV 342 Hidrología — PUCMM}
+\fancyhead[R]{\small\color{midgrey}\AsignaturaCorta}
+\fancyfoot[C]{\small\color{midgrey}\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% --- 9. Coloured Boxes Definitions ---
+\newtcolorbox{infobox}[1][]{
+enhanced, breakable,
+colback=lightblue, colframe=medblue,
+boxrule=0.8pt, arc=3pt,
+left=8pt, right=8pt, top=7pt, bottom=7pt,
+#1
+}
+\newtcolorbox{warnbox}[1][]{
+enhanced, breakable,
+colback=warnyellow, colframe=orange!70!black,
+boxrule=0.8pt, arc=3pt,
+left=8pt, right=8pt, top=7pt, bottom=7pt,
+#1
+}
+\newtcolorbox{tealbox}[1][]{
+enhanced, breakable,
+colback=lightteal, colframe=teal,
+boxrule=0.8pt, arc=3pt,
+left=8pt, right=8pt, top=7pt, bottom=7pt,
+#1
+}
+\newtcolorbox{olivebox}[1][]{
+enhanced, breakable,
+colback=lightolive, colframe=olive,
+boxrule=0.8pt, arc=3pt,
+left=8pt, right=8pt, top=7pt, bottom=7pt,
+#1
+}
+
+% ── Entregable counter ───────────────────────────────────────
+\newcounter{entregable}
+\newcommand{\entregable}[2]{%
+\stepcounter{entregable}%
+\noindent
+\begin{tcolorbox}[enhanced,
+colback=lightgrey, colframe=medblue,
+boxrule=0pt, arc=2pt,
+left=6pt, right=6pt, top=4pt, bottom=4pt,
+leftrule=4pt]
+\textbf{E\theentregable. #1.}\quad #2
+\end{tcolorbox}\vspace{2pt}
+}
+
+% ── Question counter ─────────────────────────────────────────
+\newcounter{pregunta}
+\newcommand{\pregunta}[1]{%
+\stepcounter{pregunta}%
+\noindent
+\begin{tcolorbox}[enhanced,
+colback=white, colframe=medblue,
+boxrule=0pt, arc=2pt,
+left=6pt, right=6pt, top=5pt, bottom=5pt,
+leftrule=4pt]
+\textbf{P\thepregunta.}\quad #1
+\end{tcolorbox}\vspace{2pt}
+}
+
+% --- 12. Paso (step) command ---
+\newcounter{paso}[section]
+\newcommand{\paso}[1]{%
+\stepcounter{paso}%
+\subsubsection*{Paso \thesection.\thepaso\ — #1}%
+}
+
+% --- 13. Table row colours & Misc ---
+\rowcolors{2}{lightgrey}{white}
+\newcommand{\excel}{\textsc{Excel}}
+\newcommand{\qgis}{\textsc{QGIS}}
+\newcommand{\python}{\textsc{Python}}
+\newcommand{\indomet}{\textsc{Indomet}}

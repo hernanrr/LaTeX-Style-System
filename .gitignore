@@ -1,0 +1,25 @@
+# --- Artefactos de compilación LaTeX (latexmk -lualatex) ---
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.lof
+*.log
+*.lot
+*.out
+*.run.xml
+*.synctex.gz
+*.toc
+*.xdv
+build/
+
+# --- Config local por máquina (ruta del logo institucional, etc.) ---
+# No se redistribuye el logo/manual de marca vía git; cada máquina
+# define su propia ruta en icv/icv-local.cfg.tex (ver icv/icv-local.cfg.tex.example).
+icv/icv-local.cfg.tex
+
+# --- macOS / Windows ---
+.DS_Store
+Thumbs.db

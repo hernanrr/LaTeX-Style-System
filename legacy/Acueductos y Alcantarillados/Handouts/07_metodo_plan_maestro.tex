@@ -1,0 +1,80 @@
+\documentclass[12pt]{article}
+\newcommand{\DocShort}{Plan maestro}
+\input{preamble_population.tex}
+\begin{document}
+\doccover{Método del plan maestro}{2026-05}
+\handoutintro{Estimar la población futura sumando la capacidad poblacional de las zonas definidas en el plan urbano.}{Ciudades con instrumentos formales de ordenamiento territorial y zonificación.}
+
+\section{Datos ejemplo}
+Se requiere:
+\begin{itemize}
+\item zonificación del plan maestro,
+\item área urbanizable por zona,
+\item densidad adoptada para cada uso,
+\item porcentaje de ocupación esperado en el horizonte de diseño.
+\end{itemize}
+
+\section{Ecuaciones mínimas}
+La población de cada zona se estima como:
+\begin{equation}
+P_i=A_iD_if_i
+\end{equation}
+donde $P_i$ es la población de la zona $i$, $A_i$ es el área útil de la zona, $D_i$ es la densidad adoptada y $f_i$ es la fracción de ocupación proyectada.
+
+La población total es:
+\begin{equation}
+P_T=\sum_i P_i
+\end{equation}
+donde $P_T$ es la población total de diseño del plan maestro.
+
+\section{Procedimiento}
+\begin{enumerate}
+\item Identificar las zonas del plan maestro.
+\item Asignar el área útil de cada zona.
+\item Definir la densidad de diseño.
+\item Corregir por el nivel de ocupación esperado.
+\item Sumar la población de todas las zonas.
+\end{enumerate}
+
+\section{Ejemplo resuelto}
+Supóngase el siguiente esquema de expansión urbana para el horizonte 2045.
+
+\begin{center}
+\begin{tabular}{lrrrr}
+\toprule
+Zona & Área (ha) & Densidad (hab/ha) & Ocupación & Población \\
+\midrule
+Residencial consolidada & 320 & 180 & 1.00 & 57,600 \\
+Residencial de expansión & 210 & 160 & 0.85 & 28,560 \\
+Residencial mixta & 95 & 220 & 0.90 & 18,810 \\
+Área universitaria & 35 & 90 & 0.75 & 2,363 \\
+\makecell[l]{Parque industrial\\con vivienda} & 60 & 110 & 0.70 & 4,620 \\
+Centro de servicios & 28 & 140 & 0.80 & 3,136 \\
+\midrule
+Total & & & & 115,089 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Por ejemplo, para la zona residencial de expansión:
+\[
+P = 210 \times 160 \times 0.85 = \num{28560}
+\]
+
+La población total de diseño es:
+\[
+P_T = \num{57600}+\num{28560}+\num{18810}+\num{2363}+\num{4620}+\num{3136}=\num{115089}
+\]
+
+\resultbox{La población de diseño estimada mediante el plan maestro es 115,089 habitantes.}
+
+\section{Teoría breve}
+Este método no extrapola directamente la historia censal. Parte de la estructura física y normativa de la ciudad futura, por eso es especialmente útil cuando la expansión está planificada.
+
+\section{Observaciones de uso}
+\begin{itemize}
+\item Suele ser el método preferible cuando existe un plan urbano confiable.
+\item Debe revisarse si las densidades normativas son realistas.
+\item Puede combinarse con métodos históricos como verificación externa.
+\end{itemize}
+\end{document}

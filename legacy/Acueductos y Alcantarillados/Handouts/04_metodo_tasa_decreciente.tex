@@ -1,0 +1,96 @@
+\documentclass[12pt]{article}
+\newcommand{\DocShort}{Tasa decreciente}
+\input{preamble_population.tex}
+\begin{document}
+\doccover{Método de la tasa decreciente de crecimiento}{2026-05}
+\handoutintro{Proyectar la población reduciendo en cada período censal la tasa porcentual de crecimiento observada más recientemente.}{Ciudades maduras cuyo ritmo de crecimiento empieza a desacelerarse.}
+
+\section{Datos ejemplo}
+Se usará una serie con períodos censales de $10$ años; por tanto, las tasas porcentuales del ejemplo son tasas por década.
+
+\begin{center}
+\begin{tabular}{lcccccc}
+\toprule
+Año & 1970 & 1980 & 1990 & 2000 & 2010 & 2020 \\
+\midrule
+Población & 145,800 & 170,600 & 197,100 & 223,200 & 247,000 & 267,800 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Ecuaciones mínimas}
+La tasa porcentual de crecimiento del período censal $i$ es:
+\begin{equation}
+\%\Delta_i=\frac{P_i-P_{i-1}}{P_{i-1}}\times 100
+\end{equation}
+donde $P_{i-1}$ es la población al inicio del período y $P_i$ es la población al final del período.
+
+La disminución media de la tasa porcentual se obtiene como:
+\begin{equation}
+d=\frac{1}{M}\sum_{j=1}^{M} d_j
+\end{equation}
+donde $d_j$ es cada disminución reciente de la tasa porcentual y $M$ es el número de disminuciones consideradas.
+
+La primera tasa futura corregida es:
+\begin{equation}
+\%\Delta_{\text{futura,1}}=\%\Delta_{\text{última}}-d
+\end{equation}
+
+\weightednote{Si los intervalos censales no son regulares, conviene estandarizar las tasas a una base anual antes de promediarlas y luego usar un promedio ponderado con pesos iguales a la duración de cada período en años.}
+
+\section{Procedimiento}
+\begin{enumerate}
+\item Calcular los incrementos absolutos.
+\item Calcular las tasas porcentuales de crecimiento por período censal.
+\item Calcular las disminuciones entre tasas consecutivas.
+\item Promediar las disminuciones recientes.
+\item Corregir la última tasa observada y proyectar período por período.
+\end{enumerate}
+
+\section{Ejemplo resuelto}
+\begin{center}
+\begin{tabular}{crrrr}
+\toprule
+Año & Población & \makecell{Incremento\\del período} & \makecell{\% de crecimiento\\por década} & \makecell{Disminución\\de tasa} \\
+\midrule
+1970 & 145,800 & -- & -- & -- \\
+1980 & 170,600 & 24,800 & 17.01 & -- \\
+1990 & 197,100 & 26,500 & 15.53 & 1.48 \\
+2000 & 223,200 & 26,100 & 13.24 & 2.29 \\
+2010 & 247,000 & 23,800 & 10.66 & 2.58 \\
+2020 & 267,800 & 20,800 & 8.42 & 2.24 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Tomando las tres disminuciones más recientes:
+\[
+d=\frac{2.29+2.58+2.24}{3}=2.37\ \text{puntos porcentuales por década}
+\]
+
+La última tasa observada fue $8.42\%$ por década. Entonces:
+\[
+\%\Delta_{2030}=8.42-2.37=6.05\%
+\]
+\[
+P_{2030}=\num{267800}(1+0.0605)=\num{284003}
+\]
+\[
+\%\Delta_{2040}=6.05-2.37=3.68\%, \qquad P_{2040}=\num{294453}
+\]
+\[
+\%\Delta_{2050}=3.68-2.37=1.31\%, \qquad P_{2050}=\num{298306}
+\]
+
+\resultbox{La población proyectada es 284,003 habitantes en 2030, 294,453 en 2040 y 298,306 en 2050.}
+
+\section{Teoría breve}
+Este método intenta representar la parte final de una curva en S: la ciudad sigue creciendo, pero lo hace cada vez a menor ritmo.
+
+\section{Observaciones de uso}
+\begin{itemize}
+\item No conviene si la ciudad todavía muestra aceleración.
+\item Debe distinguirse entre tasa porcentual por período censal y disminución media de la tasa por período censal.
+\item La tasa futura no debe hacerse negativa sin justificar un escenario de decrecimiento real.
+\end{itemize}
+\end{document}

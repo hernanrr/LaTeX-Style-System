@@ -1,0 +1,445 @@
+% !TEX program = lualatex
+\documentclass[11pt]{article}
+\newcommand{\AsignaturaCorta}{Asignación 3 — Análisis Espacial QGIS}
+\input{preamble}
+
+\begin{document}
+
+% ============================================================
+%  PORTADA
+% ============================================================
+\begin{center}
+  {\small\color{midgrey} Pontificia Universidad Católica Madre y Maestra\\
+  Escuela de Ingeniería Civil y Ambiental}
+
+  \vspace{1.4cm}
+  {\color{olive}\rule{\linewidth}{2pt}}
+  \vspace{0.3cm}
+
+  {\Large\bfseries\color{darkblue} ICV 342 Hidrología}\\[0.4em]
+  {\LARGE\bfseries\color{darkblue} Asignación 3 de 3}\\[0.3em]
+  {\large\itshape Análisis Espacial de Precipitación con \qgis{}\\
+  Polígonos de Thiessen e Isoyetas — Distrito Nacional}
+
+  \vspace{0.3cm}
+  {\color{olive}\rule{\linewidth}{2pt}}
+  \vspace{1.0cm}
+\end{center}
+
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+\textbf{Asignatura}   & ICV 342 Hidrología \\
+\textbf{Docente}  & Dr.\ Ricardo Hernández Moreira\\
+\textbf{Unidad}       & Unidad IV — Precipitación (análisis espacial) \\
+\textbf{Prerequisito} & Asignaciones 1 y 2 \\
+\textbf{Modalidad}    & Grupos de clase ya asignados \\
+\textbf{Herramientas} & \qgis{} 3.44 o 4.0; \python{}/R o \excel{} para cálculos tabulares \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{warnbox}
+\textbf{Nota sobre las herramientas.}
+Esta asignación requiere el uso de \qgis{} \textbf{versión 3.44 o 4.0}
+(las versiones anteriores pueden presentar diferencias en los nombres de las
+herramientas o comportamientos distintos en los algoritmos de geoprocesamiento).
+Los cálculos de precipitación areal (Thiessen e isoyetas) pueden realizarse
+directamente en la tabla de atributos de \qgis{}, en \excel{}, o con un script
+de \python{}/R; se acepta cualquiera de estas opciones.
+\end{warnbox}
+
+% ============================================================
+\section*{Objetivo General}
+% ============================================================
+
+Incorporar la dimensión espacial al análisis de precipitación desarrollado en las
+asignaciones anteriores. Los estudiantes ubicarán cinco estaciones meteorológicas
+en un entorno SIG, construirán polígonos de Thiessen y trazarán isoyetas para
+estimar la precipitación media areal sobre el \textbf{Distrito Nacional} durante
+un caso de estudio de alta variabilidad espacial.
+
+% ============================================================
+\section*{Datos Espaciales Requeridos}
+% ============================================================
+
+\begin{olivebox}
+\textbf{Fuentes de datos oficiales.}
+\begin{itemize}
+  \item \textbf{Límites administrativos (provincias y municipios):}
+    Descargar exclusivamente del \textbf{Geoportal de Infraestructura de Datos
+    Espaciales de la República Dominicana} (\url{https://www.iderd.gob.do}) o
+    utilizar la capa provista por el profesor.
+    No usar fuentes alternativas (GADM, OSM, etc.) para los límites oficiales del país.
+
+  \item \textbf{Modelo Digital de Elevación (MDE):}
+    SRTM 30\,m disponible en USGS Earth Explorer
+    (\url{https://earthexplorer.usgs.gov}), \emph{tiles} N18W070, N18W071 y N19W070. 
+    También con el complemento de OpenTopography de \qgis{}.
+    Útil como fondo topográfico para las composiciones cartográficas.
+
+  \item \textbf{Mapa base de referencia:}
+    En \qgis{}, ir a \emph{Explorador} → \emph{XYZ Tiles} → \emph{OpenStreetMap}
+    para añadir un mapa base de fondo (requiere conexión a internet).
+\end{itemize}
+\end{olivebox}
+
+% ============================================================
+\section*{Preparación del Entorno \qgis{}}
+% ============================================================
+
+\subsection*{Sistemas de referencia de coordenadas}
+
+\begin{itemize}
+  \item Usar \textbf{EPSG:4326} (WGS\,84, geográfico) para la capa de puntos de
+    estaciones meteorológicas.
+  \item Para todos los análisis de área y distancia, reproyectar las capas a
+    \textbf{EPSG:32619} (WGS\,84 / UTM Zona\,19N), que es la proyección métrica
+    adecuada para la República Dominicana.
+  \item En \qgis{}, verificar que el \textbf{SRC del proyecto} esté configurado
+    en EPSG:32619 (\emph{Proyecto → Propiedades → SRC}) para que las mediciones
+    de área en la calculadora de campos sean correctas.
+\end{itemize}
+
+\subsection*{Conversión de coordenadas DMS}
+
+Algunas estaciones tienen coordenadas en el formato grados-minutos (DMS)
+en el archivo \indomet{}.  La conversión a grados decimales es:
+
+\[
+  \phi_{\text{decimal}} = \text{grados} + \frac{\text{minutos}}{60}
+\]
+
+
+\begin{table}[htb]
+\centering
+\small
+\captionof{table}{Coordenadas de las cinco estaciones en grados decimales. Las coordenadas
+marcadas como ``Convertir de DMS'' deben verificarse con la cabecera del archivo
+original antes de usarlas. En EPSG:4326, todas las longitudes al oeste de Greenwich
+deben almacenarse con signo negativo.}
+\rowcolors{2}{lightgrey}{white}
+\begin{tabular}{llllll}
+\toprule
+\textbf{Estación} & \textbf{Latitud} & \textbf{Longitud} & \textbf{Alt (m)} & \textbf{Período media} & \textbf{Nota coords.} \\
+\midrule
+Santo Domingo   & 18.4734 & -69.8705 & 14 & 1970--2025 & Decimales en archivo \\
+Las Américas    & 18.4331 & -69.6796 & 7  & 1970--2025 & Decimales en archivo \\
+La Victoria     & 18.5833 & -69.8333 & 12 & 1970--2025 & Convertir de DMS \\
+Jardín Botánico & 18.4949 & -69.9529 & 48 & 2010--2025 & Decimales en archivo \\
+El Higuero      & 18.5833 & -69.9833 & 27 & 2007--2025 & Convertir de DMS \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+% ============================================================
+\section{Capa de Estaciones Meteorológicas}
+% ============================================================
+
+\paso{Creación de la capa de puntos}
+
+\begin{itemize}
+  \item Preparar un archivo CSV con las columnas siguientes:
+    \begin{center}\small\ttfamily
+      nombre, latitud, longitud, altitud\_m, periodo\_media,\\
+      P\_media\_periodo\_mm, P\_nov2023\_mm.
+    \end{center}
+    Los dos campos de precipitación se calculan en las asignaciones anteriores.
+
+  \item En \qgis{}: \emph{Capa → Añadir capa → Añadir capa de texto delimitado}
+    (\texttt{.csv}).  Configurar el campo $x$ como \texttt{longitud} y el campo $y$
+    como \texttt{latitud}; sistema de referencia EPSG:4326.
+
+  \item Verificar que los cinco puntos caigan en la ubicación correcta sobre el
+    mapa base. Una longitud positiva ubicaría las estaciones fuera de la República
+    Dominicana y debe considerarse un error de datos.
+
+  \item Aplicar \textbf{simbología graduada}: variar el color o tamaño del símbolo
+    según \path{P_media_periodo_mm}. En \emph{Propiedades de capa}, seleccione
+    \emph{Simbología → Graduado}.
+
+  \item Etiquetar los puntos con el nombre de la estación (\emph{Propiedades de
+    capa → Etiquetas → Etiqueta sencilla}).
+\end{itemize}
+
+\paso{Composición del mapa de estaciones}
+
+\begin{itemize}
+  \item Superponer la capa de puntos sobre el límite del Distrito Nacional y
+    las provincias vecinas, con el MDE como sombreado de relieve o un mapa base OSM.
+  \item Crear una composición de mapa (\emph{Proyecto → Nueva composición de
+    impresión}) con: título, escala gráfica, flecha de norte, leyenda con
+    la simbología de precipitación media del período disponible, el período de
+    cada estación y créditos de fuentes de datos.
+  \item Exportar como imagen PNG ($\geq 200$~dpi) o PDF.
+\end{itemize}
+
+% ============================================================
+\section{Polígonos de Thiessen y Precipitación Areal}
+% ============================================================
+
+Los \textbf{polígonos de Thiessen} (o de Voronoi) dividen el plano de modo que
+cada punto del espacio quede asignado a la estación más cercana.
+El área del polígono de cada estación se usa como peso para calcular la
+\textbf{precipitación media areal} sobre una región, de modo que las estaciones
+con mayor área de influencia contribuyen más al promedio ponderado:
+
+\begin{equation}
+  \bar{P} = \frac{\sum\limits_{i=1}^{k} A_i \, P_i}{\sum\limits_{i=1}^{k} A_i} = \sum_{i=1}^{k} w_i \, P_i
+  \label{eq:thiessen}
+\end{equation}
+
+donde $k$ es el número de estaciones cuyos polígonos intersecan el Distrito Nacional,
+$P_i$ es la precipitación registrada en la estación $i$,
+$A_i$ es el área del polígono de Thiessen de la estación $i$ \emph{recortado}
+al límite del Distrito Nacional, y $w_i = A_i / \sum A_i$ es el peso de ponderación
+de cada estación.
+
+\subsection*{Caso de estudio: noviembre de 2023}
+
+Noviembre de 2023 es el mes de estudio principal de esta asignación.
+La variabilidad espacial observada es extraordinaria (ver Tabla~1 en la
+Asignación~2): Jardín Botánico registró 481.7~mm mientras que Las Américas
+registró 192.9~mm en el mismo mes, a menos de 30~km de distancia.
+Este contraste hace que la elección del método de estimación areal sea
+especialmente relevante.
+
+\paso{Construcción de los polígonos de Thiessen en \qgis{}}
+
+\begin{itemize}
+  \item En la \emph{Caja de herramientas de procesos} (\texttt{Ctrl+Alt+T}),
+    buscar y ejecutar:
+    \texttt{Geometría vectorial → Polígonos de Voronoi}
+    (identificador: \texttt{qgis:voronoipolygons}).
+
+  \item Usar la capa de puntos de estaciones como entrada.
+    Activar el parámetro \emph{Buffer} y establecerlo en al menos el
+    20\,\% del \emph{bounding box} de las estaciones, verificando que el resultado
+    cubra por completo el Distrito Nacional.
+
+  \item \textbf{Recortar} los polígonos de Thiessen al límite del Distrito
+    Nacional: \emph{Caja de herramientas → Superposición de vectores →
+    Recortar} (\texttt{qgis:clip}).
+
+  \item En la tabla de atributos del resultado recortado, calcular el área
+    de cada polígono en km² con la calculadora de campos:
+    \[
+      \texttt{\$area / 1.000.000}
+    \]
+    (esto aplica cuando el SRC del proyecto está en metros, i.e., EPSG:32619).
+
+  \item Calcular la fracción de área: $w_i = A_i / A_{\text{total}}$.
+\end{itemize}
+
+\paso{Cálculo de la precipitación areal}
+
+\begin{itemize}
+  \item Unir los datos de precipitación de noviembre de 2023
+    (totales mensuales por estación, calculados en la Asignación~1)
+    a la tabla de atributos de los polígonos de Thiessen
+    (\emph{Propiedades de capa → Uniones → Añadir unión vectorial}
+    o mediante join en \python{}/\excel{}).
+
+  \item Aplicar la ec.~(\ref{eq:thiessen}) para obtener la precipitación
+    media areal $\bar{P}$ sobre el Distrito Nacional para noviembre de 2023.
+
+  \item Comparar $\bar{P}$ con el promedio aritmético simple de las estaciones.
+    ¿Difieren significativamente?  ¿Qué estación domina por área de influencia?
+
+  \item Repetir el procedimiento con \texttt{P\_media\_periodo\_mm}. Esta
+    variable representa la media anual del período disponible de cada estación,
+    no una normal climatológica común. La tabla y el mapa deben mostrar
+    \texttt{periodo\_media} y discutir esta limitación. Se conservarán sin
+    cambios los polígonos, las áreas y los pesos calculados para noviembre de 2023.
+
+  \item Presentar los resultados en una tabla con las columnas:
+    estación, período de la media, $A_i$ (km²), $w_i$, $P_i$ (mm) y
+    $w_i P_i$ (mm), tanto para noviembre de 2023 como para la media del
+    período disponible.
+\end{itemize}
+
+\paso{Mapa de polígonos de Thiessen}
+
+\begin{itemize}
+  \item Colorear los polígonos según la precipitación de noviembre de 2023
+    (escala de color continua, p.ej.\ blanco → azul oscuro).
+  \item Superponer la capa de puntos de estaciones con etiquetas que muestren
+    el nombre y el total mensual en mm.
+  \item Añadir en la leyenda el valor de $\bar{P}$ calculado por Thiessen.
+  \item Incluir: título, escala gráfica, flecha de norte, leyenda con unidades (mm)
+    y créditos de fuentes de datos.
+\end{itemize}
+
+% ============================================================
+\section{Isoyetas y Precipitación Areal sobre el Distrito Nacional}
+% ============================================================
+
+Las \textbf{isoyetas} son líneas que unen puntos de igual precipitación,
+análogas a las curvas de nivel en topografía.
+A diferencia del método de Thiessen, las isoyetas permiten representar la
+variación espacial continua de la precipitación y pueden incorporar el efecto
+del relieve cuando la red de estaciones es suficientemente densa.
+
+El cálculo de la precipitación media areal por el método de isoyetas es:
+
+\begin{equation}
+  \bar{P} = \frac{\sum\limits_{j} A_j \cdot \bar{P}_j}{A_{\text{total}}}
+  \label{eq:isoyetas}
+\end{equation}
+
+donde $A_j$ es el área de la franja comprendida entre dos isoyetas consecutivas,
+$\bar{P}_j = (P_j + P_{j+1})/2$ es el promedio de las dos isoyetas que la delimitan,
+y $A_{\text{total}}$ es el área total del Distrito Nacional.
+
+\paso{Interpolación espacial para el trazado de isoyetas}
+
+El mes de análisis es \textbf{noviembre de 2023}, por su alta variabilidad espacial.
+
+\begin{itemize}
+  \item Añadir la precipitación de noviembre de 2023 como campo numérico en
+    la tabla de atributos de la capa de puntos de estaciones.
+
+  \item Aplicar interpolación espacial: en la \emph{Caja de herramientas de
+    procesos} → \emph{Interpolación} → \textbf{Interpolación IDW}
+    (\emph{Inverse Distance Weighting}, ponderación inversa a la distancia).
+    Configurar:
+    \begin{itemize}
+      \item Capa de puntos: estaciones con el campo de precipitación nov.\ 2023.
+      \item Extensión del ráster: cubrir el Distrito Nacional más un buffer
+        de $\sim$10~km.
+      \item Tamaño de celda: 500 m (suficiente para la densidad de estaciones disponible).
+      \item Potencia de IDW: 2 (valor estándar).
+    \end{itemize}
+
+  \item Recortar el ráster IDW al límite del Distrito Nacional antes de calcular
+    áreas o preparar la composición final.
+
+  \item Extraer las isoyetas del ráster interpolado: \emph{Caja de herramientas →
+    Extracción de ráster → Contornos}.
+    Usar intervalos de 50~mm (p.ej.\ 150, 200, 250, 300, 350, 400, 450, 500~mm).
+
+  \item Recortar las isoyetas al límite del Distrito Nacional.
+\end{itemize}
+
+\begin{warnbox}
+\textbf{Limitación importante.}
+Con solo 4--5 estaciones en el área del Distrito Nacional, la interpolación IDW
+tiene una incertidumbre muy alta.  Las isoyetas obtenidas son una estimación
+orientativa, no mediciones directas.  Esta limitación debe discutirse explícitamente
+en el informe: ¿cuántas estaciones serían necesarias para que la interpolación
+sea confiable?  ¿Qué efecto tiene la posición de las estaciones respecto al
+gradiente de precipitación?
+\end{warnbox}
+
+\paso{Cálculo de la precipitación areal por isoyetas}
+
+\begin{itemize}
+  \item Calcular las áreas parciales entre isoyetas consecutivas usando
+    \qgis{} (\emph{Caja de herramientas → Superposición de vectores →
+    Diferencia} o la calculadora de campos sobre polígonos intersectados).
+
+  \item Construir una tabla con: intervalo de isoyetas (mm),
+    $\bar{P}_j$ (mm), $A_j$ (km$^2$) y $A_j \cdot \bar{P}_j$ (km$^2\cdot$mm).
+
+  \item Calcular $\bar{P}$ con la ec.~(\ref{eq:isoyetas}).
+
+  \item Comparar el resultado con el valor obtenido por Thiessen.
+    ¿Cuál considera más representativo dada la densidad de estaciones disponibles?
+    ¿Bajo qué condiciones el método de isoyetas es preferible?
+\end{itemize}
+
+\paso{Mapa de isoyetas}
+
+\begin{itemize}
+  \item Preparar la composición cartográfica con:
+    isoyetas etiquetadas en mm,
+    puntos de estaciones con el total observado,
+    límite del Distrito Nacional,
+    ráster IDW como fondo semitransparente con paleta de color (blanco → azul),
+    escala gráfica, flecha de norte y leyenda.
+  \item Exportar como PNG ($\geq 200$~dpi) o PDF.
+\end{itemize}
+
+% ============================================================
+\section*{Preguntas de Análisis}
+% ============================================================
+
+\setcounter{pregunta}{0}
+
+\pregunta{¿Cuándo el método de Thiessen es preferible al promedio aritmético simple,
+y cuándo el método de isoyetas es preferible al de Thiessen?  Relacione su respuesta
+con la densidad de la red de estaciones y la variabilidad espacial de la precipitación.}
+
+\pregunta{¿Cómo influyen la cercanía al litoral, la urbanización y el relieve local
+en la distribución espacial de la precipitación sobre el Distrito Nacional?
+¿La ubicación de las cinco estaciones permite distinguir esos efectos?}
+
+\pregunta{En noviembre de 2023, Jardín Botánico registró 481.7~mm y Las Américas
+solo 192.9~mm, a menos de 30~km de distancia y en el mismo mes.
+¿Qué factores meteorológicos y/o geográficos podrían explicar esta diferencia?}
+
+\pregunta{¿Cuál es el área de influencia (km²) de cada estación dentro del Distrito
+Nacional según los polígonos de Thiessen? ¿Alguna estación tiene un peso
+desproporcionado?  ¿Qué implicaciones tiene esto para la confiabilidad de la
+estimación de $\bar{P}$?}
+
+\pregunta{Si se quisiera mejorar la red de monitoreo para reducir la incertidumbre
+en la estimación de la precipitación areal sobre el Distrito Nacional, ¿dónde ubicaría
+una o dos estaciones adicionales y por qué?  Argumente en términos de geometría de
+Thiessen (reducción del área de los polígonos más grandes) y gradientes de
+precipitación observados.}
+
+% ============================================================
+\section*{Entregables}
+% ============================================================
+
+\setcounter{entregable}{0}
+
+\entregable{Proyecto \qgis{} (\texttt{.qgz})}{Proyecto completo con capas
+organizadas en grupos: \emph{Estaciones}, \emph{Límites}, \emph{Thiessen},
+\emph{Isoyetas}, \emph{MDE}.  Usar rutas de archivo relativas para facilitar
+la portabilidad.}
+
+\entregable{Mapa de estaciones}{Composición cartográfica exportada (PDF o PNG
+$\geq 200$~dpi): cinco estaciones alrededor del Distrito Nacional con simbología
+graduada por \texttt{P\_media\_periodo\_mm}; período de cada media; límites
+administrativos; mapa base; leyenda; escala; norte; créditos de fuentes.}
+
+\entregable{Mapa de polígonos de Thiessen}{Polígonos coloreados por precipitación
+de noviembre de 2023; estaciones etiquetadas con nombre y valor; nota con $\bar{P}$
+calculado por Thiessen.}
+
+\entregable{Tabla de cálculo Thiessen}{Para noviembre de 2023 y para la media
+anual del período disponible: estación, período de la media, $A_i$ (km²), $w_i$,
+$P_i$ (mm) y $w_i P_i$ (mm). Incluir $\bar{P}$, su comparación con el promedio
+aritmético y la advertencia de que las medias no comparten un período climatológico.}
+
+\entregable{Mapa de isoyetas}{Isoyetas de noviembre de 2023 sobre el Distrito
+Nacional; estaciones con precipitación observada; ráster IDW de fondo; leyenda;
+escala; norte.}
+
+\entregable{Tabla de cálculo isoyetas}{Intervalo de isoyetas, $\bar{P}_j$,
+$A_j$ (km²) y $A_j \cdot \bar{P}_j$; valor final de $\bar{P}$; comparación
+con el resultado de Thiessen.}
+
+\entregable{Respuestas a las preguntas de análisis}{Justificadas; incluir capturas
+de pantalla de \qgis{} donde sea pertinente, especialmente para las preguntas~4 y~5.}
+
+\vspace{1em}
+
+\begin{olivebox}
+\textbf{Recursos recomendados.}
+\begin{itemize}
+  \item \qgis{} Documentación oficial en español: \url{https://docs.qgis.org}
+  \item Geoportal IDE-RD: \url{https://www.iderd.gob.do}
+  \item USGS Earth Explorer (SRTM): \url{https://earthexplorer.usgs.gov}
+\end{itemize}
+\end{olivebox}
+
+\vfill
+\begin{center}
+  {\small\color{midgrey} ICV 342 Hidrología — Asignación 3 de 3 — PUCMM}
+\end{center}
+
+\end{document}

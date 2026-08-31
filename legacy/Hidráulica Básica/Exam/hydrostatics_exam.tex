@@ -1,0 +1,164 @@
+\documentclass[11pt]{article}
+\newcommand{\DocShort}{Examen: hidrostática y propiedades seleccionadas}
+\input{exam_preamble.tex}
+
+\begin{document}
+
+\doccover{Examen de hidrostática y propiedades seleccionadas de los fluidos}{2026-07}
+\introbox{Evaluar la capacidad del estudiante para resolver problemas de hidrostática y de propiedades básicas de los fluidos mediante el uso correcto de principios físicos, equilibrio y relaciones constitutivas simples.}{Se espera una solución clara, ordenada y completamente trazable. En cada ejercicio el estudiante deberá realizar primero un dibujo o esquema del sistema, identificar datos y variables, plantear las ecuaciones aplicables y desarrollar la solución en unidades SI.}
+
+\section{Objetivo del examen}
+Resolver seis problemas representativos de presión hidrostática, manometría, empuje sobre superficies, flotación, estabilidad de presas, tensión superficial y viscosidad.
+
+\section{Instrucciones generales}
+\begin{itemize}
+\item Resuelva en unidades SI.
+\item Presente claramente las ecuaciones utilizadas y las sustituciones numéricas.
+\item Puede asumir $g = \SI{9.81}{\meter\per\second\squared}$.
+\item Cuando sea necesario, use para el agua a \SI{20}{\celsius}: $\rho = \SI{998}{\kilogram\per\meter\cubed}$ y $\gamma = \SI{9.79}{\kilo\newton\per\meter\cubed}$.
+\item Valor total: \SI{100}{} puntos.
+\end{itemize}
+
+\begin{center}
+\begin{tabular}{lc}
+\toprule
+\textbf{Problema} & \textbf{Puntuación sugerida} \\
+\midrule
+1. Presión hidrostática y manometría & 15 puntos \\
+2. Empuje hidrostático sobre superficie plana & 20 puntos \\
+3. Flotación y principio de Arquímedes & 15 puntos \\
+4. Estabilidad de una presa de gravedad & 25 puntos \\
+5. Tensión superficial & 12.5 puntos \\
+6. Viscosidad & 12.5 puntos \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Datos y constantes de uso común}
+\begin{itemize}
+\item Presión atmosférica de referencia, cuando aplique: $p_{\text{atm}} = \SI{101.3}{\kilo\pascal}$.
+\item Para el mercurio, cuando aplique: $\rho_{\text{Hg}} = \SI{13600}{\kilogram\per\meter\cubed}$.
+\item Para el concreto de la presa, cuando aplique: $\gamma_c = \SI{23.6}{\kilo\newton\per\meter\cubed}$.
+\item Para la solución jabonosa del problema de tensión superficial: $\sigma = \SI{0.025}{\newton\per\meter}$.
+\end{itemize}
+
+\section{Problemas}
+
+\subsection*{Problema 1. Presión hidrostática y manometría}
+\textbf{Antes de iniciar, realice un esquema claro del sistema, indicando niveles, fluidos, puntos de referencia y datos geométricos.}
+
+Un tanque cerrado contiene agua y aire comprimido. La presión del aire sobre la superficie libre del agua se mide mediante un manómetro en U conectado al espacio de aire del tanque. El otro extremo del manómetro está abierto a la atmósfera y contiene mercurio.
+
+La diferencia entre los niveles de mercurio en el manómetro es de \SI{18}{\centi\meter}, siendo el nivel del lado conectado al tanque más bajo que el lado abierto. La profundidad del agua dentro del tanque, medida desde la superficie libre hasta el punto $A$ en el fondo, es de \SI{2.40}{\meter}.
+
+Determine:
+\begin{enumerate}
+\item La presión manométrica del aire dentro del tanque.
+\item La presión absoluta del aire dentro del tanque.
+\item La presión manométrica en el punto $A$.
+\item La presión absoluta en el punto $A$.
+\item Explique brevemente por qué la presión absoluta y la presión manométrica difieren, y cuál de ellas resulta más útil para describir el estado del agua en el fondo del tanque.
+\end{enumerate}
+
+\subsection*{Problema 2. Empuje hidrostático sobre superficie plana}
+\textbf{Antes de iniciar, realice un esquema claro del sistema, indicando dimensiones, nivel del agua, articulación, apoyo y línea de acción de la resultante.}
+
+Una placa rectangular vertical de \SI{5.0}{\meter} de ancho y \SI{4.0}{\meter} de altura cierra el extremo de un canal de agua dulce. La lámina de agua alcanza una profundidad de \SI{3.2}{\meter} medida desde la superficie libre hasta el fondo del canal. La placa está articulada a lo largo de su borde superior en el punto $A$ y se apoya contra un tope en el punto $B$, ubicado en su borde inferior.
+
+Determine:
+\begin{enumerate}
+\item La magnitud de la fuerza hidrostática resultante ejercida por el agua sobre la placa.
+\item La posición del centro de presión, medida verticalmente desde la superficie libre.
+\item La fuerza horizontal que debe ejercer el tope en $B$ para mantener la placa en equilibrio.
+\end{enumerate}
+
+Desprecie el peso de la placa y la fricción en la articulación.
+
+\subsection*{Problema 3. Flotación y principio de Arquímedes}
+\textbf{Antes de iniciar, realice un esquema claro del sistema e indique las fuerzas relevantes para el análisis.}
+
+Se desea determinar el volumen y la densidad promedio de una pieza sólida irregular empleando una balanza de resorte. La pieza pesa \SI{6.80}{\kilo\newton} en el aire y \SI{4.25}{\kilo\newton} cuando está completamente sumergida en agua a \SI{20}{\celsius}.
+
+Determine:
+\begin{enumerate}
+\item El volumen de la pieza.
+\item La densidad promedio de la pieza.
+\item La gravedad específica del material.
+\item Si la pieza pudiera colocarse libremente en agua, indique si flotaría o se hundiría. Justifique su respuesta con base en los resultados obtenidos.
+\end{enumerate}
+
+Exprese claramente sus suposiciones.
+
+\subsection*{Problema 4. Estabilidad de una presa de gravedad}
+\textbf{Antes de iniciar, realice un esquema claro de la presa, indicando geometría, fuerzas, centro de presión y base de análisis.}
+
+Una presa de gravedad de concreto, de sección rectangular, tiene una altura de \SI{18}{\meter} y una base de \SI{12}{\meter}. La cara aguas arriba es vertical y el embalse está lleno hasta la coronación de la presa. Considere un ancho unitario de \SI{1.0}{\meter} perpendicular al plano del análisis.
+
+Para el agua, use $\gamma_w = \SI{9.79}{\kilo\newton\per\meter\cubed}$.
+
+Determine:
+\begin{enumerate}
+\item La magnitud de la fuerza hidrostática ejercida por el agua sobre la cara vertical de la presa.
+\item La ubicación del centro de presión sobre la cara mojada, medida desde la superficie libre.
+\item El peso propio de la presa por metro de ancho.
+\item La magnitud de la resultante entre la fuerza hidrostática y el peso de la presa.
+\item El punto donde la resultante corta la base de la presa, medido desde el talón aguas arriba.
+\item Si la resultante pasa dentro del tercio central de la base.
+\item Con base en el resultado anterior, concluya si existe riesgo de tracción en la base y si la presa es estable frente al volcamiento en esta condición.
+\end{enumerate}
+
+Desprecie subpresión, sismo, oleaje, sedimentos y cualquier otra fuerza adicional.
+
+\subsection*{Problema 5. Tensión superficial}
+\textbf{Antes de iniciar, realice un esquema claro del sistema y represente la dirección de la fuerza de tensión superficial.}
+
+Un aro circular delgado de alambre, de \SI{8.0}{\centi\meter} de diámetro, se sumerge en una solución jabonosa y luego se extrae lentamente, de modo que se forma una película líquida sobre el aro.
+
+Determine:
+\begin{enumerate}
+\item La fuerza mínima que debe aplicarse verticalmente para sostener la película justo antes de desprenderse del aro.
+\item El trabajo necesario para elevar uniformemente la película una distancia de \SI{6}{\milli\meter}, suponiendo que la fuerza permanece constante durante ese desplazamiento.
+\item Explique por qué en este tipo de problema debe considerarse que la película tiene dos superficies libres.
+\end{enumerate}
+
+\subsection*{Problema 6. Viscosidad}
+\textbf{Antes de iniciar, realice un esquema claro del sistema, indicando área de contacto, espesor de película, dirección del movimiento y perfil de velocidad supuesto.}
+
+Un bloque rectangular de \SI{0.50}{\meter} de largo, \SI{0.30}{\meter} de ancho y peso despreciable se mueve a velocidad constante sobre una superficie horizontal, separado de ella por una película de aceite de espesor uniforme \SI{0.80}{\milli\meter}. La velocidad del bloque es de \SI{0.60}{\meter\per\second}.
+
+Si la fuerza horizontal necesaria para mantener el movimiento es de \SI{42}{\newton}, determine:
+\begin{enumerate}
+\item El esfuerzo cortante promedio en la película de aceite.
+\item La viscosidad dinámica del aceite.
+\item La viscosidad cinemática del aceite, si su densidad es $\rho = \SI{870}{\kilogram\per\meter\cubed}$.
+\item Si el espesor de la película se reduce a la mitad y todo lo demás permanece constante, indique cómo cambia la fuerza requerida para mantener la misma velocidad.
+\end{enumerate}
+
+Suponga distribución lineal de velocidades en la película.
+
+\section{Rúbrica general}
+\begin{infobox}
+Su calificación en cada problema dependerá de la calidad integral de su solución. En términos generales, se valorará lo siguiente:
+\begin{itemize}
+\item que inicie cada ejercicio con un dibujo o esquema claro del sistema;
+\item que identifique correctamente los datos, incógnitas y suposiciones;
+\item que plantee las ecuaciones físicas apropiadas para el problema;
+\item que desarrolle los cálculos con orden, unidades consistentes y sustituciones claras;
+\item que obtenga resultados numéricos razonables e interprete su significado cuando se le solicite.
+\end{itemize}
+\end{infobox}
+
+\begin{center}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{0.52\textwidth} >{\raggedleft\arraybackslash}p{0.16\textwidth} >{\raggedright\arraybackslash}X}
+\toprule
+\textbf{Criterio} & \textbf{Peso guía} & \textbf{Qué debe mostrar} \\
+\midrule
+Esquema y organización inicial & 15\% & Dibujo claro, definición de variables, datos completos y lectura correcta del enunciado. \\
+Planteamiento físico y ecuaciones & 35\% & Uso correcto de principios, equilibrio, relaciones constitutivas y ecuaciones aplicables. \\
+Desarrollo matemático y unidades & 30\% & Procedimiento ordenado, sustituciones claras y manejo consistente de unidades SI. \\
+Resultado e interpretación & 20\% & Resultado final correcto o razonable, con interpretación cuando el ejercicio la requiera. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\end{document}

@@ -1,0 +1,89 @@
+\documentclass[12pt]{article}
+\newcommand{\DocShort}{Incremento incremental}
+\input{preamble_population.tex}
+\begin{document}
+\doccover{Método del incremento incremental}{2026-05}
+\handoutintro{Proyectar la población considerando tanto el incremento medio como el incremento incremental medio.}{Ciudades de tamaño medio cuyo crecimiento viene acelerándose de manera sostenida, pero no explosiva.}
+
+\section{Datos ejemplo}
+Se usará una serie con períodos censales de $10$ años. En este ejemplo, tanto el incremento medio $X$ como el incremento incremental medio $Y$ se expresarán por período censal.
+
+\begin{center}
+\begin{tabular}{lcccccc}
+\toprule
+Año & 1970 & 1980 & 1990 & 2000 & 2010 & 2020 \\
+\midrule
+Población & 68,400 & 78,200 & 89,600 & 103,900 & 120,700 & 140,400 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Ecuaciones mínimas}
+El incremento medio por período censal es:
+\begin{equation}
+X=\frac{1}{N}\sum_{i=1}^{N}\Delta P_i
+\end{equation}
+donde $\Delta P_i$ es el incremento de población del período censal $i$ y $N$ es el número de períodos.
+
+El incremento incremental medio por período censal es:
+\begin{equation}
+Y=\frac{1}{N-1}\sum_{i=2}^{N}\left(\Delta P_i-\Delta P_{i-1}\right)
+\end{equation}
+donde $Y$ mide cuánto aumenta, en promedio, el incremento de un período al siguiente.
+
+La población proyectada después de $n$ períodos es:
+\begin{equation}
+P_n=P_{\text{actual}}+nX+\frac{n(n+1)}{2}Y
+\end{equation}
+donde $P_{\text{actual}}$ es la población del último censo.
+
+\weightednote{Si los intervalos censales no son regulares, primero conviene convertir los incrementos a una base común, por ejemplo habitantes por año, y luego obtener los promedios ponderados con pesos iguales a la duración de cada período en años.}
+
+\section{Procedimiento}
+\begin{enumerate}
+\item Calcular los incrementos por período censal.
+\item Calcular los incrementos de los incrementos.
+\item Obtener el promedio de ambos conjuntos.
+\item Sustituir en la ecuación para cada período futuro.
+\end{enumerate}
+
+\section{Ejemplo resuelto}
+\begin{center}
+\begin{tabular}{crrr}
+\toprule
+Año & Población & Incremento del período & Incremento incremental \\
+\midrule
+1970 & 68,400 & -- & -- \\
+1980 & 78,200 & 9,800 & -- \\
+1990 & 89,600 & 11,400 & 1,600 \\
+2000 & 103,900 & 14,300 & 2,900 \\
+2010 & 120,700 & 16,800 & 2,500 \\
+2020 & 140,400 & 19,700 & 2,900 \\
+\midrule
+Promedio & & 14,400 & 2,475 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\[
+P_{2030}=\num{140400}+1(\num{14400})+\frac{1(1+1)}{2}(\num{2475})=\num{157275}
+\]
+\[
+P_{2040}=\num{140400}+2(\num{14400})+\frac{2(2+1)}{2}(\num{2475})=\num{176625}
+\]
+\[
+P_{2050}=\num{140400}+3(\num{14400})+\frac{3(3+1)}{2}(\num{2475})=\num{198450}
+\]
+
+\resultbox{La población proyectada es 157,275 habitantes en 2030, 176,625 en 2040 y 198,450 en 2050.}
+
+\section{Teoría breve}
+Es una corrección del método aritmético. Mantiene una parte lineal, pero agrega un término que incorpora la aceleración media del crecimiento.
+
+\section{Observaciones de uso}
+\begin{itemize}
+\item Suele producir valores intermedios entre el método aritmético y el geométrico.
+\item Conviene cuando la ciudad ha mostrado incrementos crecientes.
+\item Debe aclararse si $X$ y $Y$ están expresados por año, por década o por otro período.
+\end{itemize}
+\end{document}

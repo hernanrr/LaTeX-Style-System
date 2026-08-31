@@ -1,0 +1,92 @@
+\documentclass[12pt]{article}
+\newcommand{\DocShort}{Gráfico simple}
+\input{preamble_population.tex}
+\begin{document}
+\doccover{Método gráfico simple}{2026-05}
+\handoutintro{Proyectar la población extendiendo visualmente la tendencia histórica de la curva población--tiempo.}{Cuando se desea una lectura rápida y razonada del patrón general de crecimiento.}
+
+\section{Datos ejemplo}
+\begin{center}
+\begin{tabular}{lcccccc}
+\toprule
+Año & 1970 & 1980 & 1990 & 2000 & 2010 & 2020 \\
+\midrule
+Población & 74,000 & 89,000 & 107,000 & 129,000 & 154,000 & 183,000 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Ecuaciones mínimas}
+Este método no parte de una ecuación cerrada. La operación consiste en:
+\begin{enumerate}
+\item graficar la población histórica,
+\item trazar una curva suave que represente la tendencia,
+\item prolongar la curva hacia el horizonte de diseño,
+\item leer los valores proyectados.
+\end{enumerate}
+
+\section{Procedimiento}
+\begin{enumerate}
+\item Ubicar el año en el eje horizontal y la población en el eje vertical.
+\item Marcar los puntos históricos.
+\item Unirlos con una curva suave sin quiebres artificiales.
+\item Extender la curva manteniendo el patrón que muestran los datos.
+\item Leer los valores de interés.
+\end{enumerate}
+
+\section{Ejemplo resuelto}
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+width=0.92\textwidth,
+height=7cm,
+xlabel={Año},
+ylabel={Población},
+xmin=1970, xmax=2050,
+ymin=50000, ymax=400000,
+grid=both,
+major grid style={gray!25},
+minor grid style={gray!10},
+xtick={1970,1980,1990,2000,2010,2020,2030,2040,2050},
+ytick={50000,100000,150000,200000,250000,300000,350000,400000},
+scaled y ticks=false,
+xticklabel style={/pgf/number format/1000 sep={}}
+]
+\addplot[
+color=medblue,
+mark=*,
+thick,
+smooth
+] coordinates {
+(1970,74000) (1980,89000) (1990,107000) (2000,129000) (2010,154000) (2020,183000)
+(2030,216000) (2040,252000) (2050,291000)
+};
+\addplot[dashed, color=teal] coordinates {(2030,50000) (2030,216000)};
+\addplot[dashed, color=teal] coordinates {(2040,50000) (2040,252000)};
+\addplot[dashed, color=teal] coordinates {(2050,50000) (2050,291000)};
+\node[anchor=south east, fill=white] at (axis cs:2028.8,221500) {216,000};
+\node[anchor=south east, fill=white] at (axis cs:2038.8,257500) {252,000};
+\node[anchor=south east, fill=white] at (axis cs:2048.8,302500) {291,000};
+\end{axis}
+\end{tikzpicture}
+\end{center}
+
+La lectura guiada del gráfico da:
+\[
+P_{2030}\approx 216,000,\qquad
+P_{2040}\approx 252,000,\qquad
+P_{2050}\approx 291,000
+\]
+
+\resultbox{La lectura guiada del gráfico sugiere 216,000 habitantes en 2030, 252,000 en 2040 y 291,000 en 2050.}
+
+\section{Teoría breve}
+El método gráfico resume la historia completa del crecimiento en una forma visual. Su fortaleza está en captar curvaturas y cambios de pendiente que a veces no quedan bien recogidos por una sola fórmula.
+
+\section{Observaciones de uso}
+\begin{itemize}
+\item Es un método dependiente del juicio del analista.
+\item Conviene usar escalas limpias y una curva suave.
+\item Debe contrastarse con métodos numéricos si el proyecto es sensible al caudal de diseño.
+\end{itemize}
+\end{document}

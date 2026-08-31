@@ -1,0 +1,17 @@
+% Layout specific to the one-page landscape grading rubric.
+\input{exam_preamble.tex}
+
+\geometry{letterpaper, landscape, top=1.45cm, bottom=1.45cm, left=1.45cm, right=1.45cm}
+
+\fancypagestyle{rubric}{
+  \fancyhf{}
+  \fancyhead[L]{\small\color{midgrey}ICV-343-T Hidráulica Básica}
+  \fancyhead[R]{\small\color{midgrey}\DocShort}
+  \fancyfoot[C]{\small\color{midgrey}\thepage}
+  \renewcommand{\headrulewidth}{0.4pt}
+}
+\pagestyle{rubric}
+
+% The shared preamble is portrait by default. Recalculate fancyhdr after the
+% landscape geometry is active so the header rule spans the full text width.
+\AtBeginDocument{\setlength{\headwidth}{\textwidth}}

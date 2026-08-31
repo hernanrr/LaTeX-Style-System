@@ -1,0 +1,69 @@
+\DocumentMetadata{lang=es-DO,testphase={phase-III,math}}
+\documentclass[11pt]{scrartcl}
+\usepackage{icv}
+
+% -----------------------------------------------------------------------
+% Metadata -- reemplaza estos valores para cada handout nuevo.
+% -----------------------------------------------------------------------
+\icvsetup{
+  asignatura  = {ICV 442-T -- Acueductos y Alcantarillados},
+  titulocorto = {Acueductos y Alcantarillados},
+  titulo      = {Título del handout},
+  subtitulo   = {Subtítulo o tema específico (opcional)},
+  profesor    = {Dr. Ricardo Hernández Moreira},
+  periodo     = {2026-1},
+  version     = {v1},
+}
+
+\hypersetup{
+  pdftitle    = {Título del handout},
+  pdfauthor   = {Dr. Ricardo Hernández Moreira},
+  pdfsubject  = {ICV 442-T -- Acueductos y Alcantarillados},
+}
+
+\begin{document}
+\icvmaketitle
+
+\begin{icvobjectives}
+  \item Primer objetivo de aprendizaje de este handout.
+  \item Segundo objetivo de aprendizaje.
+\end{icvobjectives}
+
+\section{Introducción}
+
+Contexto breve: qué problema resuelve este handout y cuándo conviene
+consultarlo.
+
+\section{Procedimiento}
+
+Pasos o desarrollo del método, con ecuaciones cuando aplique:
+\[
+  Q = A \cdot V
+\]
+donde \(Q\) es el caudal, \(A\) el área de la sección transversal y \(V\)
+la velocidad media.
+
+\section{Ejemplo resuelto}
+
+Ejemplo numérico con unidades vía \texttt{siunitx}: un caudal de
+\qty{150}{\liter\per\second} equivale a \qty{0.15}{\cubic\meter\per\second}.
+
+\begin{table}[htbp]
+  \centering
+  \caption{Ejemplo de tabla con columnas alineadas al decimal}
+  \begin{tabular}{l S[table-format=3.1]}
+    \toprule
+    {Sección} & {Caudal (\unit{\liter\per\second})} \\
+    \midrule
+    A & 120.5 \\
+    B & 98.3  \\
+    C & 150.0 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\section{Observaciones de uso}
+
+Notas prácticas, casos límite o errores comunes al aplicar este método.
+
+\end{document}

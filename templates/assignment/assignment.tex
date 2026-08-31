@@ -1,0 +1,57 @@
+\DocumentMetadata{lang=es-DO,testphase={phase-III,math}}
+\documentclass[11pt]{scrartcl}
+\usepackage{icv}
+
+% -----------------------------------------------------------------------
+% Metadata -- reemplaza estos valores para cada asignación nueva.
+% -----------------------------------------------------------------------
+\icvsetup{
+  asignatura  = {ICV 442-T -- Acueductos y Alcantarillados},
+  titulocorto = {Acueductos y Alcantarillados},
+  titulo      = {Título de la asignación},
+  subtitulo   = {Subtítulo o tema específico (opcional)},
+  profesor    = {Dr. Ricardo Hernández Moreira},
+  periodo     = {2026-1},
+  version     = {v1},
+}
+
+\hypersetup{
+  pdftitle    = {Título de la asignación},
+  pdfauthor   = {Dr. Ricardo Hernández Moreira},
+  pdfsubject  = {ICV 442-T -- Acueductos y Alcantarillados},
+}
+
+\begin{document}
+\icvmaketitle
+
+\begin{icvobjectives}
+  \item Primer objetivo de aprendizaje que evalúa esta asignación.
+  \item Segundo objetivo de aprendizaje.
+\end{icvobjectives}
+
+\section{Instrucciones}
+
+Instrucciones generales: formato de entrega, fecha límite, trabajo
+individual o en equipo, qué debe incluir el documento entregado.
+
+\section{Problemas}
+
+\begin{icvproblem}[points=15]{Cálculo de caudal de diseño}
+Enunciado del primer problema. Puede incluir datos, tablas y figuras --
+usa \texttt{icvincludegraphics} en vez de \texttt{includegraphics}, que
+exige texto alternativo como tercer argumento:
+\begin{verbatim}
+\icvincludegraphics[width=4cm,alt={Descripción del contenido de la
+  figura para lectores de pantalla.}]{ruta/figura.png}
+\end{verbatim}
+\end{icvproblem}
+
+\begin{icvproblem}[points=10]{Verificación de presión}
+Enunciado del segundo problema, sin figura.
+\end{icvproblem}
+
+\begin{icvproblem}{Pregunta de desarrollo (sin puntaje asignado)}
+Enunciado del tercer problema -- \texttt{points} es opcional.
+\end{icvproblem}
+
+\end{document}

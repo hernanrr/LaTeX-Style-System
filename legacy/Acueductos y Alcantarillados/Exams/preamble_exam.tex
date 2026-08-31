@@ -1,0 +1,136 @@
+\usepackage{fontspec}
+\setmainfont{Latin Modern Roman}
+\setsansfont{Latin Modern Sans}
+\usepackage[spanish,es-noshorthands]{babel}
+\decimalpoint
+\usepackage{geometry}
+\geometry{letterpaper, top=2.3cm, bottom=2.3cm, left=2.5cm, right=2.5cm}
+\usepackage[expansion=false]{microtype}
+\usepackage{parskip}
+\setlength{\parskip}{5pt}
+\usepackage{amsmath,amssymb}
+\usepackage{siunitx}
+\usepackage{graphicx}
+\usepackage{pdfpages}
+\usepackage{pdflscape}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{tabularx}
+\usepackage{makecell}
+\usepackage{caption}
+\usepackage{enumitem}
+\usepackage[dvipsnames,table]{xcolor}
+\usepackage{fancyhdr}
+\usepackage[hidelinks,pdfencoding=auto]{hyperref}
+\usepackage{titlesec}
+\usepackage{tcolorbox}
+\tcbuselibrary{breakable}
+
+\sisetup{
+  group-separator = {,},
+  group-minimum-digits = 4,
+  output-decimal-marker = {.},
+  per-mode = symbol
+}
+
+\definecolor{darkblue}{HTML}{16324F}
+\definecolor{medblue}{HTML}{2C6C9B}
+\definecolor{lightblue}{HTML}{EAF3FA}
+\definecolor{warnbg}{HTML}{FFF3CD}
+\definecolor{warnline}{HTML}{A25A00}
+\definecolor{lightgrey}{HTML}{F7F7F7}
+\definecolor{midgrey}{HTML}{666666}
+
+\titleformat{\section}
+  {\large\bfseries\color{darkblue}}
+  {\thesection}{0.7em}{}[{\color{medblue}\titlerule[0.8pt]}]
+\titleformat{\subsection}
+  {\normalsize\bfseries\color{darkblue}}
+  {\thesubsection}{0.7em}{}
+
+\setlist[itemize]{topsep=2pt, itemsep=2pt, parsep=0pt}
+\setlist[enumerate]{topsep=2pt, itemsep=2pt, parsep=0pt}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{midgrey}ICV-441 Acueductos y Alcantarillados}
+\fancyhead[R]{\small\color{midgrey}\DocShort}
+\fancyfoot[C]{\small\color{midgrey}\thepage}
+\setlength{\headheight}{14pt}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\rowcolors{2}{lightgrey}{white}
+\renewcommand{\arraystretch}{1.16}
+
+\newtcolorbox{infobox}{
+  breakable,
+  colback=lightblue,
+  colframe=medblue,
+  boxrule=0.8pt,
+  arc=3pt,
+  left=8pt,
+  right=8pt,
+  top=7pt,
+  bottom=7pt
+}
+
+\newtcolorbox{warnbox}{
+  breakable,
+  colback=warnbg,
+  colframe=warnline,
+  boxrule=0.8pt,
+  arc=3pt,
+  left=8pt,
+  right=8pt,
+  top=7pt,
+  bottom=7pt
+}
+
+\newcommand{\doccover}[2]{
+  \begin{center}
+  {\small\color{midgrey}Pontificia Universidad Católica Madre y Maestra\\Escuela de Ingeniería Civil y Ambiental}
+
+  \vspace{0.9cm}
+  {\color{medblue}\rule{\linewidth}{2pt}}
+  \vspace{0.25cm}
+
+  {\Large\bfseries\color{darkblue}ICV-441 Acueductos y Alcantarillados}\\[0.35em]
+  {\LARGE\bfseries\color{darkblue}#1}
+
+  \vspace{0.25cm}
+  {\color{medblue}\rule{\linewidth}{2pt}}
+  \vspace{0.8cm}
+  \end{center}
+
+  \begin{center}
+  \begin{tabular}{ll}
+  \toprule
+  \textbf{Asignatura} & ICV-441 Acueductos y Alcantarillados \\
+  \textbf{Profesor} & Ricardo Rafael Hernández Moreira, PhD \\
+  \textbf{Versión} & #2 \\
+  \textbf{Entrega} & Un solo archivo PDF \\
+  \bottomrule
+  \end{tabular}
+  \end{center}
+
+  \vspace{0.35cm}
+}
+
+\newcommand{\introbox}[2]{
+  \begin{infobox}
+  \textbf{Propósito.} #1
+
+  \vspace{0.5\baselineskip}
+
+  \textbf{Qué se espera.} #2
+  \end{infobox}
+}
+
+\AtBeginDocument{
+  \hypersetup{
+    pdftitle={\DocShort},
+    pdfauthor={Ricardo Rafael Hernández Moreira},
+    pdfsubject={ICV-441 Acueductos y Alcantarillados}
+  }
+}

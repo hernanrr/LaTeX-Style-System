@@ -1,0 +1,44 @@
+\documentclass[11pt]{article}
+\newcommand{\DocShort}{Anexo EPANET}
+\input{preamble}
+
+\begin{document}
+\doccover{Anexo: patr\'on de demanda para EPANET}{Agua potable}{18 de mayo de 2026}
+
+\section{Uso del patr\'on}
+El patr\'on siguiente se entrega como referencia para la simulaci\'on horaria de la red de agua potable. Los valores representan multiplicadores horarios normalizados y deben aplicarse de forma consistente con la demanda base adoptada en el modelo.
+
+\section{Tabla horaria}
+\begin{center}
+\begin{tabular}{cccccccc}
+\toprule
+Hora & Mult. & Hora & Mult. & Hora & Mult. & Hora & Mult. \\
+\midrule
+00:00 & 0.30 & 06:00 & 0.70 & 12:00 & 0.80 & 18:00 & 0.95 \\
+01:00 & 0.25 & 07:00 & 0.95 & 13:00 & 0.75 & 19:00 & 1.00 \\
+02:00 & 0.25 & 08:00 & 1.00 & 14:00 & 0.70 & 20:00 & 0.90 \\
+03:00 & 0.25 & 09:00 & 0.85 & 15:00 & 0.65 & 21:00 & 0.75 \\
+04:00 & 0.30 & 10:00 & 0.75 & 16:00 & 0.70 & 22:00 & 0.55 \\
+05:00 & 0.40 & 11:00 & 0.70 & 17:00 & 0.80 & 23:00 & 0.40 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Bloque para archivo \texttt{.inp}}
+\begin{verbatim}
+[PATTERNS]
+DemandaHoraria_LasCharcas
+    1 0.30   2 0.25   3 0.25   4 0.25   5 0.30   6 0.40
+    7 0.70   8 0.95   9 1.00  10 0.85  11 0.75  12 0.70
+   13 0.80  14 0.75  15 0.70  16 0.65  17 0.70  18 0.80
+   19 0.95  20 1.00  21 0.90  22 0.75  23 0.55  24 0.40
+\end{verbatim}
+
+\section{Nota de uso}
+\begin{itemize}
+\item El equipo debe explicar en la memoria c\'omo defini\'o la demanda base sobre la cual aplica el patr\'on.
+\item Si se decide ajustar el patr\'on, debe justificarse el cambio.
+\item Este anexo sirve como insumo de modelaci\'on; no sustituye la justificaci\'on de caudales de dise\~no.
+\end{itemize}
+
+\end{document}

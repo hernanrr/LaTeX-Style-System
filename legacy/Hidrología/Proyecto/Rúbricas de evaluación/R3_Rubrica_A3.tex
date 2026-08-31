@@ -1,0 +1,267 @@
+% !TEX program = lualatex
+\documentclass[11pt]{article}
+\newcommand{\AsignaturaCorta}{Rúbrica A3 --- Análisis Espacial QGIS}
+\input{preamble}
+
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{pdflscape}
+\usepackage{siunitx}
+  \sisetup{output-decimal-marker={.}, group-separator={,}}
+\usepackage{caption}
+  \captionsetup[table]{position=above}
+  \captionsetup[figure]{position=below}
+
+% Column widths (5 columns: 4 level cols + 1 pts col).
+% Landscape usable width = portrait textheight = 652.706 pt = 22.94 cm.
+% 2 x tabcolsep(5pt) x 5 cols = 50 pt = 1.757 cm overhead.
+% pts col = 0.85 cm; level col = (22.94 - 1.757 - 0.85) / 4 = 5.083 cm.
+\setlength{\tabcolsep}{5pt}
+\newlength{\LW}
+\newlength{\Lnivel} \setlength{\Lnivel}{5.083cm}
+\newlength{\Lpts}   \setlength{\Lpts}{0.85cm}
+
+% \nivel uses makecell so that \\ creates a real line break inside p{} cells.
+\newcommand{\nivel}[2]{%
+  \parbox[t]{\linewidth}{\textbf{#1}\par\vspace{2pt}{\footnotesize #2}\par\vspace{10pt}}}
+
+% Criterion section-header row (5-column span).
+% #1=accent colour  #2=title+pts  #3=entregables note
+\newcommand{\crithead}[3]{%
+  \rowcolor{#1!20}%
+  \multicolumn{5}{l}{\parbox{\LW}{\bfseries\color{#1}#2}}\\%[-3pt]
+  \rowcolor{#1!20}%
+  \multicolumn{5}{l}{\parbox{\LW}{\small\itshape\color{#1}\quad #3}}\\[2pt]}
+
+\begin{document}
+
+\begin{center}
+  {\small\color{midgrey}
+    Pontificia Universidad Católica Madre y Maestra\\
+    Escuela de Ingeniería Civil y Ambiental}
+  \vspace{0.9cm}
+  {\color{olive}\rule{\linewidth}{2pt}}\vspace{0.3cm}
+  {\Large\bfseries\color{darkblue} ICV 342 Hidrología}\\[0.3em]
+  {\large\bfseries\color{darkblue} Rúbrica de Evaluación --- Asignación 3 de 3}\\[0.2em]
+  {\normalsize\itshape Análisis Espacial de Precipitación con \qgis{}}
+  \vspace{0.3cm}
+  {\color{olive}\rule{\linewidth}{2pt}}
+\end{center}
+\vspace{0.4em}
+\begin{center}
+\begin{tabularx}{\textwidth}{lX}
+\toprule
+\textbf{Grupo:}        & \hrulefill \\[9pt]
+\textbf{Integrante 1:} & \hrulefill \\[9pt]
+\textbf{Integrante 2:} & \hrulefill \\[9pt]
+\textbf{Integrante 3:} & \hrulefill \\[9pt]
+\textbf{Calificación:} & \rule{2.5cm}{0.4pt}\;/ 100 \\
+\bottomrule
+\end{tabularx}
+\end{center}
+\vspace{0.5em}
+
+\begin{olivebox}
+\textbf{Escala de evaluación.}
+\begin{itemize}
+  \item \textbf{Excelente}: cumple \emph{todos} los requisitos con rigor
+    y precisión; el resultado es correcto y completo.
+  \item \textbf{Satisfactorio}: cumple los requisitos esenciales; puede haber
+    errores menores o aspectos incompletos que no afectan el resultado global.
+  \item \textbf{En desarrollo}: cumple parcialmente; hay evidencia de
+    comprensión del objetivo, pero los errores afectan la calidad del resultado.
+  \item \textbf{Insuficiente}: no cumple los requisitos mínimos,
+    o el entregable está ausente.
+\end{itemize}
+\end{olivebox}
+
+\begin{landscape}
+\small
+\setlength{\LW}{\textwidth}
+\sloppy
+\setlength{\extrarowheight}{2pt}
+\hfuzz=12pt
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{\Lnivel}>{\raggedright\arraybackslash}p{\Lnivel}>{\raggedright\arraybackslash}p{\Lnivel}>{\raggedright\arraybackslash}p{\Lnivel}>{\centering\arraybackslash}p{\Lpts}}
+\caption{Rúbrica de evaluación --- Asignación 3. Puntaje máximo: \num{100} puntos.}\label{tab:R3}\\
+\toprule
+\rowcolor{olive}
+{\color{white}\bfseries Excelente} &
+{\color{white}\bfseries Satisfactorio} &
+{\color{white}\bfseries En desarrollo} &
+{\color{white}\bfseries Insuficiente} &
+{\color{white}\bfseries Pts}\\
+\midrule
+\endfirsthead
+\multicolumn{5}{l}{\small\itshape(Continuación)}\\[2pt]
+\toprule
+\rowcolor{olive}
+{\color{white}\bfseries Excelente} &
+{\color{white}\bfseries Satisfactorio} &
+{\color{white}\bfseries En desarrollo} &
+{\color{white}\bfseries Insuficiente} &
+{\color{white}\bfseries Pts}\\
+\midrule
+\endhead
+\midrule\multicolumn{5}{r}{\small\itshape(continúa en la siguiente página)}\\
+\endfoot
+\midrule
+\rowcolor{lightgrey}
+\multicolumn{4}{r}{\bfseries Puntaje total \qquad\qquad} & \bfseries /100\\
+\bottomrule
+\endlastfoot
+
+\crithead{olive}%
+  {C1 --- Configuración SIG y Capa de Estaciones \quad(\num{15}~pts)}%
+  {Entregables E1, E2 (parcial)}
+\nivel{15 pts}{Proyecto \qgis{} organizado en grupos (Estaciones, Límites,
+  Thiessen, Isoyetas, MDE) con rutas relativas; SRC del proyecto EPSG:32619;
+  capa de cinco puntos EPSG:4326 con los 7 atributos requeridos
+  (incluidos \texttt{periodo\_media} y las dos precipitaciones); coordenadas
+  DMS convertidas y longitudes negativas; simbología graduada por la media del período;
+  etiquetas de nombre visibles; posición verificada sobre mapa base.}&
+\nivel{11 pts}{Proyecto organizado; atributos esenciales presentes; SRC
+  correcto; DMS convertidas; simbología presente aunque no graduada.}&
+\nivel{8 pts}{$\geq1$ estación mal ubicada, DMS sin convertir, o SRC
+  incorrecto; atributos incompletos.}&
+\nivel{0 pts}{Capa de puntos ausente o con errores fundamentales (coordenadas
+  invertidas, estaciones en posición incorrecta); proyecto no entregado.}&
+15\\[3pt]
+
+\crithead{olive}%
+  {C2 --- Composición Cartográfica: Mapa de Estaciones \quad(\num{10}~pts)}%
+  {Entregable E2}
+\nivel{10 pts}{Composición exportada a $\geq\qty{200}{dpi}$; contiene: título,
+  escala gráfica, flecha de norte, leyenda con simbología de $\bar{P}$ del
+  período disponible y rangos, créditos de fuentes; capas visibles: cinco
+  estaciones, límite del DN y mapa base o MDE; períodos indicados y etiquetas legibles.}&
+\nivel{7 pts}{Composición exportada; al menos título, escala y norte; capas
+  principales visibles; puede faltar leyenda de $\bar{P}$ o créditos.}&
+\nivel{5 pts}{Composición con $\geq3$ elementos cartográficos faltantes;
+  resolución baja; contexto geográfico deficiente.}&
+\nivel{0 pts}{Composición ausente; solo captura de pantalla sin elementos
+  cartográficos.}&
+10\\[3pt]
+
+\crithead{olive}%
+  {C3 --- Construcción de Polígonos de Thiessen \quad(\num{15}~pts)}%
+  {Entregables E1, E3 (parcial)}
+\nivel{15 pts}{Polígonos de Voronoi generados con buffer suficiente para
+  cubrir el DN; recortados correctamente al contorno del DN; áreas
+  calculadas en km² con la calculadora de campos (SRC métrico); fracciones
+  $w_i$ calculadas y sumadas a 1; join con datos de precipitación correcto;
+  mapa con simbología por precipitación de nov.~2023 y estaciones
+  etiquetadas.}&
+\nivel{11 pts}{Polígonos generados y recortados; áreas calculadas; join
+  realizado; mapa presente; error menor en el recorte o las fracciones.}&
+\nivel{8 pts}{Polígonos sin recortar al DN; áreas en unidades incorrectas
+  (no km²); join ausente o con errores.}&
+\nivel{0 pts}{Polígonos de Thiessen no generados; división arbitraria o
+  ningún análisis de ponderación espacial.}&
+15\\[3pt]
+
+\crithead{olive}%
+  {C4 --- Precipitación Areal por Thiessen \quad(\num{20}~pts)}%
+  {Entregable E4}
+\nivel{20 pts}{Tabla completa para nov.~2023 \emph{y} para la media anual del
+  período disponible: columnas $A_i$ (km²), $w_i$, $P_i$ (mm), $w_iP_i$ (mm)
+  y \texttt{periodo\_media}; usa los mismos polígonos y pesos en ambos cálculos;
+  $\bar{P}=\sum w_iP_i$ correcto; comparado con promedio aritmético
+  (diferencia en mm y en \%); discusión sobre qué estación domina y si
+  es razonable geográficamente; advierte que las medias no forman una normal común.}&
+\nivel{15 pts}{Tabla para nov.~2023 correcta; $\bar{P}$ calculado; comparación
+  con promedio aritmético presente; tabla de medias del período ausente o
+  incompleta; sin argumentación geográfica.}&
+\nivel{10 pts}{Errores en $w_i$ (no suma a 1) o $\bar{P}$ calculado como
+  promedio simple sin ponderar; comparación ausente; sin discusión.}&
+\nivel{0 pts}{Cálculo por Thiessen ausente; solo se reporta el promedio
+  aritmético.}&
+20\\[3pt]
+
+\crithead{olive}%
+  {C5 --- Interpolación IDW y Extracción de Isoyetas \quad(\num{15}~pts)}%
+  {Entregables E1, E5 (parcial)}
+\nivel{15 pts}{IDW configurado correctamente (extensión cubre DN + buffer,
+  celda $\leq\qty{500}{m}$, potencia 2); ráster plausible (valores dentro del
+  rango observado); isoyetas extraídas con intervalos de \qty{50}{mm} y
+  recortadas al DN; mapa con ráster IDW de fondo semitransparente, isoyetas
+  etiquetadas en mm y elementos cartográficos completos.}&
+\nivel{11 pts}{IDW correcto; ráster plausible; isoyetas extraídas y recortadas;
+  mapa con los elementos esenciales; puede faltar el ráster de fondo o las
+  etiquetas.}&
+\nivel{8 pts}{IDW con parámetros inadecuados; ráster de baja calidad;
+  isoyetas no recortadas al DN o con intervalos inadecuados.}&
+\nivel{0 pts}{Interpolación no realizada; isoyetas ausentes o trazadas
+  manualmente sin \qgis{}.}&
+15\\[3pt]
+
+\crithead{olive}%
+  {C6 --- Precipitación Areal por Isoyetas \quad(\num{15}~pts)}%
+  {Entregable E6}
+\nivel{15 pts}{Tabla completa: intervalo de isoyetas, $\bar{P}_j$ (mm),
+  $A_j$ (km²), $A_j\bar{P}_j$; áreas parciales calculadas en \qgis{} (no
+  estimadas visualmente); $\bar{P}$ calculado por la fórmula de isoyetas;
+  comparación con Thiessen en mm y en \%; discusión sobre cuál método es
+  más apropiado dado el número de estaciones y las limitaciones del IDW.}&
+\nivel{11 pts}{Tabla con columnas esenciales; $\bar{P}$ correcto; comparación
+  con Thiessen presente; discusión sin cuantificar la diferencia.}&
+\nivel{8 pts}{Áreas parciales estimadas visualmente o $\bar{P}$ como promedio
+  simple de $\bar{P}_j$ sin ponderar por $A_j$; comparación ausente.}&
+\nivel{0 pts}{Cálculo por isoyetas ausente.}&
+15\\[3pt]
+
+\crithead{olive}%
+  {C7 --- Preguntas de Análisis (P1--P5) \quad(\num{10}~pts, \num{2}~pts c/u)}%
+  {Entregable E7}
+\nivel{2 pts c/u}{Respuesta correcta y completa; usa resultados propios
+  (áreas de polígonos, valores de $\bar{P}$, diferencias entre métodos);
+  argumentación geográfica presente; capturas en P4 y P5 donde aplique.}&
+\nivel{1.5 pts c/u}{Correcta en lo esencial; referencia a resultados propios
+  presente aunque imprecisa.}&
+\nivel{1 pt c/u}{Parcialmente correcta; responde genéricamente sin usar
+  los resultados del propio análisis.}&
+\nivel{0 pts c/u}{Ausente o incorrecta; respuesta copiada sin adaptación.}&
+10\\[3pt]
+
+\end{longtable}
+\end{landscape}
+
+\captionof{table}{Resumen de puntaje.}
+\begin{tabularx}{\textwidth}{%
+    >{\raggedright\arraybackslash}X
+    >{\centering\arraybackslash}p{2.0cm}
+    >{\centering\arraybackslash}p{2.6cm}}
+\toprule
+\rowcolor{olive}
+{\color{white}\bfseries Criterio}&
+{\color{white}\bfseries Peso}&
+{\color{white}\bfseries Puntaje obtenido}\\
+\midrule
+C1 --- Configuración SIG y capa de estaciones & \num{15} pts & \quad/~15 \\
+C2 --- Composición cartográfica: mapa de estaciones & \num{10} pts & \quad/~10 \\
+C3 --- Construcción de polígonos de Thiessen & \num{15} pts & \quad/~15 \\
+C4 --- Precipitación areal por Thiessen & \num{20} pts & \quad/~20 \\
+C5 --- Interpolación IDW y extracción de isoyetas & \num{15} pts & \quad/~15 \\
+C6 --- Precipitación areal por isoyetas & \num{15} pts & \quad/~15 \\
+C7 --- Preguntas de análisis (P1--P5) & \num{10} pts & \quad/~10 \\
+\midrule
+\rowcolor{lightgrey}
+\bfseries Total & \bfseries\num{100} pts & \bfseries\quad/~100 \\
+\bottomrule
+\end{tabularx}
+
+\vspace{1em}
+\begin{tcolorbox}[enhanced, colback=white, colframe=midgrey,
+  boxrule=0.5pt, arc=2pt, left=6pt, right=6pt, top=6pt, bottom=52pt,
+  title=\textbf{Comentarios generales},
+  fonttitle=\small\bfseries\color{darkblue},
+  attach boxed title to top left={yshift=-2mm,xshift=4mm},
+  boxed title style={colback=white,colframe=midgrey}]
+\end{tcolorbox}
+
+\vfill
+\begin{center}
+  {\small\color{midgrey}
+    ICV 342 Hidrología --- Rúbrica Asignación 3 de 3 --- PUCMM}
+\end{center}
+\end{document}

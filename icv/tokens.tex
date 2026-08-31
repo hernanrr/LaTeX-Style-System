@@ -1,0 +1,25 @@
+% icv/tokens.tex
+% Tokens de color institucionales -- PUCMM, manual de marca e identidad
+% gráfica (https://pucmm.edu.do/wp-content/uploads/2026/07/manual-marca-identidad-grafica.pdf).
+% Facultad de Ciencias de la Ingeniería: Pantone 286C + Pantone 299C (manual, S3.2).
+% Cargado por icv.sty -- no se usa suelto.
+
+% -- Paleta institucional --
+\definecolor{icvblue}{HTML}{005DAA}      % Pantone 286C -- azul institucional
+\definecolor{icvcyan}{HTML}{009DDC}      % Pantone 299C -- azul complementario (Ingeniería)
+\definecolor{icvgray}{HTML}{C8CCCB}      % Cool Gray 4C -- solo fondo/filete, falla contraste como texto
+\definecolor{icvred}{HTML}{EF3026}       % Pantone 1795C -- uso restringido (texto grande / acentos)
+\definecolor{icvyellow}{HTML}{FFEA00}    % Yellow 012C -- solo fondo, nunca texto
+\definecolor{icvblack}{HTML}{231F20}     % Negro institucional (K100) -- color de texto por defecto
+
+% -- Tintes derivados para fondos de caja --
+\colorlet{icvblue-bg}{icvblue!8!white}
+\colorlet{icvcyan-bg}{icvcyan!10!white}
+\colorlet{icvgray-bg}{icvgray!25!white}
+\colorlet{icvred-bg}{icvred!10!white}
+\colorlet{icvyellow-bg}{icvyellow!35!white}
+
+% -- Gris de texto secundario (metadata, encabezados/pies) --
+% icvgray (#C8CCCB) no es apto como texto (contraste ~1.6:1 sobre blanco).
+% Se deriva un gris oscurecido que sí cumple WCAG AA (ratio > 5:1).
+\colorlet{icvgray-text}{icvgray!70!black}

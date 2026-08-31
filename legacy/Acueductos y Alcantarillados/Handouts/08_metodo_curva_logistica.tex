@@ -1,0 +1,118 @@
+\documentclass[12pt]{article}
+\newcommand{\DocShort}{Curva logística}
+\input{preamble_population.tex}
+\begin{document}
+\doccover{Método de la curva logística}{2026-05}
+\handoutintro{Proyectar la población mediante una curva en S con saturación finita.}{Ciudades grandes donde el crecimiento ya muestra señales de acercamiento a un límite práctico.}
+
+\section{Datos ejemplo}
+Se necesitan tres poblaciones tomadas en orden cronológico y separadas por intervalos iguales:
+
+\begin{center}
+\begin{tabular}{lccc}
+\toprule
+Año & 2001 & 2011 & 2021 \\
+\midrule
+Población & 36,300 & 76,400 & 118,700 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+En este documento:
+\[
+P_0=\num{36300}\ \text{en 2001},\qquad P_1=\num{76400}\ \text{en 2011},\qquad P_2=\num{118700}\ \text{en 2021}
+\]
+Los intervalos son iguales y valen $10$ años, de modo que $t_0=0$, $t_1=10$ años y $t_2=20$ años.
+
+\section{Ecuaciones mínimas}
+La ecuación logística se escribe como:
+\begin{equation}
+P(t)=\frac{P_s}{1+me^{nt}}
+\end{equation}
+donde $P(t)$ es la población al tiempo $t$, $P_s$ es la población de saturación, $m$ y $n$ son constantes del modelo y $t$ es el tiempo medido en años desde el primer dato.
+
+La población de saturación se estima con:
+\begin{equation}
+P_s=\frac{2P_0P_1P_2-P_1^2(P_0+P_2)}{P_0P_2-P_1^2}
+\end{equation}
+
+Luego se calculan:
+\begin{equation}
+m=\frac{P_s-P_0}{P_0}
+\end{equation}
+
+\begin{equation}
+n=\frac{2.3}{t_1}\log_{10}\left(\frac{P_0(P_s-P_1)}{P_1(P_s-P_0)}\right)
+\end{equation}
+
+\section{Procedimiento}
+\begin{enumerate}
+\item Ordenar cronológicamente las tres poblaciones como $P_0$, $P_1$ y $P_2$.
+\item Verificar que los intervalos entre observaciones sean iguales.
+\item Calcular la población de saturación $P_s$.
+\item Calcular las constantes $m$ y $n$.
+\item Sustituir en la ecuación logística y evaluar el año deseado.
+\end{enumerate}
+
+\section{Ejemplo resuelto}
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+width=0.88\textwidth,
+height=6.6cm,
+xlabel={Año},
+ylabel={Población},
+xmin=2000, xmax=2040,
+ymin=0, ymax=170000,
+grid=both,
+major grid style={gray!25},
+minor grid style={gray!10},
+xtick={2000,2005,2010,2015,2020,2025,2030,2035,2040},
+ytick={0,20000,40000,60000,80000,100000,120000,140000,160000},
+scaled y ticks=false,
+xticklabel style={/pgf/number format/1000 sep={}}
+]
+\addplot[smooth, thick, color=teal, domain=2001:2040, samples=120]
+{161203/(1 + 3.44*exp(-0.113*(x-2001)))};
+\addplot[only marks, mark=*, mark size=2.5pt, color=medblue]
+coordinates {(2001,36300) (2011,76400) (2021,118700)};
+\end{axis}
+\end{tikzpicture}
+\end{center}
+
+La gráfica muestra que los datos son consistentes con una trayectoria de tipo sigmoidal o curva S.
+
+\[
+P_s=\frac{2(\num{36300})(\num{76400})(\num{118700})-\num{76400}^2(\num{36300}+\num{118700})}{(\num{36300})(\num{118700})-\num{76400}^2}=\num{161203}
+\]
+
+\[
+m=\frac{\num{161203}-\num{36300}}{\num{36300}}=3.44
+\]
+
+\[
+n=\frac{2.3}{10}\log_{10}\left(\frac{\num{36300}(\num{161203}-\num{76400})}{\num{76400}(\num{161203}-\num{36300})}\right)=-0.113
+\]
+
+La ecuación queda:
+\[
+P(t)=\frac{\num{161203}}{1+3.44e^{-0.113t}}
+\]
+
+Para 2031, desde 2001 han transcurrido $t=30$ años:
+\[
+P_{2031}=\frac{\num{161203}}{1+3.44e^{-0.113(30)}}=\num{144454}
+\]
+
+\resultbox{La curva logística proyecta 144,454 habitantes para el año 2031.}
+
+\section{Teoría breve}
+La curva logística modela crecimiento rápido al inicio, casi lineal en la zona media y desacelerado cerca de la saturación. Por eso es un modelo más estructurado que los métodos puramente extrapolativos.
+
+\section{Observaciones de uso}
+\begin{itemize}
+\item Es sensible a la selección de $P_0$, $P_1$ y $P_2$.
+\item Los intervalos entre observaciones deben ser iguales.
+\item El valor de saturación debe interpretarse como límite práctico, no como una constante física exacta.
+\end{itemize}
+\end{document}

@@ -1,0 +1,44 @@
+\documentclass[11pt]{article}
+\newcommand{\DocShort}{Anexo SWMM}
+\input{preamble}
+
+\begin{document}
+\doccover{Anexo: patr\'on de descarga para SWMM}{Alcantarillado sanitario}{18 de mayo de 2026}
+
+\section{Uso del patr\'on}
+El patr\'on siguiente se propone para representar la variaci\'on horaria del caudal sanitario de tiempo seco. Su funci\'on es operativa: apoyar la configuraci\'on del modelo. El equipo sigue siendo responsable de justificar los aportes sanitarios y los factores empleados.
+
+\section{Tabla horaria}
+\begin{center}
+\begin{tabular}{cccccccc}
+\toprule
+Hora & Mult. & Hora & Mult. & Hora & Mult. & Hora & Mult. \\
+\midrule
+00:00 & 0.35 & 06:00 & 0.50 & 12:00 & 0.85 & 18:00 & 0.95 \\
+01:00 & 0.30 & 07:00 & 0.75 & 13:00 & 0.80 & 19:00 & 0.95 \\
+02:00 & 0.25 & 08:00 & 0.95 & 14:00 & 0.75 & 20:00 & 1.00 \\
+03:00 & 0.25 & 09:00 & 1.00 & 15:00 & 0.70 & 21:00 & 0.85 \\
+04:00 & 0.25 & 10:00 & 0.90 & 16:00 & 0.75 & 22:00 & 0.70 \\
+05:00 & 0.35 & 11:00 & 0.80 & 17:00 & 0.85 & 23:00 & 0.50 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Bloque para archivo \texttt{.inp}}
+\begin{verbatim}
+[PATTERNS]
+DescargaSanitaria_LasCharcas    HOURLY
+    1 0.35   2 0.30   3 0.25   4 0.25   5 0.25   6 0.35
+    7 0.50   8 0.75   9 0.95  10 1.00  11 0.90  12 0.80
+   13 0.85  14 0.80  15 0.75  16 0.70  17 0.75  18 0.85
+   19 0.95  20 0.95  21 1.00  22 0.85  23 0.70  24 0.50
+\end{verbatim}
+
+\section{Nota de uso}
+\begin{itemize}
+\item Este patr\'on se aplica a caudales sanitarios de tiempo seco.
+\item No es necesario forzar la documentaci\'on con discusiones sobre m\'etodos de infiltraci\'on de lluvia ajenos al problema sanitario separativo.
+\item Si el equipo incorpora aportes adicionales constantes, debe explicarlos por separado en la memoria.
+\end{itemize}
+
+\end{document}

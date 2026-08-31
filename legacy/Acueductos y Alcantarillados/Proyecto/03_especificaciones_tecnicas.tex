@@ -1,0 +1,124 @@
+\documentclass[11pt]{article}
+\newcommand{\DocShort}{Especificaciones t\'ecnicas}
+\input{preamble}
+
+\begin{document}
+\doccover{Especificaciones t\'ecnicas de dise\~no}{Criterios m\'inimos para el desarrollo del proyecto}{18 de mayo de 2026}
+
+\begin{warnbox}
+Estas especificaciones fijan criterios m\'inimos de dise\~no para el curso. No sustituyen la lectura de la normativa aplicable ni eximen al equipo de justificar los valores adoptados cuando existan alternativas aceptables.
+\end{warnbox}
+
+\section{Proyecci\'on poblacional y par\'ametros base}
+\begin{center}
+\begin{tabular}{p{0.28\linewidth} p{0.56\linewidth}}
+\toprule
+\textbf{Aspecto} & \textbf{Criterio} \\
+\midrule
+Fuente base & Datos oficiales de la ONE para Las Charcas, Azua \\
+M\'etodo de proyecci\'on & Selecci\'on y justificaci\'on de un m\'etodo coherente con la serie hist\'orica disponible \\
+Horizonte de dise\~no & 20 a\~nos para agua potable; 30 a\~nos para alcantarillado sanitario y pluvial \\
+Soporte de c\'alculo & Tabla reproducible en hoja de c\'alculo con f\'ormulas visibles \\
+Uso en el proyecto & La poblaci\'on proyectada debe alimentar demandas, aportes y estimaciones hidrol\'ogicas \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Agua potable}
+\subsection{Criterios generales}
+\begin{center}
+\begin{tabular}{p{0.27\linewidth} p{0.57\linewidth}}
+\toprule
+\textbf{Tema} & \textbf{Criterio} \\
+\midrule
+Fuente de abastecimiento & Debe justificarse la alternativa adoptada a partir de disponibilidad, calidad y factibilidad \\
+P\'erdidas de carga & El proyecto usar\'a Darcy-Weisbach como m\'etodo base para conducciones y red \\
+Presi\'on en servicio & Mantener rangos compatibles con la normativa aplicable y el buen funcionamiento de la red \\
+Velocidades & Verificar que no sean ni insuficientes ni excesivas para las tuber\'ias propuestas \\
+Accesorios principales & Incluir, cuando corresponda, v\'alvulas, purgas, ventosas, hidrantes y elementos de control \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Modelaci\'on en EPANET}
+\begin{itemize}
+\item Asignar demandas de forma coherente con la distribuci\'on espacial de la poblaci\'on.
+\item Cargar el patr\'on horario suministrado en el anexo correspondiente.
+\item Reportar presiones, velocidades y nodos cr\'iticos.
+\item Incorporar, cuando proceda, un escenario de verificaci\'on adicional para demanda extraordinaria o incendio, seg\'un el alcance definido por el equipo y la normativa consultada.
+\end{itemize}
+
+\section{Alcantarillado sanitario}
+\subsection{Criterios generales}
+\begin{center}
+\begin{tabular}{p{0.27\linewidth} p{0.57\linewidth}}
+\toprule
+\textbf{Tema} & \textbf{Criterio} \\
+\midrule
+Caudales de dise\~no & Deben construirse a partir de poblaci\'on, contribuci\'on per c\'apita, factores de pico y aportes complementarios justificados \\
+Infiltraci\'on y conexiones erradas & Deben considerarse solo en la medida en que la norma o el criterio adoptado lo exijan; el valor asumido debe explicarse \\
+Velocidades y pendientes & Verificar autolimpieza, capacidad y profundidad de zanja dentro de rangos t\'ecnicamente razonables \\
+Materiales & Selecci\'on abierta, siempre que se justifique por desempe\~no, disponibilidad y adecuaci\'on al contexto \\
+Bombeo & Solo cuando la topograf\'ia o la configuraci\'on del sistema lo haga necesario \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Modelaci\'on en SWMM para sanitario}
+\begin{itemize}
+\item Cargar el patr\'on horario de descarga sanitaria suministrado en el anexo.
+\item Introducir los aportes de tiempo seco de manera clara y consistente con la memoria.
+\item No es necesario introducir m\'etodos de infiltraci\'on hidrol\'ogica de lluvia para la estimaci\'on del caudal sanitario de redes separativas.
+\item Reportar niveles, velocidades y tramos cr\'iticos.
+\end{itemize}
+
+\section{Drenaje pluvial}
+\subsection{Hidrolog\'ia de dise\~no}
+\begin{center}
+\begin{tabular}{p{0.27\linewidth} p{0.57\linewidth}}
+\toprule
+\textbf{Tema} & \textbf{Criterio} \\
+\midrule
+Periodo de retorno & Seleccionar seg\'un jerarqu\'ia vial, uso del suelo y consecuencia de falla \\
+M\'etodo hidrol\'ogico & Racional para cuencas peque\~nas o m\'etodo alternativo justificable con la informaci\'on disponible \\
+Tiempo de concentraci\'on & Elegir y justificar el m\'etodo empleado \\
+Curvas IDF & Documentar la procedencia y el procedimiento de interpolaci\'on o ajuste \\
+Subcuencas & Delimitar con apoyo del MDT y del reconocimiento del terreno \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Dise\~no hidr\'aulico}
+\begin{itemize}
+\item Verificar capacidad, velocidades, pendientes y control de descargas.
+\item Definir con claridad puntos de captaci\'on y descarga.
+\item Considerar separaci\'on adecuada respecto del sistema sanitario.
+\item Incluir estructuras de disipaci\'on o protecci\'on cuando las condiciones de descarga lo exijan.
+\end{itemize}
+
+\subsection{Modelaci\'on en SWMM para pluvial}
+\begin{itemize}
+\item Construir subcuencas y nodos de forma consistente con el trazado adoptado.
+\item Usar un evento de dise\~no expl\'icito y documentado.
+\item Reportar caudales pico, niveles y puntos con comportamiento cr\'itico.
+\end{itemize}
+
+\section{Contenido m\'inimo de la memoria t\'ecnica}
+\begin{itemize}
+\item Tabla maestra de par\'ametros con referencia normativa o bibliogr\'afica.
+\item Desarrollo de c\'alculos principales.
+\item Resultados de modelaci\'on con tablas y figuras legibles.
+\item Justificaci\'on de materiales y criterios constructivos.
+\item Comentario final sobre factibilidad, limitaciones y mantenimiento.
+\end{itemize}
+
+\section{Criterios de aceptaci\'on}
+\begin{enumerate}
+\item Coherencia entre la informaci\'on disponible, los supuestos y el dise\~no propuesto.
+\item Justificaci\'on normativa suficiente en par\'ametros clave.
+\item Modelos que permitan verificar el desempe\~no hidr\'aulico del sistema.
+\item Documentaci\'on clara, legible y trazable.
+\item Compatibilidad entre agua potable, sanitario y pluvial.
+\end{enumerate}
+
+\end{document}

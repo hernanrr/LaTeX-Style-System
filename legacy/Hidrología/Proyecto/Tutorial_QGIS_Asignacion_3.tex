@@ -1,0 +1,642 @@
+% !TEX program = lualatex
+\documentclass[11pt]{article}
+\newcommand{\AsignaturaCorta}{Tutorial de \qgis{} — Asignación 3}
+\input{preamble}
+
+\begin{document}
+
+% ============================================================
+%  PORTADA
+% ============================================================
+\begin{center}
+  {\small\color{midgrey} Pontificia Universidad Católica Madre y Maestra\\
+  Escuela de Ingeniería Civil y Ambiental}
+
+  \vspace{1.4cm}
+  {\color{olive}\rule{\linewidth}{2pt}}
+  \vspace{0.3cm}
+
+  {\Large\bfseries\color{darkblue} ICV 342 Hidrología}\\[0.4em]
+  {\LARGE\bfseries\color{darkblue} Tutorial de \qgis{}}\\[0.3em]
+  {\large\itshape Guía práctica para la Asignación 3\\
+  Análisis espacial de precipitación en el Distrito Nacional}
+
+  \vspace{0.3cm}
+  {\color{olive}\rule{\linewidth}{2pt}}
+  \vspace{1.0cm}
+\end{center}
+
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+\textbf{Asignatura}   & ICV 342 Hidrología \\
+\textbf{Docente}      & Dr.\ Ricardo Hernández Moreira \\
+\textbf{Unidad}       & Unidad IV — Precipitación (análisis espacial) \\
+\textbf{Documento}    & Guía operativa complementaria a la Asignación 3 \\
+\textbf{Software}     & \qgis{} 3.44 o 4.0 \\
+\textbf{Enfoque}      & Flujo de trabajo completo para estaciones, Thiessen e isoyetas \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{infobox}
+\textbf{Propósito de esta guía.}
+Este documento no sustituye la \textbf{Asignación 3}. Su función es mostrar,
+paso a paso, cómo preparar el proyecto en \qgis{}, cómo construir las capas
+necesarias y cómo ejecutar el flujo de trabajo espacial requerido para producir
+los entregables: mapa de estaciones, polígonos de Thiessen, interpolación,
+isoyetas y tablas de precipitación areal.
+\end{infobox}
+
+\begin{warnbox}
+\textbf{Versión recomendada.}
+Se recomienda trabajar con \qgis{} 3.44 o 4.0, tal como se indica en la
+asignación. Versiones anteriores pueden cambiar nombres de herramientas,
+ubicación de menús o comportamiento de algunos algoritmos de geoprocesamiento.
+\end{warnbox}
+
+% ============================================================
+\section*{Cómo usar este tutorial}
+% ============================================================
+
+La secuencia recomendada es:
+\begin{enumerate}
+  \item instalar \qgis{} y los complementos mínimos;
+  \item crear un proyecto nuevo y fijar correctamente el SRC;
+  \item cargar mapa base, límites y capas de referencia;
+  \item crear la capa de estaciones meteorológicas a partir de un CSV;
+  \item construir los polígonos de Thiessen y calcular sus pesos;
+  \item interpolar la precipitación de noviembre de 2023 y extraer isoyetas;
+  \item preparar las composiciones cartográficas y exportar los entregables.
+\end{enumerate}
+
+\begin{olivebox}
+\textbf{Supuesto de partida.}
+Se asume que el grupo ya dispone de los valores tabulares calculados en las
+Asignaciones 1 y 2, en particular:
+\begin{itemize}
+  \item media anual del período disponible y período de cada estación;
+  \item total de noviembre de 2023 por estación;
+  \item coordenadas verificadas de las estaciones.
+\end{itemize}
+\end{olivebox}
+
+% ============================================================
+\section{Instalación y preparación inicial}
+% ============================================================
+
+\paso{Instalar \qgis{} con OSGeo4W}
+
+Descargue \qgis{} desde \url{https://qgis.org/download/}. Para esta guía se usa
+el instalador en línea \textbf{OSGeo4W}.
+
+\begin{center}
+\includegraphics[width=0.88\linewidth]{../img/QGIS-001-Instalador-OSGeo4W.png}
+\captionof{figure}{Página de descarga de \qgis{} con el instalador OSGeo4W resaltado.}
+\end{center}
+
+Abra el instalador con privilegios de administrador y seleccione:
+\begin{enumerate}
+  \item \textbf{Advanced Install};
+  \item \textbf{Install from Internet};
+  \item directorio por defecto (\texttt{C:\textbackslash OSGeo4W}) para todos los usuarios;
+  \item parámetros por defecto en pantallas intermedias;
+  \item un servidor de descarga activo.
+\end{enumerate}
+
+\begin{center}
+\includegraphics[width=0.75\linewidth]{../img/QGIS-002-Instalador-OSGeo4W-pagina-01.png}
+\captionof{figure}{Primera pantalla del instalador: selección de \emph{Advanced Install}.}
+\end{center}
+
+\begin{center}
+\includegraphics[width=0.75\linewidth]{../img/QGIS-003-Instalador-OSGeo4W-pagina-02.png}
+\captionof{figure}{Segunda pantalla: instalación desde internet.}
+\end{center}
+
+\paso{Seleccionar paquetes útiles}
+
+En la pantalla de selección de paquetes conviene instalar, además de
+\texttt{qgis}, algunos componentes frecuentes en análisis hidrológico:
+\begin{itemize}
+  \item \texttt{qgis: QGIS Desktop};
+  \item \texttt{saga};
+  \item \texttt{pcraster};
+  \item \texttt{grass} y el complemento \texttt{qgis-grass-plugin}.
+\end{itemize}
+
+\begin{center}
+\includegraphics[width=0.82\linewidth]{../img/QGIS-008-Instalador-OSGeo4W-pagina-07-01.png}
+\captionof{figure}{Selección del paquete principal de \qgis{} en OSGeo4W.}
+\end{center}
+
+\begin{center}
+\includegraphics[width=0.82\linewidth]{../img/QGIS-008-Instalador-OSGeo4W-pagina-07-02.png}
+\captionof{figure}{Selección de \texttt{saga}.}
+\end{center}
+
+\begin{center}
+\includegraphics[width=0.82\linewidth]{../img/QGIS-008-Instalador-OSGeo4W-pagina-07-03.png}
+\captionof{figure}{Selección de paquetes adicionales para ampliar capacidades de análisis.}
+\end{center}
+
+\paso{Instalar el complemento SRTM-Downloader}
+
+Una vez abierto \qgis{}, vaya a \emph{Complementos → Administrar e instalar
+complementos}, busque \texttt{SRTM-Downloader} e instálelo.
+
+\begin{center}
+\includegraphics[width=0.9\linewidth]{../img/QGIS-020-SRTM-downloader-plugin-manager.png}
+\captionof{figure}{Administrador de complementos con SRTM-Downloader.}
+\end{center}
+
+\begin{tealbox}
+\textbf{Nota práctica.}
+Si el grupo ya tiene el MDE descargado por otra vía aceptada en la asignación
+(por ejemplo, USGS Earth Explorer o un archivo provisto por el profesor), puede
+omitir el complemento y cargar directamente el ráster.
+\end{tealbox}
+
+% ============================================================
+\section{Creación del proyecto y sistema de referencia}
+% ============================================================
+
+\paso{Abrir un proyecto nuevo}
+
+Inicie \qgis{} y cree un proyecto en blanco desde \emph{Proyecto → Nuevo} o con
+\texttt{Ctrl+N}.
+
+\begin{center}
+\includegraphics[width=0.9\linewidth]{../img/QGIS-011-Proyecto-Nuevo.png}
+\captionof{figure}{Creación de un proyecto nuevo en \qgis{}.}
+\end{center}
+
+\paso{Definir el sistema de coordenadas del proyecto}
+
+Aunque muchas capas web usan coordenadas en Web Mercator, para cálculos de área
+y distancia en esta asignación el proyecto debe trabajar en
+\textbf{EPSG:32619 — WGS 84 / UTM zona 19N}.
+
+Para cambiarlo:
+\begin{enumerate}
+  \item vaya a \emph{Proyecto → Propiedades → SRC};
+  \item busque \texttt{32619};
+  \item seleccione \texttt{WGS 84 / UTM zone 19N};
+  \item aplique y acepte.
+\end{enumerate}
+
+\begin{center}
+\includegraphics[width=0.8\linewidth]{../img/QGIS-012-CRS-change.png}
+\captionof{figure}{Cambio del SRC del proyecto a EPSG:32619.}
+\end{center}
+
+\begin{warnbox}
+\textbf{Punto crítico del flujo.}
+Las áreas de polígonos de Thiessen y de franjas entre isoyetas deben calcularse
+en un sistema métrico. Si el proyecto o la capa permanecen en EPSG:4326, las
+áreas no tendrán sentido físico para el cálculo de precipitación areal.
+\end{warnbox}
+
+\paso{Guardar el proyecto y organizar carpetas}
+
+Antes de seguir, guarde el proyecto \texttt{.qgz} dentro de una carpeta dedicada.
+Una estructura recomendable es:
+\begin{center}
+\ttfamily
+\begin{tabular}{l}
+Proyecto\_QGIS/ \\
+\quad datos/ \\
+\quad resultados/ \\
+\quad mapas/ \\
+\quad tablas/ \\
+\quad proyecto\_asignacion3.qgz
+\end{tabular}
+\end{center}
+
+Esto facilita la portabilidad del proyecto y la entrega ordenada de resultados.
+
+% ============================================================
+\section{Capas base y datos espaciales de referencia}
+% ============================================================
+
+\paso{Añadir un mapa base}
+
+Desde el panel \emph{Explorador}, abra \emph{XYZ Tiles} y agregue
+\emph{OpenStreetMap}. Esto sirve para ubicar visualmente estaciones, límites y
+áreas de estudio.
+
+\begin{center}
+\includegraphics[width=0.9\linewidth]{../img/QGIS-013-XYZ_tiles_added.png}
+\captionof{figure}{Mapa base OSM agregado al proyecto.}
+\end{center}
+
+Si \qgis{} cambia automáticamente el SRC del proyecto al de la capa base,
+restáurelo inmediatamente a \textbf{EPSG:32619}.
+
+\paso{Ubicar el área de trabajo}
+
+En esta asignación, el único dominio de análisis es el \textbf{Distrito
+Nacional}. Use el mapa base, el cuadro de coordenadas y la
+barra de escala para navegar hacia la zona de interés.
+
+\begin{center}
+\includegraphics[width=0.9\linewidth]{../img/QGIS-014-Zoom-a-ZdI.png}
+\captionof{figure}{Ejemplo de navegación y enfoque sobre una zona de interés.}
+\end{center}
+
+\paso{Cargar límites y capas de referencia}
+
+Según la asignación, debe cargar al menos:
+\begin{itemize}
+  \item límites administrativos oficiales desde IDE-RD o capa provista;
+  \item límite del Distrito Nacional;
+  \item modelo digital de elevación (opcional como fondo temático, pero muy útil);
+  \item mapa base OSM.
+\end{itemize}
+
+Use \emph{Capa → Añadir capa} según el tipo de archivo: vectorial, ráster o texto
+delimitado. Si alguna capa viene en otro SRC, reproyéctela a EPSG:32619 para los
+análisis geométricos.
+
+% ============================================================
+\section{Capa de estaciones meteorológicas}
+% ============================================================
+
+\paso{Preparar el archivo CSV}
+
+Construya un archivo CSV con al menos los siguientes campos:
+\begin{center}
+\ttfamily\small
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lllllll}
+nombre & latitud & longitud & altitud\_m & periodo\_media & P\_media\_periodo\_mm & P\_nov2023\_mm
+\end{tabular}}
+\end{center}
+
+El archivo debe contener exactamente las cinco estaciones con datos de noviembre
+de 2023: Santo Domingo, Las Américas, La Victoria, Jardín Botánico y El Higuero.
+Puede añadir comentarios sobre la procedencia de las coordenadas.
+
+\begin{infobox}
+\textbf{Coordenadas de estaciones.}
+En la asignación se indica que algunas coordenadas provienen en formato
+grados-minutos. Verifique que todas estén en grados decimales y que las
+longitudes tengan signo negativo antes de importar el CSV. Un error de signo o
+de formato desplazará completamente la estación.
+\end{infobox}
+
+\paso{Importar el CSV como capa de puntos}
+
+En \qgis{}:
+\begin{enumerate}
+  \item vaya a \emph{Capa → Añadir capa → Añadir capa de texto delimitado};
+  \item seleccione el archivo CSV;
+  \item defina \texttt{longitud} como campo $X$ y \texttt{latitud} como campo $Y$;
+  \item asigne \textbf{EPSG:4326} a la capa de entrada, porque las coordenadas
+        geográficas vienen en latitud/longitud;
+  \item agregue la capa al proyecto.
+\end{enumerate}
+
+\paso{Verificar la ubicación espacial}
+
+Con el mapa base y los límites ya cargados:
+\begin{itemize}
+  \item verifique las cinco estaciones respecto al Distrito Nacional;
+  \item revise Santo Domingo, Las Américas, Jardín Botánico, El Higuero y
+        La Victoria;
+  \item confirme que todas las longitudes sean negativas;
+  \item si una estación aparece en el mar o lejos del área esperada, revise el
+        formato de sus coordenadas.
+\end{itemize}
+
+\paso{Aplicar simbología y etiquetas}
+
+Para el mapa de estaciones:
+\begin{itemize}
+  \item use simbología graduada según \texttt{P\_media\_periodo\_mm};
+  \item etiquete con el nombre de la estación;
+  \item si desea, añada el valor de precipitación a la etiqueta para figuras
+        explicativas.
+\end{itemize}
+
+\begin{tealbox}
+\textbf{Resultado esperado.}
+Al finalizar este bloque debe poder generar el primer entregable principal:
+un mapa de las cinco estaciones respecto al Distrito Nacional, con simbología
+graduada y etiquetas legibles. Muestre también \texttt{periodo\_media} para
+dejar claro que las medias no comparten una normal climatológica común.
+\end{tealbox}
+
+% ============================================================
+\section{Modelo digital de elevación}
+% ============================================================
+
+\paso{Descargar o cargar el MDE}
+
+La asignación permite varias fuentes. Si usa el complemento SRTM-Downloader:
+\begin{enumerate}
+  \item obtenga su clave API de OpenTopography;
+  \item defina la extensión de descarga;
+  \item guarde el resultado en la carpeta del proyecto;
+  \item use NASADEM o SRTM GL1 30 m.
+\end{enumerate}
+
+\begin{center}
+\includegraphics[width=0.72\linewidth]{../img/QGIS-021-OpenTopography-API-key-request.png}
+\captionof{figure}{Obtención de la clave API de OpenTopography.}
+\end{center}
+
+\begin{center}
+\includegraphics[width=0.82\linewidth]{../img/QGIS-022-SRTM-Downloader-dialog.png}
+\captionof{figure}{Parámetros típicos del complemento SRTM-Downloader.}
+\end{center}
+
+\paso{Dar estilo hipsométrico al MDE}
+
+Una vez cargado el ráster, abra el \textbf{Panel de Estilo} con la capa del MDE
+seleccionada y configure:
+\begin{enumerate}
+  \item \textbf{Estilo}: \emph{Singleband pseudocolor} o
+        \emph{Monobanda pseudocolor};
+  \item en \textbf{Color ramp}, seleccione
+        \emph{Create New Color Ramp} $\rightarrow$
+        \emph{Catalog: cpt-city} $\rightarrow$
+        \emph{Topography} $\rightarrow$
+        \emph{Elevation};
+  \item más abajo, en \textbf{Resampling}, cambie la opción de
+        \emph{Zoomed in} a \emph{Bilinear (2 x 2 Kernel)}.
+\end{enumerate}
+
+Esta última opción mejora la apariencia del MDE cuando el zoom está cerca y
+reduce el aspecto pixelado del ráster.
+
+\paso{Agregar sombreado y, opcionalmente, curvas de nivel}
+
+Para darle textura al relieve:
+\begin{enumerate}
+  \item duplique la capa \emph{DEM Reproyectado-cortado};
+  \item renombre la copia como \emph{DEM Sombreado};
+  \item coloque \emph{DEM Sombreado} por encima de la capa del DEM coloreado;
+  \item con \emph{DEM Sombreado} seleccionada, cambie el estilo a
+        \emph{Hillshade};
+  \item en \textbf{Layer Rendering}, cambie \emph{Blending mode} a
+        \emph{Multiply}.
+\end{enumerate}
+
+Si desea añadir curvas de nivel como apoyo visual, puede repetir el mismo flujo
+duplicando nuevamente la capa base y aplicando el estilo \emph{Contours}. En ese
+caso, en \textbf{Resampling} conviene cambiar \emph{Zoomed in} a
+\emph{Nearest Neighbor} para que las curvas se vean más definidas.
+
+\begin{tealbox}
+\textbf{Resultado visual recomendado.}
+La combinación de un DEM en pseudocolor con una capa superior en estilo
+\emph{Hillshade} y modo \emph{Multiply} produce un mapa más legible para
+composiciones finales, porque conserva la información hipsométrica y añade
+relieve sombreado.
+\end{tealbox}
+
+% ============================================================
+\section{Polígonos de Thiessen para el Distrito Nacional}
+% ============================================================
+
+\paso{Crear los polígonos de Voronoi}
+
+Con la capa de estaciones ya cargada:
+\begin{enumerate}
+  \item abra la \emph{Caja de herramientas de procesos};
+  \item busque \texttt{Polígonos de Voronoi};
+  \item use la capa de estaciones como entrada;
+  \item añada un \emph{buffer} suficiente para que el resultado cubra todo el
+        Distrito Nacional.
+\end{enumerate}
+
+El resultado será una partición del plano en la que cada zona queda asociada a la
+estación más cercana.
+
+\paso{Recortar los polígonos al Distrito Nacional}
+
+Los polígonos generados deben recortarse al contorno del Distrito Nacional:
+\begin{enumerate}
+  \item use \emph{Superposición de vectores → Recortar};
+  \item capa de entrada: polígonos de Voronoi;
+  \item capa de recorte: límite del Distrito Nacional.
+\end{enumerate}
+
+\paso{Calcular áreas y pesos}
+
+En la tabla de atributos de los polígonos recortados:
+\begin{enumerate}
+  \item cree un campo de área en km$^2$ con la expresión
+        \[
+          \texttt{\$area / 1000000}
+        \]
+  \item calcule el área total del Distrito Nacional a partir de la suma de los polígonos;
+  \item cree un campo de peso:
+        \[
+          w_i = \frac{A_i}{A_{\text{total}}}
+        \]
+\end{enumerate}
+
+\paso{Incorporar la precipitación de noviembre de 2023}
+
+Para calcular la precipitación media areal por Thiessen, cada polígono debe tener
+el valor de precipitación de su estación asociada. Puede hacerlo de dos maneras:
+\begin{itemize}
+  \item uniendo la tabla de estaciones a los polígonos mediante un identificador;
+  \item exportando la tabla y completando el cálculo en \excel{}, \python{} o R.
+\end{itemize}
+
+Luego cree un campo:
+\[
+  w_i P_i
+\]
+y sume todos los productos para obtener:
+\[
+  \bar{P} = \sum w_i P_i
+\]
+
+\begin{olivebox}
+\textbf{Qué debe salir de esta parte.}
+Al cerrar este bloque debe tener:
+\begin{itemize}
+  \item un mapa de polígonos de Thiessen recortados al Distrito Nacional;
+  \item una tabla con estación, área, peso, precipitación y producto ponderado;
+  \item el valor de precipitación media areal para noviembre de 2023;
+  \item el mismo cálculo con \texttt{P\_media\_periodo\_mm}, conservando
+        exactamente los mismos polígonos y pesos.
+\end{itemize}
+\end{olivebox}
+
+\begin{warnbox}
+\textbf{Medias de períodos distintos.}
+Cada mapa y tabla debe mostrar \texttt{periodo\_media}. La media anual del
+período disponible de cada estación no constituye una normal climatológica
+común y debe interpretarse con esa advertencia.
+\end{warnbox}
+
+% ============================================================
+\section{Interpolación e isoyetas para el Distrito Nacional}
+% ============================================================
+
+\paso{Preparar el campo de precipitación a interpolar}
+
+Antes de interpolar, confirme que la capa de estaciones contiene un campo numérico
+con la precipitación total de \textbf{noviembre de 2023}. Este será el campo de
+entrada del algoritmo de interpolación.
+
+\paso{Ejecutar la interpolación IDW}
+
+En la \emph{Caja de herramientas de procesos}:
+\begin{enumerate}
+  \item busque \textbf{Interpolación IDW};
+  \item seleccione la capa de estaciones;
+  \item use el campo de precipitación de noviembre de 2023;
+  \item defina una extensión que cubra el Distrito Nacional y un pequeño entorno;
+  \item use un tamaño de celda razonable, por ejemplo 500 m;
+  \item mantenga potencia 2, salvo que tenga una justificación técnica para cambiarla.
+\end{enumerate}
+
+Recorte el ráster IDW resultante al límite del Distrito Nacional antes de
+calcular áreas o preparar la composición final.
+
+\begin{warnbox}
+\textbf{Limitación metodológica.}
+La red de estaciones es escasa para una interpolación robusta de detalle. Las
+isoyetas resultantes son útiles como aproximación pedagógica y comparativa, pero
+deben discutirse críticamente en el informe final, tal como exige la asignación.
+\end{warnbox}
+
+\paso{Extraer las áreas entre isoyetas}
+
+Si todavía conserva el ráster interpolado de precipitación, puede omitir por
+completo la generación de contornos y trabajar directamente con zonas
+reclasificadas. Este flujo suele ser más robusto que partir de curvas vectoriales,
+especialmente cuando el relieve o la interpolación producen geometrías complejas.
+
+\begin{enumerate}
+  \item Reclasifique el ráster por intervalos de isoyetas en la
+        \emph{Caja de herramientas de procesos}:
+        \emph{Raster → Analysis → Reclassify by table}.
+  \item Convierta el ráster reclasificado a polígonos:
+        \emph{Raster → Conversion → Polygonize}.
+  \item Disuelva los polígonos según el atributo de valor de reclasificación para
+        obtener una geometría por franja de precipitación.
+  \item Recorte el resultado al límite del Distrito Nacional, si todavía no lo ha hecho.
+\end{enumerate}
+
+\paso{Calcular el área y la precipitación areal por franjas}
+
+Con las franjas ya convertidas en polígonos:
+\begin{itemize}
+  \item calcule el área de cada franja;
+  \item asigne a cada clase el valor medio del intervalo correspondiente;
+  \item cree el campo $A_j \bar{P}_j$;
+  \item obtenga la precipitación media areal con
+        \[
+          \bar{P} = \frac{\sum A_j \bar{P}_j}{A_{\text{total}}}
+        \]
+\end{itemize}
+
+\begin{infobox}
+\textbf{Cuándo conviene este método.}
+La secuencia \emph{reclasificar → polygonize → dissolve} evita varios problemas
+de topología que suelen aparecer al intentar construir manualmente polígonos entre
+curvas de contorno. Para este tutorial se recomienda como flujo preferido.
+\end{infobox}
+
+\paso{Comparar Thiessen e isoyetas}
+
+La comparación no es solo numérica. En la discusión del informe conviene
+responder:
+\begin{itemize}
+  \item cuál método representa mejor el patrón espacial con la red disponible;
+  \item cuánto difieren los valores de precipitación areal;
+  \item qué limitaciones introduce la distribución espacial de estaciones.
+\end{itemize}
+
+% ============================================================
+\section{Composición cartográfica y exportación}
+% ============================================================
+
+\paso{Crear el mapa de estaciones}
+
+En el diseñador de impresión:
+\begin{itemize}
+  \item inserte el mapa principal;
+  \item añada título, flecha norte, escala gráfica y leyenda;
+  \item revise que la simbología graduada por precipitación media del período
+        disponible sea legible y que se indiquen los períodos;
+  \item añada créditos de datos.
+\end{itemize}
+
+\paso{Crear el mapa de Thiessen}
+
+Para el mapa de Thiessen:
+\begin{itemize}
+  \item coloree los polígonos según la precipitación de noviembre de 2023;
+  \item superponga las estaciones con etiquetas;
+  \item muestre claramente el límite del Distrito Nacional;
+  \item si es útil, añada el valor de $\bar{P}$ en un cuadro de texto.
+\end{itemize}
+
+\paso{Crear el mapa de isoyetas}
+
+Para el mapa de isoyetas:
+\begin{itemize}
+  \item use el ráster IDW como fondo semitransparente;
+  \item dibuje encima las isoyetas y etiquételas en mm;
+  \item superponga las estaciones y el límite del Distrito Nacional;
+  \item cuide que la leyenda indique claramente unidades y método.
+\end{itemize}
+
+\paso{Exportar los entregables}
+
+Exporte en PDF o PNG con resolución suficiente. Como referencia práctica:
+\begin{itemize}
+  \item PNG de al menos 200 dpi;
+  \item PDF para entrega final o impresión;
+  \item nombres de archivo claros, por ejemplo:
+        \texttt{mapa\_estaciones.png},
+        \texttt{thiessen\_nov2023.pdf},
+        \texttt{isoyetas\_nov2023.pdf}.
+\end{itemize}
+
+% ============================================================
+\section*{Lista de verificación final}
+% ============================================================
+
+\begin{tealbox}
+\textbf{Antes de cerrar el proyecto, confirme lo siguiente:}
+\begin{enumerate}
+  \item el proyecto está en EPSG:32619;
+  \item las estaciones están correctamente ubicadas;
+  \item el límite del Distrito Nacional está cargado;
+  \item los polígonos de Thiessen fueron recortados al Distrito Nacional;
+  \item las áreas están en km$^2$;
+  \item los pesos $w_i$ suman aproximadamente 1;
+  \item se reutilizaron los mismos polígonos y pesos para noviembre de 2023 y
+        para la media anual del período disponible;
+  \item cada tabla o mapa de medias muestra el período de cada estación y la
+        advertencia de que no es una normal climatológica común;
+  \item la interpolación IDW usa el campo correcto de noviembre de 2023;
+  \item las isoyetas tienen intervalos y etiquetas coherentes;
+  \item las composiciones cartográficas incluyen escala, norte, leyenda y créditos;
+  \item el proyecto \texttt{.qgz} y las capas asociadas usan rutas ordenadas y reproducibles.
+\end{enumerate}
+\end{tealbox}
+
+\begin{olivebox}
+\textbf{Relación con la Asignación 3.}
+Si este tutorial se ha seguido completo, el grupo ya debería tener preparado casi
+todo el trabajo operativo necesario para responder las preguntas y construir los
+entregables exigidos en \texttt{A3\_Analisis\_Espacial\_QGIS.tex}. Lo que resta es
+completar los cálculos, interpretar resultados y redactar la discusión técnica.
+\end{olivebox}
+
+\vfill
+\begin{center}
+  {\small\color{midgrey} ICV 342 Hidrología — Tutorial de \qgis{} — PUCMM}
+\end{center}
+
+\end{document}

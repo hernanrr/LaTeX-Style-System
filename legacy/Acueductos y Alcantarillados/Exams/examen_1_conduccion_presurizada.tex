@@ -1,0 +1,208 @@
+\documentclass[11pt]{article}
+\newcommand{\DocShort}{Examen 1: conducción presurizada}
+\input{preamble_exam.tex}
+
+\begin{document}
+
+\doccover{Examen 1: diseño de conducción presurizada}{2026-07}
+\introbox{Diseñar una conducción presurizada por gravedad, dada la geometría propuesta en planta y perfil, aplicando criterios normativos del INAPA, pérdidas mayores y menores, verificación de golpe de ariete y diseño selectivo de bloques de anclaje.}{Se espera una solución técnicamente consistente, económicamente razonable y completamente trazable, presentada en una memoria narrativa clara acompañada de una tabla principal de resultados y de un perfil longitudinal con línea piezométrica y línea de energía.}
+
+\section{Objetivo}
+Diseñar la tubería presurizada que conduce agua desde un reservorio con nivel de agua a cota \SI{193}{\meter} msnm hasta un tanque con nivel de agua a cota \SI{140}{\meter} msnm, usando el alineamiento y el perfil longitudinal suministrados como archivos adjuntos del examen.
+
+\section{Normativa y jerarquía de referencias}
+La referencia normativa principal y prevalente para este examen es el \emph{Reglamento Técnico para Diseño e Instalaciones Hidro-Sanitario del INAPA}, versión julio de 2018. En caso de ambigüedad, prevalecerá este reglamento sobre cualquier otra fuente.
+
+Los estudiantes deberán citar en su memoria la sección o acápite y la página del reglamento o de la fuente técnica utilizada cuando un dato no aparezca explícitamente en esta consigna.
+
+\begin{infobox}
+\textbf{Referencias normativas mínimas a revisar en el reglamento INAPA.}
+\begin{itemize}
+\item Parámetros de diseño, velocidades permisibles, presiones mínimas y máximas: sección 6.3.2, pp. 78--80.
+\item Procedimiento general para la determinación de consumos y gastos de cálculo: sección 6.3.6.1, p. 84.
+\item Válvulas de corte y ventosas en líneas de conducción: pp. 70--72.
+\end{itemize}
+\end{infobox}
+
+\section{Datos dados}
+\subsection{Datos hidráulicos y físicos}
+\begin{itemize}
+\item Material de la tubería: acero.
+\item Rugosidad absoluta del acero: $\varepsilon = \SI{0.15}{\milli\meter}$.
+\item Temperatura del agua: \SI{20}{\celsius}.
+\item Gravedad: $g = \SI{9.81}{\meter\per\second\squared}$.
+\item Módulo volumétrico del agua: $E_{\text{agua}} = \SI{2.17e9}{\newton\per\meter\squared}$.
+\item Módulo de elasticidad del acero: $E_{\text{acero}} = \SI{1.9e11}{\newton\per\meter\squared}$.
+\item Coeficiente de Poisson del acero: $\mu_{\text{acero}} = 0.30$.
+\item Modelo estructural para el análisis transitorio: tubería de pared delgada, anclada contra movimiento axial.
+\end{itemize}
+
+\subsection{Datos demográficos y de demanda}
+\begin{itemize}
+\item Población actual: \num{11800} habitantes.
+\item Horizonte de diseño: \num{25} años.
+\item Método de crecimiento poblacional: geométrico.
+\item Tasa de crecimiento geométrico: \num{4}\,\% anual.
+\item Tipo de población: urbana.
+\item Se aplicarán los factores de día máximo y hora máxima del Reglamento del INAPA.
+\item Se supondrá un \SI{20}{\percent} de fugas.
+\item Solo se considerará uso doméstico.
+\item La conducción se diseñará hidráulicamente para el \textbf{caudal máximo diario}.
+\end{itemize}
+
+\subsection{Datos geométricos}
+\begin{itemize}
+\item Nivel de agua en el reservorio: \SI{193}{\meter} msnm.
+\item Nivel de agua en el tanque final: \SI{140}{\meter} msnm.
+\item La progresiva \texttt{0+000} corresponde al reservorio.
+\item Las progresivas avanzan en sentido aguas abajo.
+\item El alineamiento y el perfil longitudinal forman parte de los archivos adjuntos del examen y deben citarse, pero no reproducirse dentro de la memoria como apéndice de datos brutos.
+\end{itemize}
+
+\section{Método hidráulico obligatorio}
+\begin{enumerate}
+\item La pérdida por fricción se calculará con la ecuación de Darcy-Weisbach.
+\item El factor de fricción de Darcy se determinará con la ecuación de Colebrook-White.
+\item Alternativamente, podrá usarse la ecuación explícita de Swamee-Jain o el diagrama de Moody, siempre que el procedimiento quede claramente explicado.
+\item El uso de la ecuación de Hazen-Williams será penalizado con \textbf{el 100\% de la calificación total del examen}.
+\end{enumerate}
+
+\section{Criterios de diseño y aceptación}
+\subsection{Velocidades, presiones y balance de energía}
+\begin{itemize}
+\item Las velocidades permisibles y las presiones mínimas y máximas deberán cumplir con el Reglamento del INAPA.
+\item Para zona urbana, se tomará como referencia la recomendación del reglamento de diseñar con velocidad máxima de \SI{1.60}{\meter\per\second}, salvo justificación normativa mejor sustentada.
+\item Debe verificarse que la línea piezométrica permanezca por encima de la tubería en todo el trazado.
+\item Debe presentarse un perfil longitudinal con la tubería, la línea piezométrica y la línea de energía.
+\item La diferencia entre la carga disponible y la suma de pérdidas totales del sistema no podrá exceder \SI{0.10}{\meter}.
+\item Las presiones calculadas deberán ser menores que la presión admisible de la clase de tubería seleccionada. Para el análisis transitorio y el cálculo del coeficiente $k$ de interacción fluido-estructura, véase el Cuadro~\ref{tab:k-golpe-ariete}, \emph{Valores de $k$ tomados de mecánica de sólidos para el análisis de golpe de ariete}; esta referencia se cita aquí y también más adelante en la sección de golpe de ariete para evitar ambigüedad de numeración.
+\end{itemize}
+
+\subsection{Diámetros y división de tramos}
+\begin{itemize}
+\item Se utilizarán diámetros comerciales disponibles para acero, según el Cuadro~\ref{tab:nps-dn}, \emph{Diámetros comerciales de acero para referencia del examen}.
+\item El diseño deberá hacerse con diámetro interior.
+\item Se permite más de un cambio de diámetro, pero se recomienda procurar una solución con un solo cambio cuando sea técnica y económicamente razonable.
+\item Para la tabla principal, un nuevo tramo deberá iniciarse cada vez que ocurra cualquiera de los siguientes eventos: cambio de diámetro, accesorio con pérdida menor, quiebre del perfil, cambio de dirección en planta, ubicación de válvula, ventosa, purga o cualquier otro punto singular relevante.
+\item Las piezas especiales entre estaciones deberán reportarse con su progresiva.
+\end{itemize}
+
+\subsection{Pérdidas menores y accesorios}
+\begin{itemize}
+\item Deben considerarse pérdidas menores.
+\item No se permite el uso de longitudes equivalentes.
+\item Las pérdidas menores deberán calcularse mediante coeficientes $K$.
+\item Deben considerarse todos los codos sugeridos por el archivo de alineamiento.
+\item Para los codos, utilizar $K=\zeta$ de Hinds según la Figura~\ref{fig:hinds-usbr}, \emph{Anexo de referencia para coeficientes de pérdida por codos según Hinds/USBR}.
+\item La entrada a la tubería desde el reservorio se asumirá recta.
+\item La entrada al tanque se considerará de borde recto.
+\item El tipo de válvula de corte será de compuerta.
+\item La disposición de válvulas, ventosas y otros accesorios deberá justificarse con base en el Reglamento del INAPA.
+\end{itemize}
+
+\section{Análisis de golpe de ariete}
+\begin{itemize}
+\item Debe realizarse un análisis de golpe de ariete considerando solo la tubería de mayor diámetro y la longitud correspondiente a esa tubería.
+\item Se exige evaluar un cierre instantáneo usando únicamente la ecuación de Joukowsky:
+\[
+\Delta p = \rho V a
+\]
+donde $\rho$ es la densidad del agua, $V$ es la velocidad media en la tubería y $a$ es la celeridad de la onda.
+\item Debe proponerse además una recomendación de cierre gradual tal que reduzca la sobrepresión y cumpla simultáneamente dos condiciones: que el esfuerzo en la tubería no exceda el esfuerzo admisible y que el tiempo de cierre sea mayor que el tiempo crítico.
+\item Para esa recomendación, deberá compararse el tiempo de cierre propuesto con el tiempo crítico $2L/a$.
+\item La selección de la clase de tubería se hará con el criterio:
+\[
+P_{\text{estática}} + \Delta P_{\text{transitoria}} + \text{margen}
+\leq P_{\text{admisible de la clase}}
+\]
+\item Para el análisis de golpe de ariete deberá usarse el espesor correspondiente a la clase seleccionada del Cuadro~\ref{tab:clases-acero}, \emph{Cuadro simplificado de clase de tubería de acero para el examen}. Para el coeficiente $k$ aplicable a la condición de soporte adoptada, use el Cuadro~\ref{tab:k-golpe-ariete}.
+\end{itemize}
+
+\section{Bloques de anclaje}
+\begin{itemize}
+\item Deben diseñarse bloques de anclaje para los tres cambios de dirección de mayor ángulo.
+\item El objetivo es determinar el área del bloque contra la zanja.
+\item Se adoptará un factor de seguridad de \num{1.2}.
+\item Use como suelo de diseño una mezcla densa de arena y grava con $\phi = 40^\circ$.
+\item A \SI{1}{\meter} de profundidad, use $\sigma_a = \num{1800}\ \text{lb/ft}^2 = \SI{0.0862}{\mega\pascal}$.
+\item Para este examen se pide el modelo simplificado de empuje por presión interna equilibrado por la presión admisible del terreno sobre el área normal a la zanja, usando como referencia el Cuadro~\ref{tab:presion-suelo}, \emph{Presión admisible del suelo traducida a unidades SI}.
+\end{itemize}
+
+\section{Memoria de cálculo y formato de entrega}
+\begin{itemize}
+\item El entregable será un único archivo PDF.
+\item El nombre del archivo deberá ser exactamente:
+\[
+\texttt{1920\_ICV\_441\_\_Examen\_1\_[Nombre\_Apellido].pdf}
+\]
+\item Solo se aceptarán archivos PDF.
+\item El formato de papel será carta.
+\item El tamaño de letra deberá estar entre \num{10} y \num{12} puntos.
+\item La memoria deberá ser económica, pero clara.
+\item Todas las variables deberán definirse.
+\item Todas las unidades deberán reportarse.
+\item Se espera un máximo de tres decimales en los resultados.
+\item Para valores menores que uno, cuando resulte conveniente, puede usarse notación científica.
+\item Se alienta el uso correcto de prefijos SI.
+\item Deben mostrarse las fórmulas utilizadas.
+\item La tabla de resultados deberá ocupar una posición predominante dentro de la estructura de la memoria.
+\item Se permite usar Excel, pero sus resultados deberán contextualizarse dentro de una memoria narrativa.
+\item La entrega de una impresión de Excel como sustituto de la memoria narrativa será penalizada con \textbf{el 100\% de la calificación total del examen}.
+\item Se permite usar EPANET para verificar cómputos.
+\item Se permite usar Civil 3D o AutoCAD para la elaboración de dibujos.
+\end{itemize}
+
+\section{Actividades requeridas}
+\begin{enumerate}
+\item Determinar la población futura con el método geométrico y el horizonte de diseño dado.
+\item Determinar el caudal medio diario, el caudal máximo diario y el caudal máximo horario con base en el Reglamento del INAPA.
+\item Seleccionar una combinación adecuada de diámetros y longitudes de tubería tal que la carga disponible sea balanceada por las pérdidas mayores y menores totales del sistema.
+\item Verificar velocidades y presiones, incluyendo ausencia de subpresiones.
+\item Construir el perfil longitudinal con la tubería, la línea piezométrica y la línea de energía.
+\item Seleccionar la clase de tubería considerando presión estática, golpe de ariete y margen.
+\item Diseñar los tres bloques de anclaje requeridos.
+\end{enumerate}
+
+\section{Rúbrica de evaluación}
+\begin{center}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{0.49\textwidth} >{\raggedleft\arraybackslash}p{0.18\textwidth} >{\raggedright\arraybackslash}X}
+\toprule
+\textbf{Componente} & \textbf{Peso} & \textbf{Alcance} \\
+\midrule
+Análisis poblacional y determinación de caudales & 20\% & Incluye población futura, caudal medio, máximo diario y máximo horario. \\
+Determinación de diámetros & 30\% & Selección de diámetros con base en el balance hidráulico y en la normativa aplicable. \\
+Determinación de longitudes por diámetro & 20\% & Ajuste de longitudes para balance energético y trazabilidad por tramos. \\
+Determinación de clase de tubería & 15\% & Incluye presión estática, transitoria y selección final de clase. \\
+Diseño de bloques de anclaje & 15\% & Incluye empuje, presión admisible del suelo y área requerida. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\section{Errores críticos}
+\begin{warnbox}
+Los siguientes errores se consideran críticos:
+\begin{itemize}
+\item omitir pérdidas menores;
+\item no revisar golpe de ariete;
+\item no justificar cambios de diámetro;
+\item no especificar clase de tubería;
+\item no presentar el gráfico con línea piezométrica y línea de energía;
+\item no diseñar los anclajes requeridos.
+\end{itemize}
+
+Además, las siguientes acciones penalizan con \textbf{el 100\% de la calificación total del examen}:
+\begin{itemize}
+\item usar la ecuación de Hazen-Williams en lugar del método exigido;
+\item entregar una impresión de Excel como sustituto de la memoria narrativa.
+\end{itemize}
+\end{warnbox}
+
+\section{Referencias externas permitidas}
+Todo dato no dado explícitamente en esta consigna podrá obtenerse de tablas o libros técnicos, siempre que la fuente se cite correctamente. Sin embargo, para los datos incluidos en los anexos de este examen deberán usarse exclusivamente los valores aquí suministrados.
+
+\clearpage
+\tableofcontents
+\clearpage
+\input{tables_exam.tex}
+
+\end{document}

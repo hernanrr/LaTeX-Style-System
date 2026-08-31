@@ -1,0 +1,243 @@
+\documentclass[11pt]{article}
+\newcommand{\DocShort}{Guía de estudio - Parcial 2}
+\input{preamble_hidrologia}
+
+\begin{document}
+\doccover{Guía de estudio para el Parcial 2}{Unidades IV, V y VI}
+
+\handoutintro
+{Preparar al estudiante para un parcial de dificultad medio-alta sobre precipitación, escurrimiento y predicción de eventos de diseño. La guía está orientada a repaso activo: entender conceptos, comparar métodos, interpretar datos y resolver cálculos breves sin perder la lógica hidrológica.}
+{Conviene usarla como hoja principal de estudio antes del examen, como base para discutir en clase y como lista de verificación final antes del parcial.}
+
+\section{Cómo estudiar este parcial}
+\begin{itemize}
+\item No estudies cada tema como lista aislada. Conecta medición, interpretación y uso en diseño.
+\item Para cada método o concepto, responde tres preguntas: qué estima, cuándo se usa y cuál error conceptual lo invalida.
+\item Practica conversiones simples de unidades y redondea con criterio uniforme.
+\item Cuando aparezca una fórmula, no la memorices sola: identifica qué variable controla y qué decisión de ingeniería permite tomar.
+\item Si una respuesta contradice el sentido físico del problema, revisa primero la interpretación antes del cálculo.
+\end{itemize}
+
+\section{Mapa del parcial}
+\begin{center}
+\begin{tabular}{p{0.17\linewidth} p{0.29\linewidth} p{0.44\linewidth}}
+\toprule
+\textbf{Unidad} & \textbf{Qué domina} & \textbf{Qué puede preguntarse} \\
+\midrule
+IV & Formación, medición y análisis de la precipitación & Tipos de lluvia, instrumentos, precipitación media areal, datos faltantes, consistencia y curvas altura--área--duración. \\
+V & Origen, medición y representación del escurrimiento & Componentes del flujo, aforo, curva de gastos, hidrograma, hidrograma unitario y respuesta hidrológica. \\
+VI & Tratamiento probabilístico para diseño & Muestras, homogeneidad, independencia, período de retorno, máximos y mínimos, curvas IDF y modelos probabilísticos usuales. \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Unidad IV. Precipitación}
+\begin{conceptbox}
+\textbf{Debes poder explicar:} la precipitación no es solo lluvia caída; es un dato hidrológico que debe medirse bien, revisarse y transformarse en información útil para análisis de cuenca y diseño.
+\end{conceptbox}
+
+\subsection{Ideas que no deben faltar}
+\begin{itemize}
+\item Formación de la lluvia y diferencias entre precipitación convectiva, orográfica y frontal.
+\item Diferencia entre pluviómetro y pluviógrafo.
+\item Diferencia entre lámina acumulada e intensidad de precipitación.
+\item Necesidad de estimar precipitación media sobre un área y no solo en un punto.
+\item Deducción de datos faltantes y revisión de consistencia en registros.
+\item Uso de curvas altura--área--duración para pasar de lluvia puntual a lluvia areal de diseño.
+\end{itemize}
+
+\subsection{Métodos y relaciones que debes reconocer}
+\begin{center}
+\begin{tabular}{p{0.24\linewidth} p{0.28\linewidth} p{0.34\linewidth}}
+\toprule
+\textbf{Método o idea} & \textbf{Qué hace} & \textbf{Cuándo conviene} \\
+\midrule
+Promedio aritmético & Promedia lluvias puntuales & Cuando las estaciones están bien distribuidas y la variación espacial no es fuerte. \\
+Thiessen & Pondera por área de influencia & Cuando la red no es uniforme y se quiere una media areal más realista. \\
+Isoyetas & Integra zonas de igual lluvia & Cuando hay suficiente información espacial y se desea mejor representación. \\
+Razón normal & Estima dato faltante con normales & Cuando las precipitaciones normales difieren de forma relevante entre estaciones. \\
+Curva de doble masa & Verifica consistencia & Cuando se sospechan cambios de estación, instrumento o entorno. \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Fórmulas básicas a reconocer}
+\begin{align*}
+\bar{P} &= \frac{1}{n}\sum_{i=1}^{n} P_i \\
+\bar{P}_{\text{Thiessen}} &= \sum_{i=1}^{n} w_i P_i \\
+P_x &= \frac{N_x}{n}\sum_{i=1}^{n}\frac{P_i}{N_i}
+\end{align*}
+
+\begin{resultbox}
+No todos los problemas de precipitación se resuelven con la misma media. La clave es justificar si la red de estaciones permite usar promedio aritmético o si hace falta ponderación espacial o revisión de consistencia.
+\end{resultbox}
+
+\subsection{Lo que debes explicar}
+\begin{itemize}
+\item Por qué una lluvia puntual no representa automáticamente a toda la cuenca.
+\item Qué diferencia práctica existe entre dato acumulado e intensidad.
+\item Cuándo una serie puede parecer errónea por inconsistencia y no por lluvia extrema real.
+\item Cómo leer el efecto del área y la duración en una curva altura--área--duración.
+\end{itemize}
+
+\subsection{Preguntas de repaso}
+\begin{enumerate}
+\item ¿En qué situación el método de Thiessen mejora al promedio aritmético?
+\item ¿Qué ventaja tiene el pluviógrafo frente al pluviómetro cuando interesa analizar intensidades?
+\item ¿Cuándo conviene usar razón normal para completar un dato faltante?
+\item ¿Qué detecta una curva de doble masa?
+\end{enumerate}
+
+\section{Unidad V. Escurrimiento}
+\begin{conceptbox}
+\textbf{Debes poder decir:} el escurrimiento es la respuesta hidrológica observable de la cuenca, y su interpretación requiere distinguir componentes del flujo, métodos de aforo y forma del hidrograma.
+\end{conceptbox}
+
+\subsection{Ideas centrales}
+\begin{itemize}
+\item Diferencia entre escurrimiento superficial, subsuperficial y subterráneo.
+\item Diferencia entre escurrimiento directo y flujo base.
+\item Aforo como proceso de estimar caudal a partir de geometría y velocidad.
+\item Hidrograma como representación temporal del caudal.
+\item Variables del hidrograma: ascenso, pico, tiempo al pico, recesión y volumen.
+\item Curva de gastos como relación entre nivel y caudal.
+\item Hidrograma unitario como herramienta lineal para transformar lluvia efectiva en escurrimiento directo.
+\item Efecto de la urbanización sobre el pico y el tiempo de respuesta.
+\end{itemize}
+
+\subsection{Relaciones que debes dominar}
+\begin{resultbox}
+Una cuenca con menor infiltración, almacenamiento superficial reducido y drenaje más eficiente responde más rápido y tiende a producir un gasto pico mayor ante lluvias comparables.
+\end{resultbox}
+
+\begin{itemize}
+\item El gasto pico no resume todo el evento; también importa el volumen y la forma del hidrograma.
+\item El flujo base sostiene el caudal aun fuera del pico de tormenta.
+\item La urbanización suele aumentar la porción de lluvia convertida en escurrimiento rápido.
+\item Una curva de gastos no es universal: depende de la sección y de sus condiciones hidráulicas.
+\item El hidrograma unitario exige una duración definida de la lluvia efectiva.
+\end{itemize}
+
+\subsection{Fórmulas básicas a reconocer}
+\begin{align*}
+Q &= A \cdot v \\
+V &= \int Q(t)\,dt
+\end{align*}
+
+\subsection{Lo que debes explicar}
+\begin{itemize}
+\item Cómo distinguir flujo base y escurrimiento directo en lenguaje hidrológico.
+\item Qué información entrega un aforo y cuál es su límite si la velocidad está mal estimada.
+\item Qué significa que un hidrograma sea más agudo o más atenuado.
+\item Por qué el hidrograma unitario no es simplemente cualquier hidrograma pequeño.
+\end{itemize}
+
+\subsection{Preguntas de repaso}
+\begin{enumerate}
+\item ¿Qué variables mínimas necesitas para usar \(Q=A\cdot v\)?
+\item ¿Qué efecto tiene la urbanización sobre el hidrograma?
+\item ¿Qué representa la recesión de un hidrograma?
+\item ¿Cuál es la función de la curva de gastos en una estación de aforo?
+\end{enumerate}
+
+\section{Unidad VI. Predicción de eventos de diseño}
+\begin{conceptbox}
+\textbf{Debes poder explicar:} diseñar con hidrología no es adivinar un extremo, sino usar registros, criterios de selección y herramientas probabilísticas para estimar eventos consistentes con un nivel de riesgo.
+\end{conceptbox}
+
+\subsection{Ideas esenciales}
+\begin{itemize}
+\item Obtención de una muestra de datos y criterios de selección.
+\item Importancia de la longitud, continuidad y calidad del registro.
+\item Pruebas de homogeneidad e independencia antes de ajustar modelos.
+\item Diferencia entre frecuencia empírica y modelo probabilístico.
+\item Interpretación correcta del período de retorno.
+\item Estimación de máximos y mínimos anuales.
+\item Curvas intensidad--duración--frecuencia como insumo de diseño.
+\item Reconocimiento de EV1 de Gumbel y Log-Pearson Tipo III como distribuciones de uso frecuente.
+\end{itemize}
+
+\subsection{Fórmulas básicas a reconocer}
+\begin{align*}
+P &= \frac{1}{T} \\
+T &= \frac{1}{P} \\
+P(\text{al menos una excedencia en } n \text{ años}) &= 1-\left(1-\frac{1}{T}\right)^n \\
+T_{\text{emp}} &= \frac{n+1}{m}
+\end{align*}
+
+\begin{warnbox}
+\begin{itemize}
+\item Un período de retorno de 50 años no significa que el evento ocurra exactamente cada 50 años.
+\item Que un evento haya ocurrido este año no impide que vuelva a ocurrir el próximo.
+\item Ajustar una distribución no corrige por sí solo un registro corto, inconsistente o sesgado.
+\end{itemize}
+\end{warnbox}
+
+\subsection{Lo que debes explicar}
+\begin{itemize}
+\item Qué significa independencia en una muestra hidrológica.
+\item Por qué una muestra no homogénea puede distorsionar el diseño.
+\item Cómo leer una curva IDF sin confundir intensidad con lámina total.
+\item Por qué el diseño hidráulico requiere hablar en términos de riesgo, no de certeza.
+\end{itemize}
+
+\subsection{Preguntas de repaso}
+\begin{enumerate}
+\item ¿Cuál es la probabilidad anual de excedencia asociada a \(T=25\) años?
+\item ¿Qué quiere decir que un registro sea homogéneo?
+\item ¿Qué diferencia hay entre frecuencia empírica y ajuste probabilístico?
+\item ¿Por qué la intensidad disminuye al aumentar la duración para un mismo período de retorno?
+\end{enumerate}
+
+\section{Preguntas para practicar}
+\begin{enumerate}
+\item Distingue lluvia convectiva, frontal y orográfica con un ejemplo hidrológico.
+\item Decide si una red de estaciones justifica promedio aritmético o Thiessen.
+\item Estima un dato faltante usando razón normal.
+\item Explica qué revisa la curva de doble masa.
+\item Interpreta un hidrograma con pico alto y tiempo al pico corto.
+\item Calcula caudal con \(Q=A\cdot v\).
+\item Distingue curva de gastos e hidrograma.
+\item Explica qué representa un hidrograma unitario.
+\item Interpreta un período de retorno de 50 años sin caer en la lectura determinista.
+\item Calcula probabilidad de al menos una excedencia durante la vida útil de una obra.
+\item Lee una curva IDF y compara eventos de igual retorno con distinta duración.
+\end{enumerate}
+
+\section{Errores comunes}
+\begin{warnbox}
+\begin{itemize}
+\item Usar promedio aritmético aunque la red de estaciones sea claramente desigual.
+\item Confundir lámina de lluvia con intensidad.
+\item Pensar que el mayor pico siempre implica mayor volumen total.
+\item Tratar el flujo base como si fuera lluvia directa.
+\item Creer que el período de retorno fija la fecha exacta de ocurrencia.
+\item Ajustar una distribución sin revisar calidad, homogeneidad o independencia del registro.
+\item Leer una curva IDF como si todas las duraciones compartieran la misma intensidad.
+\end{itemize}
+\end{warnbox}
+
+\section{Lista final de repaso}
+\begin{itemize}
+\item Puedo explicar cómo se forma la lluvia y por qué importa su tipo.
+\item Puedo distinguir pluviómetro, pluviógrafo, lámina e intensidad.
+\item Puedo decidir entre promedio aritmético, Thiessen y razón normal.
+\item Puedo explicar qué revisa una curva de doble masa.
+\item Puedo distinguir escurrimiento directo, flujo base y tipos de escurrimiento.
+\item Puedo calcular un caudal simple con \(Q=A\cdot v\).
+\item Puedo interpretar el efecto de la urbanización sobre el hidrograma.
+\item Puedo definir curva de gastos e hidrograma unitario.
+\item Puedo interpretar período de retorno, probabilidad anual y riesgo acumulado.
+\item Puedo leer de forma básica una curva IDF y reconocer el papel de EV1 y Log-Pearson III.
+\end{itemize}
+
+\section{Fuentes base}
+\begin{itemize}
+\item Aparicio-Mijares, \emph{Fundamentos de hidrología de superficie}.
+\item Chow, Ven Te, \emph{Hidrología aplicada}.
+\item Ward, Trimble, Burckhard y Lyon, \emph{Environmental Hydrology}.
+\item Montealegre, \emph{Técnicas estadísticas aplicadas en el manejo de datos hidrológicos y meteorológicos}.
+\item Programa de la asignatura ICV-342-T Hidrología.
+\end{itemize}
+
+\end{document}

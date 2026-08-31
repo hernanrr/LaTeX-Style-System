@@ -1,0 +1,237 @@
+\documentclass[12pt]{article}
+\newcommand{\DocShort}{Asignación de análisis y proyección poblacional}
+\input{tex/preamble_assignment.tex}
+
+\begin{document}
+\doccover{Asignación comprensiva de análisis y proyección poblacional}{2026-05}
+\introbox{Aplicar criterios censales, normativos y de proyección poblacional para sustentar una población de diseño en sistemas de agua potable y alcantarillado.}{Organizar datos en Excel, aplicar varios métodos, comparar resultados con criterio ingenieril y justificar técnicamente una población de proyecto.}
+
+\section{Naturaleza de la actividad}
+\begin{itemize}
+\item Modalidad: grupal.
+\item Producto central: portafolio técnico con soporte numérico en Excel y síntesis escrita breve.
+\item Referencia normativa principal: Reglamento para el Diseño de Obras e Instalaciones Hidro-Sanitarias del INAPA, apartado de estimación de población.
+\item Horizonte de proyección: cuando el enunciado pida una proyección futura, la población deberá estimarse para el año \textbf{2046}, es decir, \textbf{20 años a partir de 2026}.
+\end{itemize}
+
+\section{Objetivo}
+El objetivo de esta asignación es que cada grupo desarrolle criterio para estimar y justificar la población de proyecto a partir de datos censales, información oficial y métodos clásicos de proyección. La actividad combina un caso con información limitada, una serie sintética con tendencia controlada y una serie real de larga duración.
+
+\section{Marco de referencia}
+En el Reglamento del INAPA, la población futura debe estimarse a partir de datos censales e información local o regional, y el método seleccionado debe justificarse en función del comportamiento observado. En consecuencia, en esta asignación interesa tanto el resultado numérico como la calidad de la justificación.
+
+\deliverablebox{Todos los cálculos deben elaborarse en Excel. El informe no sustituye la hoja de cálculo; la resume y la interpreta.}
+
+\section{Parte A. Caso guiado: La Siembra, Distrito Municipal Padre Las Casas, Azua}
+\subsection{Contexto}
+La Siembra es una comunidad con población reducida y una historia administrativa que dificulta construir una serie larga y limpia. Se utiliza como caso de trabajo porque obliga a verificar fuentes, reconocer límites de los datos y justificar con prudencia la población de diseño.
+
+\subsection{Datos y verificación}
+Cada grupo deberá identificar y citar directamente en la ONE la población correspondiente al Censo 2010 y al Censo 2022 para La Siembra. Si encuentra discrepancias entre tablas, publicaciones o bases desagregadas, deberá documentarlas y explicar cuál valor adoptó.
+
+\subsection{Actividades}
+\begin{enumerate}
+\item Organice en Excel los datos censales verificados, con años, población y fuente.
+\item Calcule incremento absoluto, incremento porcentual y una tasa media representativa para el período 2010--2022.
+\item Aplique al menos dos métodos de proyección entre los siguientes:
+\begin{itemize}
+\item aritmético,
+\item geométrico,
+\item ajuste lineal por mínimos cuadrados,
+\item ajuste exponencial por mínimos cuadrados, si considera que el comportamiento observado lo justifica.
+\end{itemize}
+\item Proyecte la población al año \textbf{2046}.
+\item Analice críticamente los resultados considerando escasez de datos, escala poblacional, posible migración, estancamiento o decrecimiento y pertinencia de los métodos seleccionados.
+\item Seleccione una población de proyecto y justifíquela conforme al Reglamento del INAPA.
+\end{enumerate}
+
+\section{Parte B. Ejercicio con serie sintética}
+\subsection{Contexto}
+Esta parte utiliza una serie poblacional sintética con fines pedagógicos. La serie fue construida para representar un patrón compatible con crecimiento logístico, pero con variaciones pequeñas que evitan un ajuste perfecto.
+
+\subsection{Datos}
+Para esta parte, el valor de \textbf{0 años antes del presente} corresponde al año \textbf{2026}.
+
+\begin{center}
+\begin{tabular}{lccccc}
+\toprule
+Años antes del presente & 0 & 5 & 20 & 30 & 50 \\
+\midrule
+Población (hab) & \num{7810} & \num{7420} & \num{5520} & \num{3460} & \num{1040} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Actividades}
+\begin{enumerate}
+\item Organice la serie en Excel y represente gráficamente población contra tiempo.
+\item Reordene la serie si lo considera necesario para analizarla cronológicamente y describa la tendencia observada.
+\item Calcule tasas o cambios medios para subperíodos relevantes e indique con claridad si están expresados por año o por período censal.
+\item Aplique los siguientes métodos:
+\begin{itemize}
+\item aritmético,
+\item geométrico,
+\item un ajuste por mínimos cuadrados lineal,
+\item un ajuste por mínimos cuadrados exponencial,
+\item una discusión exploratoria del ajuste logístico.
+\end{itemize}
+\item Proyecte la población al año \textbf{2046}.
+\item Compare los resultados de los métodos y discuta cuál describe mejor el comportamiento histórico implícito en la serie.
+\item Seleccione una población de proyecto razonable y justifique su elección.
+\end{enumerate}
+
+\section{Parte C. Ejercicio con datos reales: Restauración, Dajabón}
+\subsection{Contexto}
+En esta parte se trabaja con una serie histórica real, más extensa que la de La Siembra. El propósito es contrastar un ejercicio controlado con un caso censal real, donde el comportamiento no necesariamente sigue un modelo simple.
+
+\subsection{Datos}
+Los valores siguientes deben ser verificados y citados contra la ONE en la entrega final.
+
+\begin{center}
+\begin{tabular}{lccccccc}
+\toprule
+Año censal & 1960 & 1970 & 1981 & 1993 & 2002 & 2010 & 2022 \\
+\midrule
+Población (hab) & \num{7259} & \num{7243} & \num{7261} & \num{6954} & \num{6187} & \num{6252} & \num{5728} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Actividades}
+\begin{enumerate}
+\item Organice la serie en Excel y represente gráficamente la evolución poblacional.
+\item Analice el comportamiento de la serie, identifique cambios de tendencia y comente posibles implicaciones para diseño.
+\item Calcule incrementos absolutos, incrementos porcentuales y tasas representativas. Si emplea promedios entre intervalos censales desiguales, justifique el criterio usado.
+\item Aplique los siguientes métodos:
+\begin{itemize}
+\item aritmético,
+\item geométrico,
+\item ajuste lineal por mínimos cuadrados,
+\item ajuste exponencial por mínimos cuadrados,
+\item un método adicional de su elección entre los discutidos en clase.
+\end{itemize}
+\item Proyecte la población al año \textbf{2046}.
+\item Compare resultados en tablas y gráficos.
+\item Seleccione una población de proyecto y justifique su elección conforme al comportamiento histórico y al Reglamento del INAPA.
+\end{enumerate}
+
+\section{Entregables}
+\subsection{Archivos requeridos}
+Cada grupo debe entregar:
+\begin{enumerate}
+\item un archivo Excel con datos, cálculos, fórmulas visibles y gráficos;
+\item un informe breve en PDF, de aproximadamente 4 a 6 páginas de contenido, que sintetice procedimiento, resultados, comparación de métodos y población de proyecto adoptada.
+\end{enumerate}
+
+\subsection{Formato obligatorio de nombres}
+Use exactamente la siguiente estructura:
+\begin{itemize}
+\item \texttt{GXX\_excel\_proy\_pob.xlsx}
+\item \texttt{GXX\_informe\_proy\_pob.pdf}
+\end{itemize}
+donde \texttt{GXX} identifica al grupo, por ejemplo, \texttt{G03}.
+
+\deliverablebox{El incumplimiento del formato de nombre de archivo tendrá una penalización de \textbf{10 puntos} sobre la calificación total de la asignación.}
+
+\subsection{Contenido mínimo del informe}
+El informe deberá incluir, como mínimo:
+\begin{itemize}
+\item breve introducción;
+\item metodología utilizada;
+\item resultados de la Parte A;
+\item resultados de la Parte B;
+\item resultados de la Parte C;
+\item comparación de métodos;
+\item justificación final de la población de proyecto;
+\item conclusiones.
+\end{itemize}
+
+\section{Pregunta integradora}
+Desde el punto de vista del diseño de sistemas de agua potable y alcantarillado, explique qué riesgos técnicos implica una mala estimación de la población de proyecto en comunidades pequeñas o con comportamiento demográfico inestable.
+
+\section{Relación con el proyecto de la asignatura}
+La metodología aplicada en esta asignación servirá como base para justificar población de diseño, gastos de diseño y decisiones preliminares de dimensionamiento en etapas posteriores del curso.
+
+\appendix
+\section{Guía breve de métodos permitidos}
+\subsection{Método aritmético}
+Supone incremento absoluto aproximadamente constante en el tiempo. Suele ser razonable cuando el crecimiento es lento o relativamente estable en el horizonte analizado.
+
+\subsection{Método geométrico}
+Supone una tasa porcentual aproximadamente constante. Debe usarse con cautela en comunidades pequeñas o con señales de estancamiento o decrecimiento.
+
+\subsection{Ajuste lineal por mínimos cuadrados}
+Permite ajustar una recta a los datos históricos. Es útil cuando la tendencia global es aproximadamente lineal dentro del período estudiado.
+
+\subsection{Ajuste exponencial por mínimos cuadrados}
+Permite ajustar un modelo exponencial cuando los datos sugieren cambios proporcionales más que incrementos absolutos constantes. Su pertinencia debe ser justificada.
+
+\subsection{Ajuste logístico}
+Puede explorarse cuando la serie sugiere una trayectoria de tipo S y un límite práctico de crecimiento. En esta asignación interesa más el razonamiento técnico que la exactitud de un ajuste perfecto.
+
+\section{Rúbrica de evaluación}
+\begin{center}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{0.25\textwidth} >{\raggedright\arraybackslash}X >{\raggedleft\arraybackslash}p{0.12\textwidth}}
+\toprule
+\textbf{Criterio} & \textbf{Descripción} & \textbf{Puntos} \\
+\midrule
+Identificación y verificación de datos censales & Identifica correctamente los datos, cita la ONE, documenta discrepancias cuando existan y distingue datos observados de valores proyectados. & 20 \\
+Organización y análisis en Excel & Presenta hojas claras, fórmulas consistentes, cálculo trazable, unidades bien indicadas y gráficos legibles. & 15 \\
+Aplicación de métodos de proyección & Aplica correctamente los métodos requeridos y explicita supuestos, alcance y limitaciones de cada uno. & 25 \\
+Análisis crítico y comparación & Compara resultados con criterio ingenieril y explica por qué algunos métodos pueden ser menos adecuados que otros. & 20 \\
+Justificación de la población de proyecto & Selecciona una población de proyecto técnicamente defendible y alineada con el Reglamento del INAPA. & 20 \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\begin{warnbox}
+\textbf{Observaciones de evaluación.}
+\begin{itemize}
+\item No existe una única respuesta correcta.
+\item Se calificará prioritariamente la solidez del razonamiento técnico.
+\item El uso de fuentes oficiales de la ONE es obligatorio.
+\item El incumplimiento del formato de nombres de archivo descuenta \textbf{10 puntos} de la nota final.
+\end{itemize}
+\end{warnbox}
+
+\section{Checklist de revisión rápida}
+\begin{longtable}{p{0.95\textwidth}}
+\toprule
+\textbf{Fuentes de información y trazabilidad} \\
+\midrule
+$\square$ Se identifica claramente el año censal de cada dato utilizado. \\
+$\square$ Se cita explícitamente la ONE como fuente de los datos verificados. \\
+$\square$ Se distingue entre dato observado y valor proyectado. \\
+$\square$ En La Siembra, se documentan las limitaciones o discrepancias encontradas. \\
+\midrule
+\textbf{Organización y claridad de los datos} \\
+\midrule
+$\square$ Los datos están organizados de forma clara en Excel. \\
+$\square$ Las unidades y los años están correctamente indicados. \\
+$\square$ Las tablas y los gráficos son coherentes entre sí. \\
+$\square$ No hay inconsistencias numéricas evidentes. \\
+\midrule
+\textbf{Métodos de proyección aplicados} \\
+\midrule
+$\square$ Se aplican los métodos requeridos en cada apartado. \\
+$\square$ Las fórmulas utilizadas son correctas. \\
+$\square$ Los supuestos de cada método están explícitos. \\
+$\square$ Se reconoce cuándo un método puede ser poco adecuado para el caso analizado. \\
+\midrule
+\textbf{Análisis crítico y justificación} \\
+\midrule
+$\square$ Se comparan resultados obtenidos con distintos métodos. \\
+$\square$ Se discuten las limitaciones de los datos disponibles. \\
+$\square$ Se selecciona una población de proyecto y se justifica técnicamente. \\
+$\square$ La justificación es coherente con el Reglamento del INAPA. \\
+\midrule
+\textbf{Presentación y entrega} \\
+\midrule
+$\square$ El informe es claro, ordenado y conciso. \\
+$\square$ Los archivos entregados siguen el formato obligatorio de nombres. \\
+$\square$ Las conclusiones responden al objetivo de la actividad. \\
+$\square$ El trabajo demuestra criterio ingenieril. \\
+\bottomrule
+\end{longtable}
+
+\end{document}

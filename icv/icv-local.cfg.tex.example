@@ -1,0 +1,20 @@
+% icv/icv-local.cfg.tex.example
+%
+% Copia este archivo a icv/icv-local.cfg.tex (sin ".example") en CADA máquina
+% donde compiles. Ese archivo está en .gitignore -- nunca se sube al repo,
+% porque el logo institucional no se redistribuye públicamente (ver decisión
+% en la sesión de diseño). Sin este archivo, los documentos compilan igual,
+% solo que \icvmaketitle no muestra logo.
+%
+% Descarga el logo en líneas (monocromo) desde:
+%   https://pucmm.edu.do/somos/recursos/logosimbolo/
+%
+% -- macOS --
+% \renewcommand{\icvlogopath}{/Users/ricardo/ruta/a/logo_pucmm_lineas-Negras.png}
+%
+% -- Windows (TeX Live) --
+% Usa siempre barras normales "/", incluso en Windows -- kpathsea las acepta
+% y evita el problema de "\" como carácter de escape en LaTeX.
+% \renewcommand{\icvlogopath}{C:/Users/ricardo/ruta/a/logo_pucmm_lineas-Negras.png}
+
+\renewcommand{\icvlogopath}{}

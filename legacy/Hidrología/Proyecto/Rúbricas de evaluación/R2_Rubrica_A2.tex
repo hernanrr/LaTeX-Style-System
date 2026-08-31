@@ -1,0 +1,261 @@
+% !TEX program = lualatex
+\documentclass[11pt]{article}
+\newcommand{\AsignaturaCorta}{Rúbrica A2 --- Análisis de Frecuencia}
+\input{preamble}
+
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{pdflscape}
+\usepackage{siunitx}
+  \sisetup{output-decimal-marker={.}, group-separator={,}}
+\usepackage{caption}
+  \captionsetup[table]{position=above}
+  \captionsetup[figure]{position=below}
+
+% Column widths (5 columns: 4 level cols + 1 pts col).
+% Landscape usable width = portrait textheight = 652.706 pt = 22.94 cm.
+% 2 x tabcolsep(5pt) x 5 cols = 50 pt = 1.757 cm overhead.
+% pts col = 0.85 cm; level col = (22.94 - 1.757 - 0.85) / 4 = 5.083 cm.
+\setlength{\tabcolsep}{5pt}
+\newlength{\LW}
+\newlength{\Lnivel} \setlength{\Lnivel}{5.083cm}
+\newlength{\Lpts}   \setlength{\Lpts}{0.85cm}
+
+% \nivel uses makecell so that \\ creates a real line break inside p{} cells.
+\newcommand{\nivel}[2]{%
+  \parbox[t]{\linewidth}{\textbf{#1}\par\vspace{2pt}{\footnotesize #2}\par\vspace{10pt}}}
+
+% Criterion section-header row (5-column span).
+% #1=accent colour  #2=title+pts  #3=entregables note
+\newcommand{\crithead}[3]{%
+  \rowcolor{#1!20}%
+  \multicolumn{5}{l}{\parbox{\LW}{\bfseries\color{#1}#2}}\\%[-3pt]
+  \rowcolor{#1!20}%
+  \multicolumn{5}{l}{\parbox{\LW}{\small\itshape\color{#1}\quad #3}}\\[2pt]}
+
+\begin{document}
+
+\begin{center}
+  {\small\color{midgrey}
+    Pontificia Universidad Católica Madre y Maestra\\
+    Escuela de Ingeniería Civil y Ambiental}
+  \vspace{0.9cm}
+  {\color{teal}\rule{\linewidth}{2pt}}\vspace{0.3cm}
+  {\Large\bfseries\color{darkblue} ICV 342 Hidrología}\\[0.3em]
+  {\large\bfseries\color{darkblue} Rúbrica de Evaluación --- Asignación 2 de 3}\\[0.2em]
+  {\normalsize\itshape Análisis de Frecuencia Hidrológica}
+  \vspace{0.3cm}
+  {\color{teal}\rule{\linewidth}{2pt}}
+\end{center}
+\vspace{0.4em}
+\begin{center}
+\begin{tabularx}{\textwidth}{lX}
+\toprule
+\textbf{Grupo:}        & \hrulefill \\[9pt]
+\textbf{Integrante 1:} & \hrulefill \\[9pt]
+\textbf{Integrante 2:} & \hrulefill \\[9pt]
+\textbf{Integrante 3:} & \hrulefill \\[9pt]
+\textbf{Calificación:} & \rule{2.5cm}{0.4pt}\;/ 100 \\
+\bottomrule
+\end{tabularx}
+\end{center}
+\vspace{0.5em}
+
+\begin{tealbox}
+\textbf{Escala de evaluación.}
+\begin{itemize}
+  \item \textbf{Excelente}: cumple \emph{todos} los requisitos con rigor
+    y precisión; el resultado es correcto y completo.
+  \item \textbf{Satisfactorio}: cumple los requisitos esenciales; puede haber
+    errores menores o aspectos incompletos que no afectan el resultado global.
+  \item \textbf{En desarrollo}: cumple parcialmente; hay evidencia de
+    comprensión del objetivo, pero los errores afectan la calidad del resultado.
+  \item \textbf{Insuficiente}: no cumple los requisitos mínimos,
+    o el entregable está ausente.
+\end{itemize}
+\end{tealbox}
+
+\begin{landscape}
+\small
+\setlength{\LW}{\textwidth}
+\sloppy
+\setlength{\extrarowheight}{2pt}
+\hfuzz=12pt
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{\Lnivel}>{\raggedright\arraybackslash}p{\Lnivel}>{\raggedright\arraybackslash}p{\Lnivel}>{\raggedright\arraybackslash}p{\Lnivel}>{\centering\arraybackslash}p{\Lpts}}
+\caption{Rúbrica de evaluación --- Asignación 2. Puntaje máximo: \num{100} puntos.}\label{tab:R2}\\
+\toprule
+\rowcolor{teal}
+{\color{white}\bfseries Excelente} &
+{\color{white}\bfseries Satisfactorio} &
+{\color{white}\bfseries En desarrollo} &
+{\color{white}\bfseries Insuficiente} &
+{\color{white}\bfseries Pts}\\
+\midrule
+\endfirsthead
+\multicolumn{5}{l}{\small\itshape(Continuación)}\\[2pt]
+\toprule
+\rowcolor{teal}
+{\color{white}\bfseries Excelente} &
+{\color{white}\bfseries Satisfactorio} &
+{\color{white}\bfseries En desarrollo} &
+{\color{white}\bfseries Insuficiente} &
+{\color{white}\bfseries Pts}\\
+\midrule
+\endhead
+\midrule\multicolumn{5}{r}{\small\itshape(continúa en la siguiente página)}\\
+\endfoot
+\midrule
+\rowcolor{lightgrey}
+\multicolumn{4}{r}{\bfseries Puntaje total \qquad\qquad} & \bfseries /100\\
+\bottomrule
+\endlastfoot
+
+\crithead{teal}%
+  {C1 --- Serie de Máximos Anuales (AMS) \quad(\num{15}~pts)}%
+  {Entregables E1, E2}
+\nivel{15 pts}{AMS construida correctamente para Santo Domingo; aplica el
+  criterio de exclusión de A1 documentando años excluidos; reporta $n$,
+  $\bar{x}$, $s$, $CV$, $g_1$, mínimo y máximo; gráfico de barras con
+  los eventos de 2023 y 2024 señalados; histograma con intervalos apropiados.}&
+\nivel{11 pts}{AMS correcta; estadísticos presentes aunque incompletos ($CV$
+  o $g_1$ ausentes); gráfico correcto; eventos no señalados explícitamente
+  o histograma con intervalos inadecuados.}&
+\nivel{8 pts}{AMS con error en la selección del máximo anual (e.g., usa
+  promedio) o sin aplicar el criterio de exclusión; estadísticos incompletos.}&
+\nivel{0 pts}{AMS ausente o con errores fundamentales que invalidan el
+  análisis posterior; entregables ausentes.}&
+15\\[3pt]
+
+\crithead{teal}%
+  {C2 --- Distribución Empírica (Weibull) \quad(\num{15}~pts)}%
+  {Entregables E1, E3, E4}
+\nivel{15 pts}{Valores ordenados de mayor a menor con rango $m$ correcto
+  ($m=1$ para el mayor); $\hat{P}=m/(n+1)$; $T_m=(n+1)/m$; curva de
+  excedencia (escala lineal en $P$) y curva de período de retorno (escala
+  logarítmica en $T$); posiciones colocadas en ambas plantillas; interpolación
+  limitada a $T\leq n+1$ y N/A más allá del registro.}&
+\nivel{11 pts}{Cálculos correctos; una plantilla incompleta o error menor de
+  escala; no se extrapola la distribución empírica.}&
+\nivel{8 pts}{Usa fórmula de ploteo incorrecta (e.g., California $m/n$)
+  o confunde excedencia con no-excedencia; o prolonga la curva empírica fuera
+  del rango observado.}&
+\nivel{0 pts}{Distribución empírica ausente; no se construye ninguna curva
+  de frecuencia.}&
+15\\[3pt]
+
+\crithead{teal}%
+  {C3 --- Ajuste Gumbel EVI \quad(\num{20}~pts)}%
+  {Entregables E1, E3, E4}
+\nivel{20 pts}{$\alpha_G$ y $u$ correctos por el método de los momentos;
+  variable reducida $y$ calculada para cada observación; $F(x)$ y $1-F(x)$
+  correctas; curva Gumbel superpuesta a la empírica; evaluación del ajuste
+  con rangos de sobre/subestimación identificados; valores de diseño para
+  todos los $T$ requeridos usando $y_T=-\ln[\ln(T/(T-1))]$ y
+  $x_T=u+\alpha_G\,y_T$.}&
+\nivel{15 pts}{Parámetros correctos; curvas presentes; evaluación superficial
+  (sin rangos específicos); valores de diseño con errores menores.}&
+\nivel{10 pts}{Error en $\alpha_G$ o $u$ que se propaga; curva no superpuesta
+  a la empírica; sin evaluación del ajuste.}&
+\nivel{0 pts}{Ajuste Gumbel ausente; confusión fundamental con la distribución
+  o sus parámetros.}&
+20\\[3pt]
+
+\crithead{teal}%
+  {C4 --- Ajuste SQRT-ETmax \quad(\num{15}~pts)}%
+  {Entregables E1, E3, E4}
+\nivel{15 pts}{CDF y log-verosimilitud SQRT-ETmax correctas; $k(\alpha)$ y
+  $g(\alpha)$ implementados; raíz positiva con $|g|<10^{-6}$; $k,\alpha>0$;
+  cuantiles obtenidos resolviendo la ecuación no lineal; CDF monótona; curva
+  superpuesta y comparación explícita con Gumbel~EVI.}&
+\nivel{11 pts}{Máxima verosimilitud y cuantiles esencialmente correctos;
+  curva presente; error menor de tolerancia, verificación o comparación.}&
+\nivel{8 pts}{Modelo SQRT-ETmax identificado, pero con errores en la
+  log-verosimilitud, la raíz numérica o la inversión de cuantiles.}&
+\nivel{0 pts}{Ajuste SQRT-ETmax ausente o sustituido por Gumbel aplicado a
+  $\sqrt{x}$.}&
+15\\[3pt]
+
+\crithead{teal}%
+  {C5 --- Tabla de Precipitaciones de Diseño \quad(\num{15}~pts)}%
+  {Entregable E5}
+\nivel{15 pts}{Tabla completa para los nueve $T$ requeridos (2 a 1000 años)
+  con los tres métodos; N/A empírico cuando $T>n+1$; extrapolaciones
+  paramétricas de 200, 500 y 1000 años marcadas como de alta incertidumbre;
+  valores consistentes con las curvas y unidades indicadas.}&
+\nivel{11 pts}{Tabla con los nueve $T$; al menos dos métodos correctos;
+  incertidumbre o límite empírico no señalados; unidades presentes.}&
+\nivel{8 pts}{Tabla incompleta; valores inconsistentes con las curvas;
+  extrapolación confundida con interpolación.}&
+\nivel{0 pts}{Tabla ausente o con un solo método; no permite tomar
+  decisiones de diseño.}&
+15\\[3pt]
+
+\crithead{teal}%
+  {C6 --- Análisis de Eventos Extremos 2023--2024 \quad(\num{10}~pts)}%
+  {Entregable E6}
+\nivel{10 pts}{Máximo diario identificado para los tres eventos (nov.~2023,
+  nov.~2024, dic.~2024); ranking histórico correcto; período de retorno por
+  los tres métodos; tabla comparativa completa; eventos marcados en las
+  curvas; discusión sobre rareza estadística y coherencia entre métodos.}&
+\nivel{7 pts}{Los tres eventos identificados; período de retorno con al menos
+  dos métodos; tabla presente aunque incompleta; discusión superficial.}&
+\nivel{5 pts}{Solo uno o dos eventos analizados; período de retorno con un
+  solo método o con errores; sin discusión.}&
+\nivel{0 pts}{Análisis de eventos extremos ausente.}&
+10\\[3pt]
+
+\crithead{teal}%
+  {C7 --- Preguntas de Análisis (P1--P5) \quad(\num{10}~pts, \num{2}~pts c/u)}%
+  {Entregable E7}
+\nivel{2 pts c/u}{Respuesta correcta y completa; incluye cálculo explícito
+  donde aplique (P1 en particular); usa resultados propios como evidencia.}&
+\nivel{1.5 pts c/u}{Correcta en lo esencial; cálculos con errores menores
+  o sin conexión con resultados propios.}&
+\nivel{1 pt c/u}{Parcialmente correcta; errores conceptuales o falta de
+  justificación cuantitativa.}&
+\nivel{0 pts c/u}{Ausente, incorrecta o sin ninguna justificación.}&
+10\\[3pt]
+
+\end{longtable}
+\end{landscape}
+
+\captionof{table}{Resumen de puntaje.}
+\begin{tabularx}{\textwidth}{%
+    >{\raggedright\arraybackslash}X
+    >{\centering\arraybackslash}p{2.0cm}
+    >{\centering\arraybackslash}p{2.6cm}}
+\toprule
+\rowcolor{teal}
+{\color{white}\bfseries Criterio}&
+{\color{white}\bfseries Peso}&
+{\color{white}\bfseries Puntaje obtenido}\\
+\midrule
+C1 --- Serie de máximos anuales (AMS) & \num{15} pts & \quad/~15 \\
+C2 --- Distribución empírica (Weibull) & \num{15} pts & \quad/~15 \\
+C3 --- Ajuste Gumbel EVI & \num{20} pts & \quad/~20 \\
+C4 --- Ajuste SQRT-ETmax & \num{15} pts & \quad/~15 \\
+C5 --- Tabla de precipitaciones de diseño & \num{15} pts & \quad/~15 \\
+C6 --- Análisis de eventos extremos 2023--24 & \num{10} pts & \quad/~10 \\
+C7 --- Preguntas de análisis (P1--P5) & \num{10} pts & \quad/~10 \\
+\midrule
+\rowcolor{lightgrey}
+\bfseries Total & \bfseries\num{100} pts & \bfseries\quad/~100 \\
+\bottomrule
+\end{tabularx}
+
+\vspace{1em}
+\begin{tcolorbox}[enhanced, colback=white, colframe=midgrey,
+  boxrule=0.5pt, arc=2pt, left=6pt, right=6pt, top=6pt, bottom=52pt,
+  title=\textbf{Comentarios generales},
+  fonttitle=\small\bfseries\color{darkblue},
+  attach boxed title to top left={yshift=-2mm,xshift=4mm},
+  boxed title style={colback=white,colframe=midgrey}]
+\end{tcolorbox}
+
+\vfill
+\begin{center}
+  {\small\color{midgrey}
+    ICV 342 Hidrología --- Rúbrica Asignación 2 de 3 --- PUCMM}
+\end{center}
+\end{document}

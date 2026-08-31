@@ -1,0 +1,369 @@
+% !TEX program = lualatex
+\documentclass[11pt]{article}
+\newcommand{\AsignaturaCorta}{Asignación 1 — Depuración y Homogeneidad}
+\input{preamble}
+
+\begin{document}
+
+% ============================================================
+%  PORTADA
+% ============================================================
+\begin{center}
+  {\small\color{midgrey} Pontificia Universidad Católica Madre y Maestra\\
+  Escuela de Ingeniería Civil y Ambiental}
+
+  \vspace{1.4cm}
+  {\color{medblue}\rule{\linewidth}{2pt}}
+  \vspace{0.3cm}
+
+  {\Large\bfseries\color{darkblue} ICV 342 Hidrología}\\[0.4em]
+  {\LARGE\bfseries\color{darkblue} Asignación 1 de 3}\\[0.3em]
+  {\large\itshape Depuración, Homogeneidad y Análisis Exploratorio\\
+  de Registros Climatológicos del Gran Santo Domingo}
+
+  \vspace{0.3cm}
+  {\color{medblue}\rule{\linewidth}{2pt}}
+  \vspace{1.0cm}
+\end{center}
+
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+\textbf{Asignatura}  & ICV 342 Hidrología \\
+\textbf{Docente}  & Dr.\ Ricardo Hernández Moreira\\
+\textbf{Unidad}      & Unidad IV — Precipitación \\
+\textbf{Modalidad}   & Grupos de clase ya asignados \\
+\textbf{Herramientas}& \python{} o R (recomendado); \excel{} (ver nota) \\
+\textbf{Datos}       & Archivo \texttt{.xlsx} provisto por el profesor (\indomet) \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{warnbox}
+\textbf{Nota sobre el uso de \excel{}.}
+Es posible realizar el trabajo en \excel{}, pero el proceso resultará considerablemente
+más tedioso: el archivo contiene más de 2{,}000 filas de datos no serializados que
+habría que reorganizar manualmente hoja por hoja.  Se recomienda aprender a leer el
+archivo con \python{} (librería \texttt{openpyxl} o \texttt{pandas}) o R, que permiten
+automatizar la lectura de todos los bloques anuales en pocas líneas de código.
+Si el grupo decide usar \excel{}, se espera igualmente la entrega de todos los
+entregables especificados.
+\end{warnbox}
+
+% ============================================================
+\section*{Objetivo General}
+% ============================================================
+
+Convertir los datos brutos de seis estaciones meteorológicas del entorno del Gran
+Santo Domingo ---en el formato no serializado provisto por \indomet{}--- a una
+estructura limpia, homogénea y lista para el análisis hidrológico.
+Se aplicarán métodos estadísticos clásicos de control de calidad y análisis de
+homogeneidad, y se elaborarán las estadísticas descriptivas que caracterizan el
+régimen pluviométrico de la región.
+
+% ============================================================
+\section*{Descripción de los Datos}
+% ============================================================
+
+El archivo \texttt{.xlsx} contiene una hoja (\emph{worksheet}) por estación.
+Cada hoja muestra los datos organizados en bloques anuales: una cabecera con nombre
+de estación y año, seguida de una tabla de 31 filas (días) por 12 columnas
+(meses \textsc{ene}–\textsc{dic}), y totales mensuales al final.
+
+\begin{center}
+\small
+\captionof{table}{Estaciones meteorológicas disponibles. N indica años aproximados con datos.
+Las coordenadas en formato DMS (grados-minutos-segundos) deben convertirse a grados decimales.}
+\begin{tabular}{llccccc}
+\toprule
+\textbf{Estación} & \textbf{Período} & \textbf{N} & \textbf{Lat (°N)} & \textbf{Lon (°W)} & \textbf{Alt (m)} & \textbf{Coords.} \\
+\midrule
+Santo Domingo   & 1970–2025 & 56  & 18.473 & 69.871 & 14 & Decimales \\
+Las Américas    & 1970–2025 & 56  & 18.433 & 69.680 & 7  & Decimales \\
+La Victoria     & 1970–2025 & $\approx$27 & 18.583 & 69.833 & 12 & DMS → conv. \\
+Jardín Botánico & 2010–2025 & 16  & 18.495 & 69.953 & 48 & Decimales \\
+El Higuero      & 2007–2025 & 19  & 18.583 & 69.983 & 27 & DMS → conv. \\
+Monte Plata     & 1970–1990 & 21  & 18.800 & 69.783 & 56 & DMS → conv. \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{infobox}
+\textbf{Valores especiales en el archivo.}
+\begin{itemize}
+  \item \textbf{Guión ``\,--\,''}: indica un día que no existe en el calendario
+    (por ejemplo, el día 31 en meses de 30 días, o los días 29 a 31 en febrero
+    de un año no bisiesto).  Debe tratarse como dato faltante
+    (\texttt{NaN}); \emph{no representa un día sin lluvia}.
+
+  \item \textbf{INAP}: precipitación inapreciable (traza).
+    Se recomienda tratar como 0.0~mm.  El grupo debe documentar esta
+    decisión en el informe.
+
+  \item \textbf{Coma decimal}: algunos valores usan coma en lugar de punto como
+    separador decimal (e.g., \texttt{0,9} en lugar de \texttt{0.9}).
+    Deben corregirse durante la lectura.
+\end{itemize}
+\end{infobox}
+
+% ============================================================
+\section{Lectura, Serialización y Control de Calidad}
+% ============================================================
+
+\paso{Lectura del archivo}
+
+Leer el archivo identificando todas las hojas disponibles.
+Para cada hoja, localizar los bloques anuales usando el texto
+\texttt{"DATOS DIARIOS"} como marcador: cada vez que esa expresión
+aparece en una celda, comienza un nuevo bloque para el año indicado
+en esa misma celda.
+Extraer el nombre de la estación, coordenadas y altitud de la
+cabecera de cada hoja.
+Imprimir un resumen por estación: nombre, coordenadas, altitud,
+primer año, último año y número de bloques encontrados.
+
+\paso{Serialización a serie temporal}
+
+El objetivo es transformar los bloques anuales en registros diarios con la estructura:
+
+\begin{center}
+\ttfamily
+\begin{tabular}{lll}
+\toprule
+fecha (YYYY-MM-DD) & estacion & precipitacion\_mm \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{itemize}
+  \item Aplicar el tratamiento de valores especiales descrito anteriormente.
+  \item Verificar que no se generen fechas inválidas (e.g., 30 de febrero).
+  \item Exportar la serie serializada de cada estación como archivo CSV individual.
+  \item \textbf{Verificación:} comparar los totales mensuales calculados a partir
+    de los datos diarios con la fila \texttt{TOTAL} del archivo original.
+    Diferencias mayores a 0.5~mm indican errores de lectura.
+\end{itemize}
+
+\paso{Mapa de calidad de datos}
+
+\begin{itemize}
+  \item Para cada estación y cada año, calcular:
+    \begin{enumerate}[label=\alph*)]
+      \item el número de días con dato válido,
+      \item el número de días con dato faltante genuino (excluyendo días inexistentes
+        del calendario),
+      \item el porcentaje de completitud.
+    \end{enumerate}
+  \item Construir un \textbf{mapa de calidad}: tabla año $\times$ estación coloreada
+    por rangos de completitud (100\,\%, 90--99\,\%, 80--89\,\%, $<$\,80\,\%).
+  \item Definir y documentar un criterio de exclusión para el análisis de frecuencia
+    de la Asignación~2.  \emph{Sugerencia: excluir años con más de 10 días faltantes.}
+\end{itemize}
+
+% ============================================================
+\section{Análisis de Homogeneidad — Curva de Doble Masa}
+% ============================================================
+
+La \textbf{curva de doble masa} es el método clásico para detectar cambios en la
+consistencia temporal de un registro pluviométrico.  El principio es simple: si
+una estación ha sido medida siempre de la misma manera y en el mismo lugar, la
+relación entre su acumulado histórico y el acumulado de una referencia regional
+debe mantenerse lineal a lo largo del tiempo.  Quiebres o cambios de pendiente en
+esta curva indican posibles errores instrumentales, traslados del pluviómetro o
+alteraciones en el entorno de la estación.
+
+El método compara la \emph{acumulación} de precipitación anual de la estación bajo
+análisis con la acumulación de un grupo de estaciones vecinas consideradas homogéneas.
+
+\paso{Precipitaciones anuales}
+
+\begin{itemize}
+  \item Calcular la precipitación anual total de cada estación para todos los años
+    con datos suficientes (según el criterio del Paso~1.3).
+  \item Construir una tabla año $\times$ estación con los totales anuales.
+    Marcar como \texttt{NaN} los años excluidos.
+\end{itemize}
+
+\paso{Construcción de la curva de doble masa}
+
+\begin{itemize}
+  \item Seleccionar \textbf{Santo Domingo} como estación bajo análisis, por ser la
+    de registro más largo y continuo.
+  \item Usar \textbf{Las Américas como referencia fija}, por ser la estación con
+    el registro concurrente más largo. La composición de la referencia no debe
+    cambiar entre años.
+  \item Conservar únicamente los años en que Santo Domingo y Las Américas cumplan
+    simultáneamente el criterio de completitud del Paso~1.3; si una de las dos
+    estaciones no cumple, excluir ese año de ambas series acumuladas.
+  \item Calcular las sumas acumuladas históricas anuales de ambas series.
+  \item Graficar el acumulado de Santo Domingo (eje $y$) contra el acumulado de la
+    estación de referencia (eje $x$), etiquetando cada punto con el año correspondiente.
+  \item Identificar visualmente si la nube de puntos sigue una línea recta o si
+    existen quiebres de pendiente.
+\end{itemize}
+
+\paso{Interpretación y corrección}
+
+\begin{itemize}
+  \item Si se detecta un quiebre, determinar el año aproximado en que ocurre.
+  \item Calcular la pendiente de cada segmento lineal ($m_1$, $m_2$) mediante
+    regresión lineal. Cada segmento debe contener al menos ocho años válidos;
+    de lo contrario, reportar el posible quiebre sin aplicar corrección.
+  \item Si la razón de pendientes difiere en más del 5\,\%, aplicar el factor de
+    corrección al período más antiguo:
+    \[
+      P_{\text{corr}} = P \cdot \frac{m_{\text{reciente}}}{m_{\text{antiguo}}}
+    \]
+    donde $P$ es la precipitación anual original y $m$ es la pendiente del
+    segmento correspondiente.
+  \item Graficar la serie de precipitación anual antes y después de la corrección
+    en un mismo panel.
+  \item \textbf{Discusión:} ¿Se encontró alguna inhomogeneidad?
+    ¿A qué podría atribuirse (cambio de instrumento, traslado de la estación,
+    cambio de observador, urbanización del entorno)? Documentar que la estación
+    de referencia se mantuvo fija y discutir la posibilidad de que un cambio en
+    Las Américas afecte la interpretación.
+\end{itemize}
+
+% ============================================================
+\section{Estimación de Datos Faltantes}
+% ============================================================
+
+Cuando un registro presenta lagunas, es posible estimarlas a partir de las estaciones
+vecinas.  En este paso se aplicará el \textbf{método de la razón normal}.
+
+\paso{Método de la razón normal}
+
+Sea $P_x(d)$ la precipitación diaria faltante en la estación $x$ para el día $d$,
+y sean $P_A(d)$, $P_B(d)$, $P_C(d)$ los valores observados ese mismo día en las
+estaciones vecinas $A$, $B$ y $C$.
+Sean $\bar{N}_x$, $\bar{N}_A$, $\bar{N}_B$, $\bar{N}_C$ las precipitaciones medias
+anuales multi-anuales de cada estación.  El método de la razón normal estima:
+
+\[
+  P_x(d) = \frac{\bar{N}_x}{3}
+  \left(
+    \frac{P_A(d)}{\bar{N}_A} + \frac{P_B(d)}{\bar{N}_B} + \frac{P_C(d)}{\bar{N}_C}
+  \right)
+\]
+
+Este método es apropiado cuando las precipitaciones medias anuales de las estaciones
+vecinas difieren en más del 10\,\% respecto a la estación con dato faltante;
+en caso contrario, el promedio aritmético simple es suficiente.
+
+\begin{itemize}
+  \item Calcular la precipitación media anual $\bar{N}$ de cada estación usando
+    únicamente años observados que cumplan el criterio de completitud. Cada normal
+    debe basarse en al menos diez años válidos de la propia estación.
+  \item Aplicar el método a \textbf{La Victoria}, usando Santo Domingo,
+    Las Américas y El Higuero como estaciones vecinas, solamente cuando las tres
+    tengan un valor observado para el mismo día.
+  \item Estimar únicamente faltantes diarios aislados dentro de meses con un máximo
+    de diez días faltantes. No reconstruir meses completos, años completos ni
+    secuencias de más de diez días sin observaciones.
+  \item Conservar \texttt{precipitacion\_mm} sin alteración y añadir las columnas:
+    \begin{center}\small\ttfamily
+      precipitacion\_estimada\_mm,\quad es\_estimado,\quad metodo\_estimacion.
+    \end{center}
+    El mapa de calidad y el criterio de exclusión deben calcularse solo con los
+    datos originales.
+  \item Reportar cuántos días fueron estimados y su distribución temporal. Los
+    valores estimados no deben incorporarse a series de máximos anuales.
+\end{itemize}
+
+% ============================================================
+\section{Análisis Estadístico Exploratorio}
+% ============================================================
+
+\paso{Estadísticas descriptivas}
+
+Para cada estación con datos suficientes, reportar en una tabla comparativa:
+media anual, desviación estándar, coeficiente de variación, mínimo anual,
+máximo anual, y percentiles 25, 50 y 75 de los totales anuales.
+
+\paso{Climatología mensual}
+
+\begin{itemize}
+  \item Calcular el promedio mensual multi-anual de cada estación: el promedio de
+    todos los totales de enero disponibles, el de febrero, etc.
+  \item Graficar la climatología mensual de Santo Domingo y Las Américas en un mismo
+    panel de barras agrupadas, con barras de error de $\pm 1$ desviación estándar.
+  \item Identificar los meses de mayor y menor precipitación.
+    ¿El régimen pluviométrico del Gran Santo Domingo es unimodal o bimodal?
+    Relacione con los sistemas meteorológicos que afectan la región.
+\end{itemize}
+
+\paso{Gráficos de la serie temporal diaria}
+
+\begin{itemize}
+  \item Graficar la precipitación diaria de Santo Domingo como
+    \textbf{gráfico de barras}.
+    En el informe, explicar por qué se usa un gráfico de barras y no de línea para
+    representar esta variable.
+  \item Graficar la precipitación anual de las dos estaciones con registro largo
+    (Santo Domingo y Las Américas) en un mismo panel, añadiendo la media histórica
+    como línea de referencia horizontal.
+\end{itemize}
+
+% ============================================================
+\section*{Preguntas de Análisis}
+% ============================================================
+
+\setcounter{pregunta}{0}
+
+\pregunta{¿Por qué la curva de doble masa utiliza acumulados anuales en lugar de
+valores anuales directos?  ¿Qué ventaja estadística aporta la acumulación?}
+
+\pregunta{¿En qué condiciones el método de la razón normal es preferible al promedio
+aritmético simple para estimar datos faltantes?  Justifique.}
+
+\pregunta{¿Qué limitaciones tiene estimar datos faltantes diarios usando
+estaciones con diferente altitud y exposición? ¿Cómo afecta esto al análisis de
+frecuencia de la Asignación 2?}
+
+\pregunta{El régimen pluviométrico del Gran Santo Domingo, ¿es unimodal o bimodal?
+Justifique con los datos y relacione con los sistemas meteorológicos que afectan la región.}
+
+\pregunta{Si la curva de doble masa de Santo Domingo mostrara un quiebre en la
+década de 1980, ¿qué investigación adicional realizaría para determinar si se trata
+de un error instrumental o de un cambio real en el régimen climático?}
+
+% ============================================================
+\section*{Entregables}
+% ============================================================
+
+\setcounter{entregable}{0}
+
+\entregable{Código fuente comentado}{Script en \python{} o R (o libro de \excel{}
+bien documentado) que lea el archivo, serialice los datos, aplique el control de
+calidad y genere todos los gráficos de esta asignación.  El código debe ser
+reproducible: ejecutable directamente apuntando a la ruta del archivo de datos.}
+
+\entregable{Mapa de calidad de datos}{Tabla año $\times$ estación con el porcentaje
+de completitud, coloreada por rangos.  Indicar el criterio de exclusión adoptado y
+la justificación.}
+
+\entregable{Curva de doble masa}{Gráfico de acumulados con identificación de posibles
+quiebres de pendiente.  Si se aplica corrección, incluir el gráfico de la serie anual
+antes y después de la corrección.}
+
+\entregable{Tabla de datos faltantes estimados}{Para La Victoria: fecha, valor
+original, valor estimado, valores observados de las tres estaciones vecinas,
+\texttt{es\_estimado} y \texttt{metodo\_estimacion}. Identificar también las
+lagunas extensas que se conservaron sin estimar.}
+
+\entregable{Análisis estadístico exploratorio}{Tabla de estadísticas descriptivas;
+climatología mensual con $\pm1\sigma$ para Santo Domingo y Las Américas; gráfico
+de barras de la serie diaria de Santo Domingo con su justificación; y comparación
+de las series anuales de las dos estaciones de registro largo con sus medias
+históricas.}
+
+\entregable{Respuestas a las preguntas de análisis}{Respuestas justificadas con
+datos concretos.  Mostrar cálculos donde aplique.}
+
+\vfill
+\begin{center}
+  {\small\color{midgrey} ICV 342 Hidrología — Asignación 1 de 3 — PUCMM}
+\end{center}
+
+\end{document}
