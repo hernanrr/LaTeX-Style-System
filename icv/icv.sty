@@ -130,6 +130,18 @@
 }
 \newcommand{\icvsetup}[1]{\pgfkeys{/icv/.cd,#1}}
 
+% Metadata PDF automática a partir de \icvsetup -- evita la duplicación
+% manual de título/autor/asunto que causaba PDFs sin metadata en legacy/
+% (ver hallazgo "A-Proy no emite metadata PDF" del inventario de Fase 1).
+% Se lee al final del preámbulo, cuando \icvsetup ya se ejecutó.
+\AtBeginDocument{%
+  \hypersetup{
+    pdftitle  = \icv@titulo,
+    pdfauthor = \icv@profesor,
+    pdfsubject= \icv@asignatura,
+  }%
+}
+
 % ---------------------------------------------------------------------------
 % 9. Encabezado / pie de página (scrlayer-scrpage, nativo KOMA)
 % ---------------------------------------------------------------------------
@@ -251,7 +263,7 @@
 }
 
 % ---------------------------------------------------------------------------
-% 14. Problemas (asignaciones/exámenes tipo article) con puntaje opcional
+% 15. Problemas (asignaciones/exámenes tipo article) con puntaje opcional
 % ---------------------------------------------------------------------------
 % \begin{icvproblem}[points=10]{Título del problema}
 %   ...
