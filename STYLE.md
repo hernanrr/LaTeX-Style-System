@@ -82,6 +82,31 @@ reemplaza por completo la paleta previa de `legacy/` (`medblue`,
 `darkblue`, `teal`, `olive`...), que no correspondía a la identidad
 institucional.
 
+### Accesibilidad para daltonismo
+
+Requisito explícito del profesor: el sistema debe ser accesible para
+daltonismo de todo tipo (deuteranopia y protanopia -- rojo-verde, las más
+comunes -- y tritanopia -- azul-amarillo, rara). Verificado por simulación
+(matrices de Machado, Oliveira & Fialho 2009) en sesión de diseño:
+
+- **Regla ya vigente y obligatoria: ningún entorno semántico puede
+  depender solo del color para distinguirse.** Por eso `icvobjectives`,
+  `icvnote`, `icvwarning` e `icvproblem` siempre llevan un título en
+  negrita con texto explícito -- no un simple cambio de color. Cualquier
+  entorno semántico nuevo debe seguir el mismo patrón.
+- `icvblue` vs. `icvcyan` siguen siendo distinguibles bajo los tres tipos
+  de daltonismo simulados -- no por el matiz (que se comprime bajo
+  deuteranopia/protanopia), sino porque `icvcyan` es consistentemente más
+  claro. Es la señal que hay que preservar si se ajusta cualquiera de los
+  dos: la diferencia de luminosidad, no solo de tono.
+- **`icvred` (reservado, sin macro asignada) se confunde con
+  `icvyellow`/su borde bajo deuteranopia y, sobre todo, protanopia** --
+  en la simulación de protanopia son casi indistinguibles. Si en el
+  futuro `icvred` se asigna a un entorno nuevo (p.ej. algo tipo
+  "crítico"), no puede depender de distinguirse de `icvwarning` solo por
+  el matiz -- necesita un salto de luminosidad grande, y en cualquier
+  caso debe llevar título en negrita como todos los demás.
+
 ## Logo
 
 - Aparece **solo en la portada** (`\icvmaketitle`), nunca en cada página.

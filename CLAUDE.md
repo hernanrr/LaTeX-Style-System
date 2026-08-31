@@ -85,3 +85,7 @@ bib/                       # .bib compartido entre materias (citas opt-in)
 - ¿Los números usan `\num`/`\qty`/columnas `S`, no formato manual?
 - ¿Se usó un entorno semántico existente (`icvnote`, `icvwarning`,
   `icvobjectives`, `icvproblem`) en vez de maquetación ad hoc?
+- ¿Cualquier distinción por color (caja semántica nueva, resaltado)
+  también se distingue por texto? El sistema debe ser accesible para
+  daltonismo de todo tipo -- ver STYLE.md § Accesibilidad para daltonismo.
+  No depender solo del matiz.
