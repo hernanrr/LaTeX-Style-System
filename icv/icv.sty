@@ -13,6 +13,24 @@
 \ProvidesPackage{icv}[2026/08/31 v0.1 Sistema de estilo ICV -- PUCMM]
 
 % ---------------------------------------------------------------------------
+% 0. Detección de clase base -- ANTES de cargar paquetes (§3 la necesita)
+% ---------------------------------------------------------------------------
+% icv.sty se carga bajo scrartcl (KOMA) para la mayoría de tipos de
+% documento, pero también bajo `exam` (puntaje automático) y `ltx-talk`
+% (slides) -- ver STYLE.md § Arquitectura. KOMAClassName solo existe en
+% clases KOMA-Script.
+\newif\ificv@koma
+\@ifundefined{KOMAClassName}{\icv@komafalse}{\icv@komatrue}
+
+% ltx-talk ya trae su propia pila completa (geometry, amsmath, mathtools,
+% fontspec, hyperref, math vía lua-unicode-math -- confirmado leyendo su
+% log de carga) y maneja espaciado/encabezado/pie vía \EditInstance --
+% varias cargas de icv.sty de aquí en adelante se saltan bajo esta clase
+% para no duplicar/chocar con lo que ltx-talk ya resolvió mejor.
+\newif\ificv@ltxtalk
+\@ifclassloaded{ltx-talk}{\icv@ltxtalktrue}{\icv@ltxtalkfalse}
+
+% ---------------------------------------------------------------------------
 % 1. Motor obligatorio: LuaLaTeX
 % ---------------------------------------------------------------------------
 \RequirePackage{iftex}
@@ -38,12 +56,18 @@
 \RequirePackage[spanish,es-noshorthands]{babel}
 \RequirePackage{geometry}
 \RequirePackage[expansion=false]{microtype}
-\RequirePackage{amsmath}
-\RequirePackage{amssymb}
-% unicode-math se carga DESPUÉS de amsmath/amssymb -- si va antes, choca con
-% amssymb (p.ej. "Command \eth already defined") porque ambos declaran los
-% mismos símbolos matemáticos.
-\RequirePackage{unicode-math}
+% ltx-talk ya carga amsmath+mathtools y matemática completa vía
+% lua-unicode-math -- volver a cargar amssymb/unicode-math choca contra
+% eso (p.ej. "Command \ulcorner already defined"), y amsmath también
+% quedaría duplicado. Bajo cualquier otra clase, cargamos lo nuestro.
+\ificv@ltxtalk\else
+  \RequirePackage{amsmath}
+  \RequirePackage{amssymb}
+  % unicode-math se carga DESPUÉS de amsmath/amssymb -- si va antes, choca
+  % con amssymb (p.ej. "Command \eth already defined") porque ambos
+  % declaran los mismos símbolos matemáticos.
+  \RequirePackage{unicode-math}
+\fi
 \RequirePackage{booktabs}
 \RequirePackage{array}
 \RequirePackage{enumitem}
@@ -79,26 +103,18 @@
 \color{icvblack}
 
 % ---------------------------------------------------------------------------
-% 5.5. Detección de clase KOMA vs. no-KOMA
-% ---------------------------------------------------------------------------
-% icv.sty se carga bajo scrartcl (KOMA) para la mayoría de tipos de
-% documento, pero también bajo la clase `exam` (no-KOMA) para exámenes que
-% necesitan puntaje automático -- ver STYLE.md § Arquitectura. KOMAClassName
-% solo existe si la clase base es de la familia KOMA-Script.
-\newif\ificv@koma
-\@ifundefined{KOMAClassName}{\icv@komafalse}{\icv@komatrue}
-
-% ---------------------------------------------------------------------------
 % 6. Geometría y espaciado numérico (siunitx v3)
 % ---------------------------------------------------------------------------
-\geometry{letterpaper,margin=2.5cm,bottom=2.8cm}
+\ificv@ltxtalk\else
+  \geometry{letterpaper,margin=2.5cm,bottom=2.8cm}
 
-% Espaciado de párrafos: opción nativa de KOMA si aplica, o el paquete
-% parskip si no (bajo una clase no-KOMA no hay warning que evitar).
-\ificv@koma
-  \KOMAoptions{parskip=half}
-\else
-  \RequirePackage{parskip}
+  % Espaciado de párrafos: opción nativa de KOMA si aplica, o el paquete
+  % parskip si no (bajo una clase no-KOMA no hay warning que evitar).
+  \ificv@koma
+    \KOMAoptions{parskip=half}
+  \else
+    \RequirePackage{parskip}
+  \fi
 \fi
 
 \sisetup{
@@ -160,6 +176,8 @@
 % KOMA: scrlayer-scrpage nativo. Clase `exam`: su propio sistema de
 % encabezado/pie (\firstpageheader/\runningheader) -- forzar fancyhdr ahí
 % choca porque exam.cls ya define \lhead y equivalentes por su cuenta.
+% Clase `ltx-talk`: se salta por completo -- el propio template de slides
+% configura header/footer vía \EditInstance (ver templates/slides/).
 % Cualquier otra clase no-KOMA: fancyhdr genérico.
 \ificv@koma
   \RequirePackage[automark]{scrlayer-scrpage}
@@ -170,26 +188,28 @@
   \ihead{\ifdefempty{\icv@titulocorto}{\icv@asignatura}{\icv@titulocorto}}
   \ohead{\thepage}
 \else
-  \@ifclassloaded{exam}{%
-    \pagestyle{headandfoot}
-    \firstpageheader%
-      {\small\color{icvgray-text}\ifdefempty{\icv@titulocorto}{\icv@asignatura}{\icv@titulocorto}}%
-      {}%
-      {\small\color{icvgray-text}\thepage}
-    \runningheader%
-      {\small\color{icvgray-text}\ifdefempty{\icv@titulocorto}{\icv@asignatura}{\icv@titulocorto}}%
-      {}%
-      {\small\color{icvgray-text}\thepage}
-    \runningheadrule
-  }{%
-    \RequirePackage{fancyhdr}
-    \pagestyle{fancy}
-    \fancyhf{}
-    \renewcommand{\headrulewidth}{0.4pt}
-    \fancyhead[L]{\small\color{icvgray-text}%
-      \ifdefempty{\icv@titulocorto}{\icv@asignatura}{\icv@titulocorto}}
-    \fancyhead[R]{\small\color{icvgray-text}\thepage}
-  }%
+  \ificv@ltxtalk\else
+    \@ifclassloaded{exam}{%
+      \pagestyle{headandfoot}
+      \firstpageheader%
+        {\small\color{icvgray-text}\ifdefempty{\icv@titulocorto}{\icv@asignatura}{\icv@titulocorto}}%
+        {}%
+        {\small\color{icvgray-text}\thepage}
+      \runningheader%
+        {\small\color{icvgray-text}\ifdefempty{\icv@titulocorto}{\icv@asignatura}{\icv@titulocorto}}%
+        {}%
+        {\small\color{icvgray-text}\thepage}
+      \runningheadrule
+    }{%
+      \RequirePackage{fancyhdr}
+      \pagestyle{fancy}
+      \fancyhf{}
+      \renewcommand{\headrulewidth}{0.4pt}
+      \fancyhead[L]{\small\color{icvgray-text}%
+        \ifdefempty{\icv@titulocorto}{\icv@asignatura}{\icv@titulocorto}}
+      \fancyhead[R]{\small\color{icvgray-text}\thepage}
+    }%
+  \fi
 \fi
 
 % ---------------------------------------------------------------------------
@@ -197,17 +217,21 @@
 % ---------------------------------------------------------------------------
 % KOMA: disposition ya es sans-serif por defecto (\setsansfont fija TeX
 % Gyre Heros), solo hace falta el color. No-KOMA: titlesec hace ambas cosas.
+% Clase `ltx-talk`: se salta -- su propio sistema de templates gobierna
+% cualquier navegación por secciones dentro de la presentación.
 \ificv@koma
   \addtokomafont{section}{\color{icvblue}}
   \addtokomafont{subsection}{\color{icvblue}}
   \addtokomafont{subsubsection}{\color{icvblue}}
 \else
-  \RequirePackage{titlesec}
-  % El punto tras el número replica el estilo por defecto de KOMA, para que
-  % ambas ramas (KOMA / no-KOMA) se vean iguales.
-  \titleformat{\section}{\sffamily\Large\bfseries\color{icvblue}}{\thesection.}{0.5em}{}
-  \titleformat{\subsection}{\sffamily\large\bfseries\color{icvblue}}{\thesubsection.}{0.5em}{}
-  \titleformat{\subsubsection}{\sffamily\normalsize\bfseries\color{icvblue}}{\thesubsubsection.}{0.5em}{}
+  \ificv@ltxtalk\else
+    \RequirePackage{titlesec}
+    % El punto tras el número replica el estilo por defecto de KOMA, para que
+    % ambas ramas (KOMA / no-KOMA) se vean iguales.
+    \titleformat{\section}{\sffamily\Large\bfseries\color{icvblue}}{\thesection.}{0.5em}{}
+    \titleformat{\subsection}{\sffamily\large\bfseries\color{icvblue}}{\thesubsection.}{0.5em}{}
+    \titleformat{\subsubsection}{\sffamily\normalsize\bfseries\color{icvblue}}{\thesubsubsection.}{0.5em}{}
+  \fi
 \fi
 
 % ---------------------------------------------------------------------------

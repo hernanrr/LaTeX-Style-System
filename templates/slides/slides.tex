@@ -1,0 +1,68 @@
+% ltx-talk es experimental (v0.6.0) -- su interfaz puede cambiar entre
+% versiones. Requiere LaTeX 2025-11-01+ (TeX Live 2026 lo trae).
+\DocumentMetadata{lang=es-DO,tagging=on,pdfstandard=ua-2}
+\documentclass{ltx-talk}
+\usepackage{icv}
+
+% ltx-talk usa un color con nombre semántico "structure" (azul-morado por
+% defecto, sin interfaz documentada de personalización) para títulos y
+% frametitles -- lo redefinimos al azul institucional.
+\DeclareColor{structure}[HTML]{005DAA}
+
+% -----------------------------------------------------------------------
+% Metadata -- reemplaza estos valores para cada presentación nueva.
+% -----------------------------------------------------------------------
+\icvsetup{
+  asignatura  = {ICV 442-T -- Acueductos y Alcantarillados},
+  titulocorto = {Acueductos y Alcantarillados},
+  titulo      = {Título de la presentación},
+  subtitulo   = {Subtítulo (opcional)},
+  profesor    = {Dr. Ricardo Hernández Moreira},
+  periodo     = {2026-1},
+  version     = {v1},
+}
+
+% ltx-talk tiene su propio sistema de portada (\maketitle), distinto del
+% \icvmaketitle de documentos en prosa -- se alimenta de los mismos datos
+% de \icvsetup para no declarar el título/autor dos veces. \icv@... son
+% macros internas de icv.sty (con @) -- fuera de un .sty, @ no tiene
+% catcode de letra, así que hace falta \makeatletter para referenciarlas.
+\makeatletter
+\title{\icv@titulo}
+\subtitle{\icv@subtitulo}
+\author{\icv@profesor}
+\institute{\icv@asignatura}
+\date{\icv@periodo}
+\makeatother
+
+% Pie de página con la paleta institucional -- ver icv/tokens.tex.
+\EditInstance{footer}{std}{
+  background-color = icvblue,
+  color            = white,
+  element-order    = {institute, title, framenumber},
+}
+
+\begin{document}
+
+\begin{frame}
+  \maketitle[framestyle = wallpaper, horizontal-alignment = left]
+\end{frame}
+
+\begin{frame}
+  \frametitle{Objetivos de aprendizaje}
+  \begin{icvobjectives}
+    \item Primer objetivo de aprendizaje de esta presentación.
+    \item Segundo objetivo de aprendizaje.
+  \end{icvobjectives}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Contenido}
+  \begin{itemize}[action-spec = <+->]
+    \item Primer punto, revelado incrementalmente.
+    \item Segundo punto.
+    \item Tercer punto.
+  \end{itemize}
+\end{frame}
+
+\end{document}

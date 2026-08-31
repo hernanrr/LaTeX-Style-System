@@ -256,11 +256,34 @@ Insuficiente, en ese orden, nombres fijos). Sin casillas de marcar (no se
 llena a mano) y sin fondo de color por nivel -- ver § Accesibilidad para
 daltonismo.
 
-### Slides
+### Slides (`templates/slides/slides.tex`)
 
-Aún no implementado (carpeta creada, sin plantilla verificada -- ver
-`templates/slides/slides.tex`, escrito pero pendiente de compilar en una
-instalación con `ltx-talk` disponible).
+Usa la clase `ltx-talk` (Joseph Wright, experimental v0.6.0+, requiere
+LaTeX 2025-11-01+ -- TeX Live 2026 lo trae), no Beamer -- decisión
+explícita del profesor. `ltx-talk` ya trae su propia pila completa
+(`geometry`, `amsmath`+`mathtools`, `fontspec`, `hyperref`, matemática vía
+`lua-unicode-math`) y su propio sistema de layout/encabezado-pie
+(`\EditInstance`) -- `icv.sty` detecta esta clase y se aparta de todo eso
+para no duplicar ni chocar (ver comentarios en `icv.sty`).
+
+Metadata vía `\icvsetup` igual que los demás tipos, pero mapeada a los
+comandos nativos de `ltx-talk` (`\title`, `\author`, `\institute`,
+`\date`) en vez de `\icvmaketitle` -- una presentación necesita su propio
+frame de portada (`\maketitle[framestyle=wallpaper,...]`), no el bloque de
+portada en prosa. Como esas macros son internas de `icv.sty` (con `@`),
+referenciarlas desde la plantilla requiere `\makeatletter`/`\makeatother`
+alrededor -- ya resuelto en el template, no hace falta repetirlo en
+documentos nuevos si simplemente copias la plantilla.
+
+`ltx-talk` usa un color con nombre semántico `structure` (azul-morado por
+defecto, sin interfaz documentada de personalización) para títulos y
+`\frametitle` -- se redefine a `icvblue` con
+`\DeclareColor{structure}[HTML]{005DAA}` en la plantilla. El pie de
+página usa la paleta institucional vía `\EditInstance{footer}{std}{...}`.
+
+Compilación verificada en TeX Live 2026 (macOS) -- 5 páginas, sin errores
+ni warnings, portada + objetivos + frame con revelado incremental
+(`action-spec = <+->`).
 
 ## PDF etiquetado
 
@@ -272,6 +295,10 @@ instalación con `ltx-talk` disponible).
   un error fatal de `tagpdf` ("automatic begin/end count mismatch"),
   confirmado y aislado por descarte en sesión de diseño. Es una excepción
   puntual y documentada, no una renuncia general al etiquetado.
+  **Slides (`ltx-talk`)** sí lleva `\DocumentMetadata`, pero con las
+  llaves propias que ese paquete documenta y usa en sus ejemplos
+  oficiales -- `{lang=es-DO,tagging=on,pdfstandard=ua-2}` -- en vez de
+  `testphase=`.
 - Sin cebreado automático de tablas (`\rowcolors` global) — si una tabla
   específica lo necesita, se activa localmente alrededor de esa tabla, no
   para todo el documento.
