@@ -50,11 +50,6 @@
 \RequirePackage[dvipsnames,table]{xcolor}
 \RequirePackage[breakable]{tcolorbox}
 \RequirePackage{caption}
-% Encabezado/pie y espaciado de párrafos vía mecanismos NATIVOS de KOMA-Script
-% (scrlayer-scrpage, \KOMAoptions{parskip=...}) en vez de fancyhdr/parskip --
-% KOMA avisa explícitamente que esos paquetes "no se recomiendan" junto a una
-% clase KOMA. Igual con titlesec: se usa \addtokomafont en vez de \titleformat.
-\RequirePackage[automark]{scrlayer-scrpage}
 \RequirePackage{longtable}
 \RequirePackage{makecell}
 \RequirePackage{graphicx}
@@ -84,10 +79,27 @@
 \color{icvblack}
 
 % ---------------------------------------------------------------------------
+% 5.5. Detección de clase KOMA vs. no-KOMA
+% ---------------------------------------------------------------------------
+% icv.sty se carga bajo scrartcl (KOMA) para la mayoría de tipos de
+% documento, pero también bajo la clase `exam` (no-KOMA) para exámenes que
+% necesitan puntaje automático -- ver STYLE.md § Arquitectura. KOMAClassName
+% solo existe si la clase base es de la familia KOMA-Script.
+\newif\ificv@koma
+\@ifundefined{KOMAClassName}{\icv@komafalse}{\icv@komatrue}
+
+% ---------------------------------------------------------------------------
 % 6. Geometría y espaciado numérico (siunitx v3)
 % ---------------------------------------------------------------------------
 \geometry{letterpaper,margin=2.5cm,bottom=2.8cm}
-\KOMAoptions{parskip=half}
+
+% Espaciado de párrafos: opción nativa de KOMA si aplica, o el paquete
+% parskip si no (bajo una clase no-KOMA no hay warning que evitar).
+\ificv@koma
+  \KOMAoptions{parskip=half}
+\else
+  \RequirePackage{parskip}
+\fi
 
 \sisetup{
   output-decimal-marker = {.},
@@ -143,22 +155,60 @@
 }
 
 % ---------------------------------------------------------------------------
-% 9. Encabezado / pie de página (scrlayer-scrpage, nativo KOMA)
+% 9. Encabezado / pie de página
 % ---------------------------------------------------------------------------
-\pagestyle{scrheadings}
-\clearpairofpagestyles
-\KOMAoptions{headsepline=0.4pt}
-\setkomafont{pageheadfoot}{\normalfont\small\color{icvgray-text}}
-\ihead{\ifdefempty{\icv@titulocorto}{\icv@asignatura}{\icv@titulocorto}}
-\ohead{\thepage}
+% KOMA: scrlayer-scrpage nativo. Clase `exam`: su propio sistema de
+% encabezado/pie (\firstpageheader/\runningheader) -- forzar fancyhdr ahí
+% choca porque exam.cls ya define \lhead y equivalentes por su cuenta.
+% Cualquier otra clase no-KOMA: fancyhdr genérico.
+\ificv@koma
+  \RequirePackage[automark]{scrlayer-scrpage}
+  \pagestyle{scrheadings}
+  \clearpairofpagestyles
+  \KOMAoptions{headsepline=0.4pt}
+  \setkomafont{pageheadfoot}{\normalfont\small\color{icvgray-text}}
+  \ihead{\ifdefempty{\icv@titulocorto}{\icv@asignatura}{\icv@titulocorto}}
+  \ohead{\thepage}
+\else
+  \@ifclassloaded{exam}{%
+    \pagestyle{headandfoot}
+    \firstpageheader%
+      {\small\color{icvgray-text}\ifdefempty{\icv@titulocorto}{\icv@asignatura}{\icv@titulocorto}}%
+      {}%
+      {\small\color{icvgray-text}\thepage}
+    \runningheader%
+      {\small\color{icvgray-text}\ifdefempty{\icv@titulocorto}{\icv@asignatura}{\icv@titulocorto}}%
+      {}%
+      {\small\color{icvgray-text}\thepage}
+    \runningheadrule
+  }{%
+    \RequirePackage{fancyhdr}
+    \pagestyle{fancy}
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0.4pt}
+    \fancyhead[L]{\small\color{icvgray-text}%
+      \ifdefempty{\icv@titulocorto}{\icv@asignatura}{\icv@titulocorto}}
+    \fancyhead[R]{\small\color{icvgray-text}\thepage}
+  }%
+\fi
 
 % ---------------------------------------------------------------------------
-% 10. Jerarquía tipográfica de secciones (nativo KOMA -- disposition ya es
-%     sans-serif por defecto porque \setsansfont fija TeX Gyre Heros)
+% 10. Jerarquía tipográfica de secciones
 % ---------------------------------------------------------------------------
-\addtokomafont{section}{\color{icvblue}}
-\addtokomafont{subsection}{\color{icvblue}}
-\addtokomafont{subsubsection}{\color{icvblue}}
+% KOMA: disposition ya es sans-serif por defecto (\setsansfont fija TeX
+% Gyre Heros), solo hace falta el color. No-KOMA: titlesec hace ambas cosas.
+\ificv@koma
+  \addtokomafont{section}{\color{icvblue}}
+  \addtokomafont{subsection}{\color{icvblue}}
+  \addtokomafont{subsubsection}{\color{icvblue}}
+\else
+  \RequirePackage{titlesec}
+  % El punto tras el número replica el estilo por defecto de KOMA, para que
+  % ambas ramas (KOMA / no-KOMA) se vean iguales.
+  \titleformat{\section}{\sffamily\Large\bfseries\color{icvblue}}{\thesection.}{0.5em}{}
+  \titleformat{\subsection}{\sffamily\large\bfseries\color{icvblue}}{\thesubsection.}{0.5em}{}
+  \titleformat{\subsubsection}{\sffamily\normalsize\bfseries\color{icvblue}}{\thesubsubsection.}{0.5em}{}
+\fi
 
 % ---------------------------------------------------------------------------
 % 11. Bloque de título: \icvmaketitle
