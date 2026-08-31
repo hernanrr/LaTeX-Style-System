@@ -212,7 +212,15 @@ opción de clase `answers`
 `\begin{solution}...\end{solution}` en el template. **No lleva
 `\DocumentMetadata`** -- ver § PDF etiquetado.
 
-### Project-spec, slides, rubric
+### Project-spec (`templates/project-spec/project-spec.tex`)
+
+Sobre `scrartcl`, igual que handout/assignment -- no necesita clase
+especial. Estructura esperada: Objetivos de aprendizaje → Propósito →
+Alcance → Marco normativo (`icvwarning` para advertencias) → Información
+disponible (tabla) → Organización de equipos → Entregables (tabla) →
+Convención de nombres de archivo (`icvnote`) → Criterios de aceptación.
+
+### Slides, rubric
 
 Aún no implementados (carpetas creadas, sin plantilla). No inventar su
 estructura por adelantado — se diseñan cuando toque esa fase.
