@@ -127,7 +127,7 @@ comunes -- y tritanopia -- azul-amarillo, rara). Verificado por simulación
   titulo      = {Título del documento},
   subtitulo   = {Opcional},
   profesor    = {Dr. Ricardo Hernández Moreira}, % ya es el valor por defecto
-  periodo     = {2026-1},
+  periodo     = \icvciclo{2026}{3}, % -> "Ciclo 1930"
   version     = {v1},
 }
 ```
@@ -135,6 +135,14 @@ comunes -- y tritanopia -- azul-amarillo, rara). Verificado por simulación
 - `pdftitle`/`pdfauthor`/`pdfsubject` se derivan **automáticamente** de
   estos campos vía `\AtBeginDocument` — nunca declarar `\hypersetup` a
   mano en un documento para duplicar lo mismo.
+- **Período académico**: PUCMM llama "Ciclo" a sus períodos académicos
+  (tres cuatrimestres por año, código numérico propio -- p.ej. Ciclo 1930
+  = sep-dic 2026). Nunca escribir el código a mano ni usar el formato
+  "Año-N": siempre `\icvciclo{año}{cuatrimestre}` (1=ene-abr, 2=may-ago,
+  3=sep-dic), que calcula el código correcto. La fórmula está anclada en
+  el punto conocido Ciclo 1930 = sep-dic 2026 (dato institucional, no
+  inventado) -- ver el comentario junto a `\icvciclo` en `icv.sty` si
+  hace falta ajustarla.
 - **Versión**: contador simple `vN`, reiniciado en cada período académico
   nuevo (no es una fecha ni un hash).
 - Códigos canónicos de asignatura:

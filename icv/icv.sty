@@ -158,6 +158,25 @@
 }
 \newcommand{\icvsetup}[1]{\pgfkeys{/icv/.cd,#1}}
 
+% \icvciclo{año}{cuatrimestre} -- convierte año + cuatrimestre (1=ene-abr,
+% 2=may-ago, 3=sep-dic) al código de ciclo académico de PUCMM ("Ciclo
+% NNNN"). Fórmula anclada en el punto conocido Ciclo 1930 = sep-dic 2026
+% (dato dado por el profesor); cada cuatrimestre suma 10. Uso:
+%   \icvsetup{periodo = \icvciclo{2026}{3}}   % -> "Ciclo 1930"
+% Si PUCMM rompe el patrón lineal en algún momento, este es el único
+% lugar que hay que corregir.
+\newcommand{\icv@ciclo@error}{%
+  \PackageError{icv}%
+    {Cuatrimestre inválido en \string\icvciclo}%
+    {El segundo argumento debe ser 1 (enero-abril), 2 (mayo-agosto) o
+     3 (septiembre-diciembre).}%
+}
+\newcommand{\icvciclo}[2]{%
+  \ifnum#2<1 \icv@ciclo@error\fi
+  \ifnum#2>3 \icv@ciclo@error\fi
+  Ciclo~\number\numexpr 10*(3*#1+#2)-58880\relax
+}
+
 % Metadata PDF automática a partir de \icvsetup -- evita la duplicación
 % manual de título/autor/asunto que causaba PDFs sin metadata en legacy/
 % (ver hallazgo "A-Proy no emite metadata PDF" del inventario de Fase 1).
