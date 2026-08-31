@@ -198,7 +198,21 @@ Estructura esperada: Objetivos de aprendizaje → Introducción → desarrollo
 Estructura esperada: Objetivos de aprendizaje → Instrucciones → Problemas
 (`icvproblem`, con o sin `points=`).
 
-### Exam, project-spec, slides, rubric
+### Exam (`templates/exam/exam.tex`)
+
+Usa la clase `exam` (no `scrartcl`), que también carga `icv.sty` -- ver
+§ Arquitectura. Estructura esperada: bloque de fecha/duración/puntaje
+total, línea de Nombre/ID, Instrucciones (`icvnote`), luego `questions`
+con `\question[N]`. Localización al español ya resuelta en el template
+(`\pointpoints`, `\qformat`...) -- no reinventarla por documento.
+
+Para generar la clave de respuestas del mismo archivo, recompila con la
+opción de clase `answers`
+(`\documentclass[11pt,addpoints,answers]{exam}`) -- ver
+`\begin{solution}...\end{solution}` en el template. **No lleva
+`\DocumentMetadata`** -- ver § PDF etiquetado.
+
+### Project-spec, slides, rubric
 
 Aún no implementados (carpetas creadas, sin plantilla). No inventar su
 estructura por adelantado — se diseñan cuando toque esa fase.
@@ -207,6 +221,12 @@ estructura por adelantado — se diseñan cuando toque esa fase.
 
 - Todo documento empieza con `\DocumentMetadata{lang=es-DO,testphase=
   {phase-III,math}}` como primerísima línea, antes de `\documentclass`.
+  **Excepción: los documentos de tipo `exam`** (clase `exam`) no llevan
+  `\DocumentMetadata` -- el entorno nativo `\begin{solution}` de esa
+  clase (toggle de clave de respuestas vía la opción `answers`) produce
+  un error fatal de `tagpdf` ("automatic begin/end count mismatch"),
+  confirmado y aislado por descarte en sesión de diseño. Es una excepción
+  puntual y documentada, no una renuncia general al etiquetado.
 - Sin cebreado automático de tablas (`\rowcolors` global) — si una tabla
   específica lo necesita, se activa localmente alrededor de esa tabla, no
   para todo el documento.
