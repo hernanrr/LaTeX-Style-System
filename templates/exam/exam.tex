@@ -1,0 +1,88 @@
+% SIN \DocumentMetadata a propósito -- el entorno nativo \begin{solution}
+% de exam.cls (toggle de clave de respuestas vía la opción "answers") rompe
+% el motor de etiquetado con un error fatal ("tagpdf: automatic begin/end
+% count mismatch"), confirmado y aislado en sesión de diseño. Excepción
+% documentada en STYLE.md § PDF etiquetado -- los demás tipos de documento
+% sí llevan \DocumentMetadata.
+%
+% Agrega la opción "answers" (\documentclass[11pt,addpoints,answers]{exam})
+% para generar la clave de respuestas del mismo archivo -- ver los entornos
+% \begin{solution} y \CorrectChoice más abajo, nativos de la clase exam.
+\documentclass[11pt,addpoints]{exam}
+\usepackage{icv}
+
+% -----------------------------------------------------------------------
+% Metadata -- reemplaza estos valores para cada examen nuevo.
+% -----------------------------------------------------------------------
+\icvsetup{
+  asignatura  = {ICV 442-T -- Acueductos y Alcantarillados},
+  titulocorto = {Examen Parcial 1},
+  titulo      = {Examen Parcial 1},
+  subtitulo   = {},
+  profesor    = {Dr. Ricardo Hernández Moreira},
+  periodo     = {2026-1},
+  version     = {v1},
+}
+
+% -----------------------------------------------------------------------
+% Localización de exam.cls al español (patrón probado en
+% legacy/Hidrología/Examenes -- ver STYLE.md § Reglas por tipo de documento).
+% -----------------------------------------------------------------------
+\pointpoints{punto}{puntos}
+\vpword{Puntos}
+\vsword{Calificación}
+\vtword{Total:}
+\hpword{Puntos:}
+\hsword{Calificación:}
+\htword{Total}
+\qformat{\textbf{Pregunta \thequestion.} \hfill (\thepoints)}
+\renewcommand{\solutiontitle}{\noindent\textbf{Solución:}\par}
+\pointsinrightmargin
+\setlength{\rightpointsmargin}{1.5cm}
+
+\begin{document}
+\icvmaketitle
+
+\begin{center}
+\begin{tabular}{ll}
+  \toprule
+  \textbf{Fecha:} & Fecha del examen \\
+  \textbf{Duración:} & Duración del examen \\
+  \textbf{Puntaje total:} & \numpoints\ puntos \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\vspace{6pt}
+\begin{center}
+\makebox[\linewidth][l]{%
+  \textbf{Nombre:}\hspace{0.5em}\rule{0.55\linewidth}{0.4pt}%
+  \hspace{1em}\textbf{ID:}\hspace{0.5em}\hrulefill%
+}
+\end{center}
+\vspace{6pt}
+
+\begin{icvnote}[Instrucciones]
+Instrucciones generales: material permitido, formato de respuesta, si el
+examen es cerrado o con apuntes, y cualquier otra regla del examen.
+\end{icvnote}
+
+\begin{questions}
+
+\question[10] Enunciado de una pregunta de respuesta breve o desarrollo.
+\begin{solution}
+Explicación de la solución -- solo se imprime si compilas con la opción
+de clase \texttt{answers}.
+\end{solution}
+
+\question[15] Enunciado de una pregunta de selección múltiple.
+\begin{choices}
+  \choice Opción incorrecta.
+  \CorrectChoice Opción correcta.
+  \choice Opción incorrecta.
+  \choice Opción incorrecta.
+\end{choices}
+
+\end{questions}
+
+\end{document}
