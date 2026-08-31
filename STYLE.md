@@ -205,6 +205,7 @@ comunes -- y tritanopia -- azul-amarillo, rara). Verificado por simulación
 | `icvnote[Título]` | Nota informativa de título libre (reemplaza `\handoutintro`/`\excelnote` de legacy/) | `icvblue` |
 | `icvwarning[Título]` | Advertencia o resultado clave de título libre (reemplaza `\weightednote`/`\resultbox`) | `icvyellow` |
 | `icvproblem[points=N]{Título}` | Problema numerado, puntaje opcional (asignaciones) | `icvblue` |
+| `icvrubric{Puntaje máximo}` + `\criterio{Nombre}{Peso}` + `\nivel{Nivel}{Descripción}` | Tabla de rúbrica (retrato, longtable) | Sin color de fondo por nivel a propósito -- ver § Accesibilidad |
 
 No crear una caja semántica nueva por documento — si un caso de uso no
 encaja en `icvnote`/`icvwarning`, es una señal para extender `icv.sty`
@@ -245,10 +246,21 @@ Alcance → Marco normativo (`icvwarning` para advertencias) → Información
 disponible (tabla) → Organización de equipos → Entregables (tabla) →
 Convención de nombres de archivo (`icvnote`) → Criterios de aceptación.
 
-### Slides, rubric
+### Rubric (`templates/rubric/rubric.tex`)
 
-Aún no implementados (carpetas creadas, sin plantilla). No inventar su
-estructura por adelantado — se diseñan cuando toque esa fase.
+Sobre `scrartcl`. Retrato, no apaisado (se califica en Moodle, no en
+papel). Estructura: Escala de evaluación (`icvnote`, describe los 4
+niveles fijos) → `icvrubric` con un `\criterio{Nombre}{Peso %}` seguido de
+sus 4 `\nivel{...}{...}` (Excelente/Satisfactorio/En desarrollo/
+Insuficiente, en ese orden, nombres fijos). Sin casillas de marcar (no se
+llena a mano) y sin fondo de color por nivel -- ver § Accesibilidad para
+daltonismo.
+
+### Slides
+
+Aún no implementado (carpeta creada, sin plantilla verificada -- ver
+`templates/slides/slides.tex`, escrito pero pendiente de compilar en una
+instalación con `ltx-talk` disponible).
 
 ## PDF etiquetado
 

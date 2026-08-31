@@ -334,4 +334,52 @@
   \end{tcolorbox}%
 }
 
+% ---------------------------------------------------------------------------
+% 16. Rúbricas
+% ---------------------------------------------------------------------------
+% \begin{icvrubric}{Puntaje máximo}
+%   \criterio{Nombre del criterio}{Peso en \%}
+%   \nivel{Excelente}{Descripción}
+%   \nivel{Satisfactorio}{Descripción}
+%   \nivel{En desarrollo}{Descripción}
+%   \nivel{Insuficiente}{Descripción}
+%   \criterio{...}
+%   ...
+% \end{icvrubric}
+%
+% Retrato, no apaisado (rúbricas se califican en Moodle, no en papel -- ver
+% STYLE.md). Los 4 nombres de nivel son fijos. Sin fondo de color por nivel
+% a propósito: \rowcolor/\cellcolor (colortbl) son frágiles invocados
+% indirectamente desde una macro, y de todas formas la regla del sistema
+% es que ningún entorno semántico dependa del color -- aquí la distinción
+% es el nombre del nivel en negrita (ver STYLE.md § Accesibilidad).
+\newcommand{\criterio}[2]{%
+  \midrule
+  \multicolumn{2}{l}{\color{icvblue}\bfseries #1 \hfill Peso: #2\%}\\
+  \midrule
+}
+\newcommand{\nivel}[2]{%
+  \textbf{#1} & #2 \\[6pt]
+}
+\newenvironment{icvrubric}[1]{%
+  \begin{longtable}{@{}p{0.22\linewidth} p{0.70\linewidth}@{}}
+    \caption{Rúbrica de evaluación -- puntaje máximo: #1} \\
+    \toprule
+    \textbf{Nivel} & \textbf{Descripción} \\
+    \midrule
+    \endfirsthead
+    \multicolumn{2}{l}{\small\itshape (Continuación)} \\
+    \toprule
+    \textbf{Nivel} & \textbf{Descripción} \\
+    \midrule
+    \endhead
+    \midrule
+    \multicolumn{2}{r}{\small\itshape (continúa en la siguiente página)} \\
+    \endfoot
+    \bottomrule
+    \endlastfoot
+}{%
+  \end{longtable}
+}
+
 \endinput
