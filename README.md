@@ -60,9 +60,10 @@ Si te saltas este paso, los documentos compilan igual -- solo que
 
 Tus documentos nuevos deben vivir en `cursos/<nombre del curso>/` --
 **dentro del repo**, no en una carpeta aparte del disco. La razón está en
-la sección 5 (cómo encuentra `latexmk` su configuración). `legacy/` es
+la sección 6 (cómo encuentra `latexmk` su configuración). `legacy/` es
 material previo intocable y `examples/` son los ejemplos dorados del
-sistema, no un lugar para trabajar.
+sistema, no un lugar para trabajar. Antes de poner contenido real ahí,
+lee la sección 5 -- este repo es público.
 
 1. Copia la plantilla del tipo que necesitas a tu carpeta de curso, p. ej.:
 
@@ -86,7 +87,60 @@ sistema, no un lugar para trabajar.
    (`icvnote`, `icvwarning`, `icvobjectives`, `icvproblem`, etc. -- ver
    `STYLE.md` § Entornos semánticos) en vez de maquetación ad hoc.
 
-## 5. Compilar
+## 5. Privacidad de tus materiales de curso
+
+**Este repositorio (`LaTeX-Style-System`) es público en GitHub.** El
+sistema de estilo, las plantillas y los ejemplos dorados están pensados
+para serlo. Tus materiales reales de curso -- exámenes, asignaciones con
+contenido real, cualquier cosa con calificaciones o datos de
+estudiantes -- no deben estarlo.
+
+Por eso `cursos/*` está en `.gitignore` (con una única excepción:
+`cursos/README.md`, que solo documenta la convención de carpetas y no
+tiene nada sensible). Nada de lo que pongas dentro de `cursos/` se sube
+jamás a este repo público, sin importar cuántos `git add -A` hagas por
+accidente.
+
+Pero eso solo evita la fuga -- no te da versionado ni sincronización entre
+máquinas para ese contenido. Para eso, `cursos/` es un **repo git anidado
+independiente**, apuntando a un repo privado aparte:
+
+**Configuración inicial (una vez):**
+
+```bash
+# 1. Crea un repo privado en GitHub (ejemplo con gh, o hazlo desde la web)
+gh repo create hernanrr/cursos-icv-pucmm --private
+
+# 2. Dentro de cursos/, inicializa un repo git propio (independiente del
+#    repo del sistema de estilo -- este .git vive DENTRO de cursos/)
+cd cursos
+git init
+git remote add origin https://github.com/hernanrr/cursos-icv-pucmm.git
+git add .
+git commit -m "material inicial"
+git push -u origin main
+```
+
+Como `cursos/` ya está ignorado por el `.gitignore` del repo padre, git no
+se queja de "repositorio embebido" -- para el repo del sistema de estilo,
+`cursos/` simplemente no existe (salvo su `README.md`).
+
+**En una máquina nueva:**
+
+```bash
+git clone https://github.com/hernanrr/LaTeX-Style-System.git
+cd LaTeX-Style-System/cursos
+git init
+git remote add origin https://github.com/hernanrr/cursos-icv-pucmm.git
+git fetch origin
+git checkout main
+```
+
+Esto no interfiere con `latexmk` -- la búsqueda de `.latexmkrc` (ver
+sección 6) es puramente de sistema de archivos, no le importa cuántos
+`.git` haya anidados en el camino.
+
+## 6. Compilar
 
 Desde la raíz del repo, con `make`:
 
@@ -129,7 +183,7 @@ no va a encontrar `.latexmkrc`, no sabrá usar LuaLaTeX, y
 ningún atajo limpio para ese caso -- simplemente mantén tus documentos
 dentro de `cursos/`.
 
-## 6. Verificar antes de dar el documento por terminado
+## 7. Verificar antes de dar el documento por terminado
 
 ```bash
 make lint                              # chktex sobre todo el repo, o:

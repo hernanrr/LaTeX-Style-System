@@ -23,3 +23,10 @@ icv/icv-local.cfg.tex
 # --- macOS / Windows ---
 .DS_Store
 Thumbs.db
+
+# --- Material de curso real -- este repo es público en GitHub, tu contenido
+# real de clase (exámenes, asignaciones, etc.) no debe estarlo. cursos/ vive
+# en un repo git privado *anidado* aparte -- ver README.md § Privacidad de
+# tus materiales de curso. Se excluye todo excepto el README de convención.
+cursos/*
+!cursos/README.md

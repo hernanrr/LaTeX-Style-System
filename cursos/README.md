@@ -23,5 +23,8 @@ Los nombres de subcarpeta por curso no están normativizados en `STYLE.md`
 para que `latexmk` funcione es que cualquier carpeta aquí sea una
 subcarpeta del repo (ver [`README.md`](../README.md) § Compilar).
 
-Este archivo existe para que la carpeta se trackee en git aunque esté
-vacía; bórralo o déjalo, es indistinto una vez haya contenido real.
+**Privacidad:** este repo (`LaTeX-Style-System`) es público. Todo lo
+demás dentro de `cursos/` está en `.gitignore` -- solo este `README.md`
+se sube aquí. Tu contenido real vive en un repo git privado *anidado*
+dentro de esta carpeta; ver [`README.md`](../README.md) § Privacidad de
+tus materiales de curso para la configuración.
