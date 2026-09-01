@@ -219,6 +219,11 @@
         {}%
         {\small\color{icvgray-text}\thepage}
       \runningheadrule
+      % exam.cls trae un pie de página propio ("Page N") activo por
+      % defecto bajo \pagestyle{headandfoot} -- el número de página ya
+      % se muestra en el encabezado, así que el pie queda vacío.
+      \firstpagefooter{}{}{}
+      \runningfooter{}{}{}
     }{%
       \RequirePackage{fancyhdr}
       \pagestyle{fancy}
