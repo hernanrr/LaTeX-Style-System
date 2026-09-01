@@ -58,15 +58,23 @@ Si te saltas este paso, los documentos compilan igual -- solo que
 
 ## 4. Crear un documento nuevo (ejemplo: un handout)
 
-1. Copia la plantilla del tipo que necesitas a donde vayas a trabajar,
-   p. ej.:
+Tus documentos nuevos deben vivir en `cursos/<nombre del curso>/` --
+**dentro del repo**, no en una carpeta aparte del disco. La razón está en
+la sección 5 (cómo encuentra `latexmk` su configuración). `legacy/` es
+material previo intocable y `examples/` son los ejemplos dorados del
+sistema, no un lugar para trabajar.
+
+1. Copia la plantilla del tipo que necesitas a tu carpeta de curso, p. ej.:
 
    ```bash
-   cp templates/handout/handout.tex "ICV 442 - Acueductos/mi-handout-nuevo.tex"
+   mkdir -p "cursos/Acueductos y Alcantarillados/Handouts"
+   cp templates/handout/handout.tex \
+      "cursos/Acueductos y Alcantarillados/Handouts/mi-handout-nuevo.tex"
    ```
 
    (También puedes partir de un ejemplo dorado en `examples/` si tu
-   documento se parece más a uno de esos que a la plantilla en blanco.)
+   documento se parece más a uno de esos que a la plantilla en blanco --
+   cópialo igual a `cursos/...`, no lo edites en `examples/`.)
 
 2. Llena `\icvsetup{...}` al inicio del archivo: título, asignatura,
    período académico (usa `\icvciclo{año}{cuatrimestre}`, ver
@@ -87,11 +95,10 @@ make handout        # o assignment, exam, project-spec, rubric, slides
 ```
 
 Eso compila `templates/<tipo>/<tipo>.tex`. Para compilar **tu** documento
-(no la plantilla), entra a su carpeta y usa `latexmk` directamente -- la
-configuración de `.latexmkrc` aplica sin importar el directorio:
+(no la plantilla), entra a su carpeta y usa `latexmk` directamente:
 
 ```bash
-cd "ICV 442 - Acueductos"
+cd "cursos/Acueductos y Alcantarillados/Handouts"
 latexmk mi-handout-nuevo.tex
 ```
 
@@ -100,6 +107,27 @@ junto con los artefactos de compilación -- todo eso está en `.gitignore`.
 
 `make all` compila todas las plantillas; `make examples` compila todos los
 ejemplos dorados; `make clean` borra los `build/` generados.
+
+### Cómo encuentra `latexmk` su configuración
+
+`latexmk` no tiene nada hardcodeado sobre este proyecto -- lee
+`.latexmkrc` en tiempo de ejecución, y lo encuentra por **búsqueda
+ascendente automática**: parte del directorio donde lo invocas y sube por
+los directorios padre hasta encontrar un `.latexmkrc` (o hasta llegar a la
+raíz del sistema de archivos si no hay ninguno). Ese archivo es el que le
+dice que use LuaLaTeX, dónde está `icv.sty` (`TEXINPUTS`), y dónde poner
+el PDF (`build/`).
+
+Por eso **tu carpeta de trabajo tiene que estar dentro del árbol del
+repo** -- cualquier subcarpeta, a cualquier profundidad, funciona sin
+configuración adicional. De ahí la convención de la sección 4: todo
+documento nuevo va en `cursos/<curso>/...`, una subcarpeta del repo.
+
+Si compilas desde una carpeta **fuera** del repo por completo, `latexmk`
+no va a encontrar `.latexmkrc`, no sabrá usar LuaLaTeX, y
+`\usepackage{icv}` va a fallar porque no encuentra `icv.sty`. No hay
+ningún atajo limpio para ese caso -- simplemente mantén tus documentos
+dentro de `cursos/`.
 
 ## 6. Verificar antes de dar el documento por terminado
 
@@ -120,6 +148,7 @@ icv/                     # paquete núcleo: icv.sty, tokens.tex
   icv-local.cfg.tex.example  # plantilla de config local (logo), gitignored el real
 templates/<tipo>/        # una plantilla en blanco por tipo de documento
 examples/                 # documentos reales completos, ejemplo dorado por tipo
+cursos/<curso>/           # tus documentos nuevos, organizados por curso -- ver cursos/README.md
 legacy/                   # material previo del profesor, solo como referencia histórica
 docs/packages.md           # lista cerrada de paquetes LaTeX permitidos
 bib/                        # .bib compartido entre materias (citas opt-in)
