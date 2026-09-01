@@ -1,0 +1,43 @@
+# .chktexrc -- higiene básica de LaTeX (chktex) para este repo.
+#
+# Uso: chktex -l .chktexrc archivo.tex
+#
+# Filosofía: preferir excepciones puntuales (comandos concretos en
+# Silent, valores de guion permitidos) sobre silenciar advertencias
+# completas con -n. Cada ajuste de abajo responde a un falso positivo
+# real, verificado corriendo chktex sobre los 12 documentos del repo
+# (templates/ + examples/) en sesión de diseño -- no es una lista
+# genérica copiada de otro lado.
+
+## Comandos que terminan en salto de línea/párrafo sin que sea un error
+## (Advertencia 1). Los de icv.sty y los de exam.cls que usamos aquí no
+## están en la lista por defecto de chktex.
+Silent
+{
+    \icvmaketitle \icvsetup
+    \question \choice \CorrectChoice
+    \pointsinrightmargin \pointpoints \qformat
+    \printanswers \numpoints
+}
+
+## Guion "--" (en dash) entre palabras separadas por espacio -- lo usamos
+## a propósito para separar código de asignatura y nombre
+## ("ICV 442-T -- Acueductos...") y como puntuación general en prosa.
+## Valor por defecto de chktex: solo 3 guiones ("---") entre palabras.
+WordDash { 2 }
+
+## Guion "--" entre caracteres alfabéticos sin espacio -- lo usamos para
+## rangos de numerales romanos ("Unidades I--III"). Valor por defecto:
+## solo 1 o 3 guiones.
+HyphDash { 1 2 3 }
+
+## Advertencias de espaciado inter-palabra/inter-oración después de
+## abreviaturas (12, 13) son sistemáticamente falsos positivos en
+## español con babel -- disparan constantemente en "Dr.", finales de
+## \item y celdas de tabla que terminan en punto. No hay una lista de
+## excepciones limpia para esto (a diferencia de Silent/WordDash), así
+## que se desactivan directamente.
+CmdLine
+{
+    -n12 -n13
+}

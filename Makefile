@@ -9,16 +9,18 @@
 #   make handout        # compila templates/handout/handout.tex
 #   make assignment      # compila templates/assignment/assignment.tex
 #   make all             # compila todas las plantillas
+#   make lint            # corre chktex sobre templates/ y examples/
 #   make clean           # borra los build/ generados
 
 LATEXMK := latexmk
+CHKTEX  := chktex -l .chktexrc -q
 
 TEMPLATES := $(wildcard templates/*/*.tex)
 EXAMPLES  := $(wildcard examples/*.tex)
 NAMES     := $(basename $(notdir $(TEMPLATES)))
 EXNAMES   := $(basename $(notdir $(EXAMPLES)))
 
-.PHONY: all clean examples $(NAMES) $(EXNAMES)
+.PHONY: all clean lint examples $(NAMES) $(EXNAMES)
 
 all: $(NAMES)
 
@@ -44,6 +46,12 @@ slides: templates/slides/slides.tex
 
 rubric: templates/rubric/rubric.tex
 	$(LATEXMK) $<
+
+lint:
+	@for f in $(TEMPLATES) $(EXAMPLES); do \
+	  echo "-- $$f --"; \
+	  $(CHKTEX) "$$f" || true; \
+	done
 
 clean:
 	@rm -rf build

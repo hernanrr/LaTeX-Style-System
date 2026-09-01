@@ -79,6 +79,7 @@ bib/                       # .bib compartido entre materias (citas opt-in)
 
 - ¿Compila con `latexmk -lualatex` sin errores?
 - ¿El PDF se ve bien (renderízalo y revísalo, no asumas)?
+- ¿`chktex -l .chktexrc -q archivo.tex` (o `make lint`) sale limpio?
 - ¿La metadata (`\icvsetup`) está completa o tiene `TODO` explícito donde
   falta?
 - ¿Toda figura de contenido usa `\icvincludegraphics` con `alt=`?

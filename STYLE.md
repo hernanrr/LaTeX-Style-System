@@ -18,6 +18,11 @@ no sobre **proceso**.
   directamente desde la carpeta del documento — `.latexmkrc` se autoconfigura
   sin importar desde dónde se invoque, buscando hacia arriba desde el cwd.
 - `make clean` borra los `build/` generados. Nunca commitear `build/`.
+- `make lint` corre `chktex` (higiene básica: guiones, espaciado,
+  comandos huérfanos) sobre `templates/` y `examples/`, usando
+  `.chktexrc` -- ver ese archivo para qué advertencias se silenciaron y
+  por qué (todas son falsos positivos verificados, no una lista
+  genérica).
 - Probado en TeX Live 2024/2026, macOS y Windows.
 
 ## Arquitectura
