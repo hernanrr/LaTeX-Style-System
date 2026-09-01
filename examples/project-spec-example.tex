@@ -1,0 +1,171 @@
+\DocumentMetadata{lang=es-DO,testphase={phase-III,math}}
+\documentclass[11pt]{scrartcl}
+\usepackage{icv}
+
+% -----------------------------------------------------------------------
+% Migrado de legacy/Acueductos y Alcantarillados/Proyecto/
+% 02_terminos_referencia.tex -- especificación de proyecto real
+% completa, sin recortar.
+% -----------------------------------------------------------------------
+\icvsetup{
+  asignatura  = {ICV 442-T -- Acueductos y Alcantarillados},
+  titulocorto = {Términos de referencia},
+  titulo      = {Términos de referencia},
+  subtitulo   = {Proyecto de curso: sistemas de saneamiento para Las Charcas, Azua},
+  profesor    = {Dr. Ricardo Hernández Moreira},
+  periodo     = \icvciclo{2026}{3},
+  version     = {v1},
+}
+
+\begin{document}
+\icvmaketitle
+
+\begin{icvobjectives}
+  \item Desarrollar un diseño académico de sistemas de agua potable,
+    alcantarillado sanitario y drenaje pluvial para una comunidad real,
+    con memoria técnica, planos y modelación hidráulica que sustenten
+    las decisiones de trazado y dimensionamiento.
+\end{icvobjectives}
+
+\section{Propósito del proyecto}
+El proyecto consiste en desarrollar, en equipos pequeños, un diseño
+académico de sistemas de agua potable, alcantarillado sanitario y
+drenaje pluvial para la comunidad de Las Charcas, provincia Azua. El
+producto esperado es un diseño detallado con memoria técnica, planos y
+modelación hidráulica suficiente para sustentar decisiones de trazado y
+dimensionamiento.
+
+\section{Competencias que se evalúan}
+\begin{center}
+\begin{tabular}{p{0.16\linewidth} p{0.68\linewidth}}
+  \toprule
+  \textbf{Competencia} & \textbf{Aplicación en el proyecto} \\
+  \midrule
+  EA3 & Obtención y uso de información básica: población, topografía,
+    lluvia, normativa y brechas de datos. \\
+  EA4 & Aplicación de fundamentos de hidráulica y justificación
+    normativa en los tres sistemas. \\
+  EA5 & Consideración de factibilidad operativa, mantenimiento y
+    coherencia general del diseño. \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\section{Alcance}
+
+\subsection{Sistemas incluidos}
+\begin{itemize}
+  \item \textbf{Agua potable}: fuente, conducción, almacenamiento, red
+    de distribución y accesorios principales.
+  \item \textbf{Alcantarillado sanitario}: colectores, pozos de visita,
+    descarga final y bombeo solo si la topografía lo exige.
+  \item \textbf{Drenaje pluvial}: captación superficial, colectores,
+    estructuras de disipación y punto de descarga.
+\end{itemize}
+
+\subsection{Nivel de detalle esperado}
+\begin{itemize}
+  \item Memorias de cálculo trazables.
+  \item Planos legibles en escala adecuada.
+  \item Especificaciones técnicas de materiales y criterios de diseño.
+  \item Modelos en EPANET y SWMM con resultados verificables.
+\end{itemize}
+
+\section{Marco normativo}
+\begin{enumerate}
+  \item Reglamento y criterios técnicos de INAPA.
+  \item Reglamento del MOPC cuando establezca una exigencia más
+    restrictiva o pertinente.
+  \item Referencias internacionales solo como apoyo o para completar
+    vacíos, nunca para desplazar sin justificación el marco local.
+\end{enumerate}
+
+\begin{icvwarning}[Atención]
+No basta citar una institución de forma genérica. Las decisiones de
+diseño deben vincularse, cuando sea posible, con artículos, tablas o
+criterios identificables de la norma consultada.
+\end{icvwarning}
+
+\section{Información disponible}
+\begin{center}
+\begin{tabular}{p{0.29\linewidth} p{0.18\linewidth} p{0.37\linewidth}}
+  \toprule
+  \textbf{Dato} & \textbf{Estado} & \textbf{Observación} \\
+  \midrule
+  Modelo digital de terreno & Disponible & Malla de \qty{8}{\meter}
+    por \qty{8}{\meter} suministrada para el curso \\
+  Datos poblacionales de la ONE & Disponible & Base para proyección
+    poblacional \\
+  Series de precipitación & Parcial & Pueden solicitarse a INDOMET
+    por vía institucional \\
+  Curvas IDF & Disponible & Apéndice del reglamento de diseño de
+    INAPA \\
+  Información sobre fuentes existentes & Incierta & Puede
+    investigarse con INAPA \\
+  Usos de suelo y densidades & Parcial & Requieren interpretación a
+    partir de cartografía e imágenes \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\section{Organización de equipos}
+\begin{itemize}
+  \item Los equipos estarán formados por 2 o 3 estudiantes.
+  \item Todos los integrantes deben participar en los tres sistemas.
+  \item Se recomienda asignar roles de coordinación, modelación,
+    documentación y planos, con posibilidad de rotación.
+  \item Cada equipo debe mantener una bitácora semanal breve y útil.
+\end{itemize}
+
+\section{Entregables}
+\begin{center}
+\begin{tabular}{p{0.33\linewidth} p{0.17\linewidth} p{0.30\linewidth}}
+  \toprule
+  \textbf{Entregable} & \textbf{Formato} & \textbf{Observaciones} \\
+  \midrule
+  Memoria de proyección poblacional & PDF + hoja de cálculo &
+    Entregable independiente \\
+  Memoria técnica integrada & PDF & Incluye agua potable, sanitario
+    y pluvial \\
+  Planos del proyecto & PDF & Planta, perfiles y detalles
+    principales \\
+  Modelos hidráulicos & Archivos nativos + resumen PDF & EPANET y
+    SWMM \\
+  Presentación oral & PDF exportado & El archivo fuente puede
+    elaborarse en Canva o programa equivalente \\
+  Anexos & PDF y hojas de cálculo & Patrones, bitácoras, tabla
+    maestra y soportes \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\begin{icvnote}[Convención de nombres para entregas]
+\texttt{ICV442\_T[Equipo]\_[Sistema]\_[Entregable]\_[Apellidos]\_v[versión].pdf}
+
+Ejemplos de uso:
+\begin{itemize}
+  \item \texttt{ICV442\_T01\_AguaPotable\_MemoriaCalc\_HernandezPerez\_v1.0.pdf}
+  \item \texttt{ICV442\_T02\_Sanitario\_PlanoPerfil\_GomezRuiz\_v1.0.pdf}
+  \item \texttt{ICV442\_T03\_PresentacionOral\_TorresLopez\_v1.0.pdf}
+\end{itemize}
+\end{icvnote}
+
+\section{Coordinación con instituciones}
+Si el equipo decide gestionar información adicional, puede hacerlo
+mediante solicitudes formales de acceso a la información dirigidas a
+las oficinas correspondientes. Esa gestión es recomendable, pero no
+obligatoria. Si no se obtiene respuesta dentro del plazo del curso, el
+equipo debe documentar el intento y continuar con supuestos técnicos
+razonables y explícitos.
+
+\section{Criterios generales de aceptación}
+\begin{itemize}
+  \item El trabajo debe ser coherente entre sistemas, no una suma de
+    tres ejercicios desconectados.
+  \item Los supuestos deben estar declarados y ser compatibles con la
+    información disponible.
+  \item La presentación documental debe permitir que un tercero
+    entienda qué se hizo, con qué datos y bajo qué criterios.
+\end{itemize}
+
+\end{document}
