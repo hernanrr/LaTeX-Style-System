@@ -1,0 +1,115 @@
+\DocumentMetadata{lang=es-DO,testphase={phase-III,math}}
+\documentclass[11pt]{scrartcl}
+\usepackage{icv}
+
+% -----------------------------------------------------------------------
+% Migrado de legacy/Acueductos y Alcantarillados/Proyecto/05_rubrica.tex
+% -- rúbrica real completa. La sección "Proyecto escrito" ya usaba en el
+% original los mismos 4 niveles fijos que icvrubric adopta (Excelente/
+% Satisfactorio/En desarrollo/Insuficiente) con peso% por criterio, así
+% que migra 1:1. "Presentación oral" tiene una forma distinta (columna
+% única "Se espera", no 4 niveles) -- se deja como tabla propia, no
+% forzada a icvrubric.
+% -----------------------------------------------------------------------
+\icvsetup{
+  asignatura  = {ICV 442-T -- Acueductos y Alcantarillados},
+  titulocorto = {Rúbrica de evaluación},
+  titulo      = {Rúbrica de evaluación},
+  subtitulo   = {Proyecto escrito y presentación oral},
+  profesor    = {Dr. Ricardo Hernández Moreira},
+  periodo     = \icvciclo{2026}{3},
+  version     = {v1},
+}
+
+\begin{document}
+\icvmaketitle
+
+\begin{icvnote}[Escala de evaluación]
+\begin{itemize}
+  \item \textbf{Excelente}: cumple todos los requisitos con rigor y
+    precisión; el resultado es correcto y completo.
+  \item \textbf{Satisfactorio}: cumple los requisitos esenciales; puede
+    haber errores menores que no afectan el resultado global.
+  \item \textbf{En desarrollo}: cumple parcialmente; hay evidencia de
+    comprensión del objetivo, pero los errores afectan la calidad del
+    resultado.
+  \item \textbf{Insuficiente}: no cumple los requisitos mínimos, o el
+    entregable está ausente.
+\end{itemize}
+\end{icvnote}
+
+\section{Proyecto escrito}
+
+\begin{icvrubric}{100 puntos}
+
+\criterio{Calidad de la información básica}{15}
+\nivel{Excelente}{Fuentes oficiales claras, proyección bien
+  justificada y cálculos trazables.}
+\nivel{Satisfactorio}{Información suficiente con algunas debilidades
+  de trazabilidad o justificación.}
+\nivel{En desarrollo}{Información parcial o poco sustentada.}
+\nivel{Insuficiente}{Fuentes débiles o ausencia de base suficiente.}
+
+\criterio{Fundamentos hidráulicos}{35}
+\nivel{Excelente}{Supuestos, cálculos y modelos coherentes; resultados
+  verificados.}
+\nivel{Satisfactorio}{Trabajo correcto con omisiones menores.}
+\nivel{En desarrollo}{Inconsistencias parciales o verificación
+  incompleta.}
+\nivel{Insuficiente}{Errores graves de criterio o falta de
+  verificación.}
+
+\criterio{Cumplimiento normativo y justificación técnica}{25}
+\nivel{Excelente}{Parámetros clave bien sustentados y decisiones
+  defendibles.}
+\nivel{Satisfactorio}{Mayormente sustentado, con algunos vacíos.}
+\nivel{En desarrollo}{Justificación superficial o dispersa.}
+\nivel{Insuficiente}{Criterios adoptados sin sustento suficiente.}
+
+\criterio{Claridad y presentación}{15}
+\nivel{Excelente}{Documento ordenado, legible y bien estructurado.}
+\nivel{Satisfactorio}{Presentación adecuada con detalles por mejorar.}
+\nivel{En desarrollo}{Estructura confusa en varias partes.}
+\nivel{Insuficiente}{Documento desordenado o difícil de seguir.}
+
+\criterio{Viabilidad y especificaciones}{10}
+\nivel{Excelente}{Materiales, detalles y mantenimiento consistentes
+  con el contexto.}
+\nivel{Satisfactorio}{En general viable, aunque incompleto en algunos
+  puntos.}
+\nivel{En desarrollo}{Viabilidad poco discutida o mal cerrada.}
+\nivel{Insuficiente}{Sin consideración seria de viabilidad o
+  mantenimiento.}
+
+\end{icvrubric}
+
+\section{Presentación oral}
+
+\begin{center}
+\begin{tabular}{p{0.34\linewidth} p{0.49\linewidth} p{0.08\linewidth}}
+  \toprule
+  \textbf{Criterio} & \textbf{Se espera} & \textbf{Peso} \\
+  \midrule
+  Síntesis y claridad & Exposición ordenada, dentro del tiempo, con
+    lenguaje técnico claro. & 30\% \\
+  Dominio técnico & Capacidad para explicar criterios, defender
+    supuestos y responder preguntas. & 40\% \\
+  Material visual & Gráficos, planos y resultados legibles, sin
+    sobrecarga. & 15\% \\
+  Trabajo en equipo & Participación equilibrada y transiciones
+    razonables. & 15\% \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\section{Observaciones de uso}
+\begin{itemize}
+  \item La rúbrica se aplica tanto al producto final como al nivel de
+    control técnico demostrado por el equipo.
+  \item Un documento muy extenso no compensa la falta de criterio en
+    decisiones clave.
+  \item La calidad de la presentación oral no sustituye debilidades del
+    proyecto escrito, ni a la inversa.
+\end{itemize}
+
+\end{document}
