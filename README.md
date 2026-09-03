@@ -195,6 +195,47 @@ generado sin errores, metadata completa o con `TODO` explícito, figuras
 con `alt=`, números con `\num`/`\qty`/columnas `S`, ninguna distinción que
 dependa solo del color).
 
+## 8. Generar un documento con ayuda de un agente de IA
+
+Este repo está preparado para eso: [`CLAUDE.md`](CLAUDE.md) es un archivo
+de convención que Claude Code (y agentes compatibles) carga
+**automáticamente** como instrucciones de proyecto en cuanto abres una
+sesión con directorio de trabajo dentro del repo. No hace falta
+explicarle el sistema de estilo desde cero cada vez.
+
+1. **Abre el agente con el directorio de trabajo dentro del repo** --
+   idealmente ya en la carpeta destino, p. ej.
+   `cursos/Acueductos y Alcantarillados/Handouts/`, para que el archivo
+   nuevo caiga donde debe.
+2. **`CLAUDE.md` se carga solo.** Ya establece que el agente debe leer
+   `STYLE.md` antes de escribir nada, identificar el tipo de documento,
+   partir de la plantilla o de un ejemplo dorado (nunca un
+   `\documentclass` en blanco), usar `\icvsetup` para toda la metadata,
+   compilar con `latexmk -lualatex`, verificar el PDF visualmente y con
+   `chktex`, y dejar un `TODO` explícito -- nunca inventar -- si falta
+   algún dato de metadata.
+3. **Tu prompt solo necesita aportar lo que el agente no puede inventar:**
+   el tema/contenido, el tipo de documento, y la metadata real (código de
+   asignatura, ciclo académico, versión) si la tienes a mano.
+
+Ejemplo de prompt:
+
+> Crea un handout nuevo sobre el método de Thomas para proyección de
+> población, para ICV 442 (Acueductos y Alcantarillados), ciclo 2026
+> cuatrimestre 3. Básate en mis notas de clase [las pegas o apuntas a un
+> archivo en `legacy/`]. Guárdalo en
+> `cursos/Acueductos y Alcantarillados/Handouts/`.
+
+Cosas que el agente **no** debe asumir por su cuenta sin preguntarte
+primero (están explícitas en `CLAUDE.md`): tocar `icv.sty`, agregar un
+paquete LaTeX no listado en `docs/packages.md`, cambiar colores o
+fuentes, o hacer commit/push sin que se lo pidas.
+
+**Si usas un agente que no auto-carga `CLAUDE.md`** (ChatGPT, u otra
+herramienta sin esa convención), dilo explícitamente al inicio del
+prompt: *"Lee `CLAUDE.md` y `STYLE.md` en la raíz de este repo antes de
+hacer nada, y sigue esas reglas al pie de la letra."*
+
 ## Estructura del repo
 
 ```text
