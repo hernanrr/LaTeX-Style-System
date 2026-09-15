@@ -1,9 +1,17 @@
 # .latexmkrc -- LuaLaTeX exclusivo. Nunca pdflatex/xelatex.
 #
-# Válido en macOS y Windows (TeX Live 2024+). latexmk busca archivos
-# `.latexmkrc` subiendo desde el directorio actual hasta la raíz, así que
-# esta configuración se carga sin importar desde qué subcarpeta compiles
-# (templates/handout/, examples/, etc.) -- no hace falta `cd` a la raíz.
+# Válido en macOS y Windows (TeX Live 2024+).
+#
+# IMPORTANTE -- latexmk NO busca `.latexmkrc` hacia arriba en el árbol de
+# directorios. Solo lee, en este orden: el rc del sistema, `$HOME/.latexmkrc`,
+# y `./.latexmkrc` en el directorio actual (ver latexmk 4.88, la llamada
+# `read_first_rc_file_in_list("./.latexmkrc", "./latexmkrc")`). Por eso
+# **hay que invocar latexmk desde la raíz del repo**: desde una subcarpeta
+# este archivo no se lee, TEXINPUTS no se configura e `icv.sty` no resuelve.
+#
+#   Correcto:   latexmk templates/handout/handout.tex        (desde la raíz)
+#               make handout / make doc FILE=...
+#   Falla:      cd templates/handout && latexmk handout.tex
 use File::Basename;
 use Cwd 'abs_path';
 
@@ -18,4 +26,10 @@ $lualatex  = 'lualatex -interaction=nonstopmode -synctex=1 -halt-on-error %O %S'
 $ENV{'TEXINPUTS'} = $root . '/icv//:' . ( $ENV{'TEXINPUTS'} // '' ) . ':';
 $ENV{'BIBINPUTS'} = $root . '/bib//:' . ( $ENV{'BIBINPUTS'} // '' ) . ':';
 
-$out_dir = 'build'; # relativo al directorio desde donde se invoca latexmk/make; gitignored
+# $do_cd hace que latexmk entre a la carpeta del .tex antes de compilar, así
+# que `build/` se crea JUNTO AL DOCUMENTO y no en la raíz, sin importar desde
+# dónde se invoque. Es lo que `make clean` ya asumía al barrer los build/ de
+# templates/ y examples/.
+$do_cd = 1;
+
+$out_dir = 'build'; # relativo al .tex gracias a $do_cd; gitignored

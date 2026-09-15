@@ -7,8 +7,10 @@
 #
 # Uso:
 #   make handout        # compila templates/handout/handout.tex
+#   make pruebin         # compila templates/pruebin/pruebin.tex
 #   make assignment      # compila templates/assignment/assignment.tex
 #   make all             # compila todas las plantillas
+#   make doc FILE=<ruta> # compila cualquier .tex del repo (p.ej. de cursos/)
 #   make lint            # corre chktex sobre templates/ y examples/
 #   make clean           # borra los build/ generados
 
@@ -20,7 +22,7 @@ EXAMPLES  := $(wildcard examples/*.tex)
 NAMES     := $(basename $(notdir $(TEMPLATES)))
 EXNAMES   := $(basename $(notdir $(EXAMPLES)))
 
-.PHONY: all clean lint examples $(NAMES) $(EXNAMES)
+.PHONY: all clean lint examples doc $(NAMES) $(EXNAMES)
 
 all: $(NAMES)
 
@@ -47,6 +49,19 @@ slides: templates/slides/slides.tex
 rubric: templates/rubric/rubric.tex
 	$(LATEXMK) $<
 
+pruebin: templates/pruebin/pruebin.tex
+	$(LATEXMK) $<
+
+# Compila un .tex arbitrario desde la raíz (necesario porque latexmk no lee
+# .latexmkrc desde subcarpetas -- ver .latexmkrc). El build/ queda junto al
+# documento gracias a $$do_cd.
+#   make doc FILE="cursos/1930/1930 Hidráulica Aplicada/Pruebines/x.tex"
+doc:
+ifndef FILE
+	$(error Falta FILE. Uso: make doc FILE="ruta/al/documento.tex")
+endif
+	$(LATEXMK) "$(FILE)"
+
 lint:
 	@for f in $(TEMPLATES) $(EXAMPLES); do \
 	  echo "-- $$f --"; \
@@ -55,4 +70,4 @@ lint:
 
 clean:
 	@rm -rf build
-	@find templates examples -type d -name build -exec rm -rf {} + 2>/dev/null || true
+	@find templates examples cursos -type d -name build -exec rm -rf {} + 2>/dev/null || true

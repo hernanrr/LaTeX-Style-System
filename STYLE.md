@@ -13,10 +13,16 @@ no sobre **proceso**.
 
 - **LuaLaTeX + `latexmk` exclusivamente.** Nunca `pdflatex`, nunca `xelatex`.
   `icv.sty` rechaza compilar si no detecta LuaLaTeX.
-- Compila con `make <tipo>` desde la raíz del repo (`make handout`,
-  `make assignment`, `make handout-example`...), o con `latexmk archivo.tex`
-  directamente desde la carpeta del documento — `.latexmkrc` se autoconfigura
-  sin importar desde dónde se invoque, buscando hacia arriba desde el cwd.
+- **Compila siempre desde la raíz del repo**: `make <tipo>` (`make handout`,
+  `make assignment`, `make handout-example`...), `make doc FILE=<ruta>` para
+  cualquier otro `.tex`, o `latexmk <ruta>` directamente. **No funciona hacer
+  `cd` a la carpeta del documento**: latexmk no busca `.latexmkrc` hacia
+  arriba en el árbol — solo lee el rc del sistema, `$HOME/.latexmkrc` y
+  `./.latexmkrc` del directorio actual (verificado en latexmk 4.88). Desde una
+  subcarpeta, `TEXINPUTS` no se configura e `icv.sty` no resuelve.
+- El `build/` se genera **junto al documento**, no en la raíz: `.latexmkrc`
+  fija `$do_cd = 1`, con lo que latexmk entra a la carpeta del `.tex` antes de
+  compilar.
 - `make clean` borra los `build/` generados. Nunca commitear `build/`.
 - `make lint` corre `chktex` (higiene básica: guiones, espaciado,
   comandos huérfanos) sobre `templates/` y `examples/`, usando
@@ -250,6 +256,39 @@ opción de clase `answers`
 (`\documentclass[11pt,addpoints,answers]{exam}`) -- ver
 `\begin{solution}...\end{solution}` en el template. **No lleva
 `\DocumentMetadata`** -- ver § PDF etiquetado.
+
+### Pruebín (`templates/pruebin/pruebin.tex`)
+
+Evaluación corta calificada que se resuelve en el aula (20-30 min, una o
+dos preguntas). Sobre `scrartcl`, **no** sobre la clase `exam`: un pruebín
+no necesita puntaje automático ni selección múltiple, y sobre `scrartcl` sí
+se conserva `\DocumentMetadata` (PDF etiquetado), que `exam.cls` obliga a
+sacrificar -- ver § PDF etiquetado.
+
+Estructura esperada: cabecera de fecha/duración/puntaje en una línea →
+línea de Nombre/ID → Instrucciones (`icvnote`) → uno o dos `icvproblem` con
+incisos → anexo gráfico opcional en su propia página. **No lleva bloque de
+objetivos de aprendizaje** (a diferencia de `assignment`): es una
+evaluación puntual, no una asignación.
+
+- **Clave de respuestas**: un toggle de `etoolbox` (`icvclave`) al final del
+  archivo, no la opción `answers` de `exam.cls`. Se activa descomentando
+  `\toggletrue{icvclave}`, o sin tocar el archivo con
+  `latexmk -pretex='\def\icvclaveon{}' -usepretex -jobname=<nombre>-clave`.
+- **Incisos**: bajo PDF etiquetado (`phase-III`), `enumerate` **no** acepta
+  las claves de `enumitem` (`label=`, `itemsep=`...) -- falla con
+  «Package block Error: Some keys specified on the enumerate environment
+  are unknown». Usar `\item[\textbf{(a)}]` con etiquetas explícitas.
+- **Anexo gráfico** (diagramas, retículas de trazado): TikZ se carga
+  **local al documento** (`\usepackage{tikz}`), no en `icv.sty` -- ver
+  `docs/packages.md`. Todo diagrama lleva una descripción en prosa debajo
+  que cumple el papel del `alt=` obligatorio de `\icvincludegraphics`.
+  Si el diagrama usa exageración vertical, los símbolos (válvulas, bombas)
+  deben dibujarse en unidades absolutas (`pt`) y no en unidades de dato, o
+  salen deformados en esa misma proporción.
+
+Ejemplo dorado:
+`cursos/1930/1930 Hidráulica Aplicada/Pruebines/pruebin-01-lge-lgp.tex`.
 
 ### Project-spec (`templates/project-spec/project-spec.tex`)
 

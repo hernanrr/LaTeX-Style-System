@@ -26,10 +26,13 @@ nueva -- ver `STYLE.md` § Arquitectura para la excepción de la clase `exam`.
    `\hypersetup` a mano (ya es automático desde `\icvsetup`, ver
    `icv.sty`), nunca hardcodees el nombre de la universidad/escuela fuera
    de `\icvmaketitle`.
-5. **Compila con `latexmk -lualatex`** (`make <tipo>` desde la raíz, o
-   `latexmk archivo.tex` desde la carpeta del documento) y corrige
-   cualquier error antes de dar el documento por terminado. Un documento
-   que no compila no está listo, sin importar cuánto contenido tenga.
+5. **Compila con `latexmk -lualatex` SIEMPRE desde la raíz del repo**
+   (`make <tipo>`, o `make doc FILE=<ruta>` para un documento de `cursos/`).
+   No hagas `cd` a la carpeta del documento: latexmk no lee `.latexmkrc`
+   desde subcarpetas y la compilación falla con `icv.sty not found` -- ver
+   `STYLE.md` § Motor y compilación. Corrige cualquier error antes de dar
+   el documento por terminado: un documento que no compila no está listo,
+   sin importar cuánto contenido tenga.
 6. **Verifica el resultado visualmente** (renderiza el PDF a imagen y
    revísalo) antes de reportar que algo "ya funciona" -- un log limpio no
    garantiza que el layout se vea bien.
