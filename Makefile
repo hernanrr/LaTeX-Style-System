@@ -14,7 +14,15 @@
 #   make lint            # corre chktex sobre templates/ y examples/
 #   make clean           # borra los build/ generados
 
+# `time_it` cronometra una compilación e imprime los segundos al terminar,
+# pase o falle. Un número en pantalla convierte "esto va lento" en un dato.
 LATEXMK := latexmk
+define time_it
+@start=$$(date +%s); \
+$(LATEXMK) $(1); rc=$$?; \
+echo "[make] $$(( $$(date +%s) - $$start )) s"; \
+exit $$rc
+endef
 CHKTEX  := chktex -l .chktexrc -q
 
 TEMPLATES := $(wildcard templates/*/*.tex)
@@ -29,28 +37,28 @@ all: $(NAMES)
 examples: $(EXNAMES)
 
 $(EXNAMES): %: examples/%.tex
-	$(LATEXMK) $<
+	$(call time_it,$<)
 
 handout: templates/handout/handout.tex
-	$(LATEXMK) $<
+	$(call time_it,$<)
 
 assignment: templates/assignment/assignment.tex
-	$(LATEXMK) $<
+	$(call time_it,$<)
 
 exam: templates/exam/exam.tex
-	$(LATEXMK) $<
+	$(call time_it,$<)
 
 project-spec: templates/project-spec/project-spec.tex
-	$(LATEXMK) $<
+	$(call time_it,$<)
 
 slides: templates/slides/slides.tex
-	$(LATEXMK) $<
+	$(call time_it,$<)
 
 rubric: templates/rubric/rubric.tex
-	$(LATEXMK) $<
+	$(call time_it,$<)
 
 pruebin: templates/pruebin/pruebin.tex
-	$(LATEXMK) $<
+	$(call time_it,$<)
 
 # Compila un .tex arbitrario desde la raíz (necesario porque latexmk no lee
 # .latexmkrc desde subcarpetas -- ver .latexmkrc). El build/ queda junto al
@@ -60,7 +68,7 @@ doc:
 ifndef FILE
 	$(error Falta FILE. Uso: make doc FILE="ruta/al/documento.tex")
 endif
-	$(LATEXMK) "$(FILE)"
+	$(call time_it,"$(FILE)")
 
 lint:
 	@for f in $(TEMPLATES) $(EXAMPLES); do \

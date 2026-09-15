@@ -41,3 +41,19 @@ $do_cd = 1;
 # Los .pdf generados están en .gitignore; los de legacy/ no se tocan.
 $out_dir = '.';
 $aux_dir = 'build';
+
+# ---------------------------------------------------------------------------
+# Señal de vida
+# ---------------------------------------------------------------------------
+# Este sistema es lento por construcción: LuaLaTeX carga icv.sty, las fuentes
+# TeX Gyre y el motor de PDF etiquetado antes de mirar tu documento. Un .tex
+# VACÍO con \usepackage{icv} ya cuesta ~14 s (medido). Sin nada en pantalla eso
+# se confunde con un cuelgue, así que latexmk anuncia inicio y final.
+# Baselines medidos -- ver STYLE.md § Motor y compilación.
+#
+# latexmk ya reporta cada pasada y el motivo de cada rerun por sí solo: NO
+# silencies la compilación con `>/dev/null` -- si molesta el ruido, fíltralo
+# con grep, pero no lo descartes. Ver CLAUDE.md § Compilar.
+$compiling_cmd = 'echo "[latexmk] === compilando %T ==="';
+$success_cmd   = 'echo "[latexmk] === OK: %D ==="';
+$failure_cmd   = 'echo "[latexmk] === FALLÓ: %T -- revisa el .log en build/ ==="';

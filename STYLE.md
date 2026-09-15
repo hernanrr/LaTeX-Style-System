@@ -39,6 +39,33 @@ no sobre **proceso**.
   `.chktexrc` -- ver ese archivo para qué advertencias se silenciaron y
   por qué (todas son falsos positivos verificados, no una lista
   genérica).
+- **Cuánto debe tardar.** El sistema es lento por construcción, y no saberlo
+  lleva a confundir una compilación normal con un cuelgue. Baselines medidos
+  (macOS, TeX Live 2026, con caché de fuentes ya construida):
+
+  | Escenario | Tiempo |
+  |---|---|
+  | Sin cambios (`up-to-date`) | ~1 s |
+  | Una pasada de LuaLaTeX | ~15-20 s |
+  | Build completo desde `make clean` (3 pasadas) | ~60-80 s |
+  | `.tex` vacío con solo `\usepackage{icv}` | ~14 s |
+
+  Varían con la carga de la máquina: mediciones repetidas del mismo build
+  completo dieron 66 s y 78 s. Esos ~14 s de piso son cargar `icv.sty`, las fuentes y el etiquetado: el
+  contenido del documento apenas los mueve. El PDF etiquetado suma ~3.5 s por
+  pasada; `testphase=math` (luamml) y TikZ no cuestan nada medible --
+  **no los quites buscando velocidad, no la hay**. Si un build pasa
+  holgadamente de estos números, hay un problema real: mira el `.log` en
+  `build/`, no adivines.
+- **Nunca silencies la compilación.** `latexmk` ya reporta cada pasada y el
+  motivo de cada rerun, y `.latexmkrc` añade banners de inicio/fin/fallo.
+  Redirigir a `/dev/null` convierte una espera normal en un cuelgue aparente.
+  Si molesta el ruido, filtra con `grep`, pero no descartes la salida.
+- **Una compilación a la vez.** Varias en paralelo se disputan CPU y disco:
+  cada una tarda varias veces más y cualquier medición de tiempo que hagas
+  sobre ellas no significa nada.
+- `make` cronometra cada compilación e imprime los segundos al terminar, pase
+  o falle.
 - Probado en TeX Live 2024/2026, macOS y Windows.
 
 ## Arquitectura
