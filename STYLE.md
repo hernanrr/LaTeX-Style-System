@@ -13,16 +13,59 @@ no sobre **proceso**.
 
 - **LuaLaTeX + `latexmk` exclusivamente.** Nunca `pdflatex`, nunca `xelatex`.
   `icv.sty` rechaza compilar si no detecta LuaLaTeX.
-- Compila con `make <tipo>` desde la raíz del repo (`make handout`,
-  `make assignment`, `make handout-example`...), o con `latexmk archivo.tex`
-  directamente desde la carpeta del documento — `.latexmkrc` se autoconfigura
-  sin importar desde dónde se invoque, buscando hacia arriba desde el cwd.
-- `make clean` borra los `build/` generados. Nunca commitear `build/`.
+- **Compila siempre desde la raíz del repo**: `make <tipo>` (`make handout`,
+  `make assignment`, `make handout-example`...), `make doc FILE=<ruta>` para
+  cualquier otro `.tex`, o `latexmk <ruta>` directamente. **No funciona hacer
+  `cd` a la carpeta del documento**: latexmk no busca `.latexmkrc` hacia
+  arriba en el árbol — solo lee el rc del sistema, `$HOME/.latexmkrc` y
+  `./.latexmkrc` del directorio actual (verificado en latexmk 4.88). Desde una
+  subcarpeta, `TEXINPUTS` no se configura e `icv.sty` no resuelve.
+- **Entregables y auxiliares van separados**, ambos junto al documento
+  (`.latexmkrc` fija `$do_cd = 1`, con lo que latexmk entra a la carpeta del
+  `.tex` antes de compilar):
+
+  ```text
+  Pruebin 01/
+    pruebin-01-lge-lgp.tex       # fuente
+    pruebin-01-lge-lgp.pdf       # entregable    ($out_dir = '.')
+    build/                       # .aux .log .fls ($aux_dir = 'build')
+  ```
+
+- `make clean` borra los `build/` y los PDF generados. Nunca commitear
+  ninguno de los dos. `clean` solo toca archivos con un `.tex` hermano del
+  mismo nombre, así que no borra PDF de origen (los ensayos de `legacy/`).
 - `make lint` corre `chktex` (higiene básica: guiones, espaciado,
   comandos huérfanos) sobre `templates/` y `examples/`, usando
   `.chktexrc` -- ver ese archivo para qué advertencias se silenciaron y
   por qué (todas son falsos positivos verificados, no una lista
   genérica).
+- **Cuánto debe tardar.** El sistema es lento por construcción, y no saberlo
+  lleva a confundir una compilación normal con un cuelgue. Baselines medidos
+  (macOS, TeX Live 2026, con caché de fuentes ya construida):
+
+  | Escenario | Tiempo |
+  |---|---|
+  | Sin cambios (`up-to-date`) | ~1 s |
+  | Una pasada de LuaLaTeX | ~15-20 s |
+  | Build completo desde `make clean` (3 pasadas) | ~60-80 s |
+  | `.tex` vacío con solo `\usepackage{icv}` | ~14 s |
+
+  Varían con la carga de la máquina: mediciones repetidas del mismo build
+  completo dieron 66 s y 78 s. Esos ~14 s de piso son cargar `icv.sty`, las fuentes y el etiquetado: el
+  contenido del documento apenas los mueve. El PDF etiquetado suma ~3.5 s por
+  pasada; `testphase=math` (luamml) y TikZ no cuestan nada medible --
+  **no los quites buscando velocidad, no la hay**. Si un build pasa
+  holgadamente de estos números, hay un problema real: mira el `.log` en
+  `build/`, no adivines.
+- **Nunca silencies la compilación.** `latexmk` ya reporta cada pasada y el
+  motivo de cada rerun, y `.latexmkrc` añade banners de inicio/fin/fallo.
+  Redirigir a `/dev/null` convierte una espera normal en un cuelgue aparente.
+  Si molesta el ruido, filtra con `grep`, pero no descartes la salida.
+- **Una compilación a la vez.** Varias en paralelo se disputan CPU y disco:
+  cada una tarda varias veces más y cualquier medición de tiempo que hagas
+  sobre ellas no significa nada.
+- `make` cronometra cada compilación e imprime los segundos al terminar, pase
+  o falle.
 - Probado en TeX Live 2024/2026, macOS y Windows.
 
 ## Arquitectura
@@ -250,6 +293,39 @@ opción de clase `answers`
 (`\documentclass[11pt,addpoints,answers]{exam}`) -- ver
 `\begin{solution}...\end{solution}` en el template. **No lleva
 `\DocumentMetadata`** -- ver § PDF etiquetado.
+
+### Pruebín (`templates/pruebin/pruebin.tex`)
+
+Evaluación corta calificada que se resuelve en el aula (20-30 min, una o
+dos preguntas). Sobre `scrartcl`, **no** sobre la clase `exam`: un pruebín
+no necesita puntaje automático ni selección múltiple, y sobre `scrartcl` sí
+se conserva `\DocumentMetadata` (PDF etiquetado), que `exam.cls` obliga a
+sacrificar -- ver § PDF etiquetado.
+
+Estructura esperada: cabecera de fecha/duración/puntaje en una línea →
+línea de Nombre/ID → Instrucciones (`icvnote`) → uno o dos `icvproblem` con
+incisos → anexo gráfico opcional en su propia página. **No lleva bloque de
+objetivos de aprendizaje** (a diferencia de `assignment`): es una
+evaluación puntual, no una asignación.
+
+- **Clave de respuestas**: un toggle de `etoolbox` (`icvclave`) al final del
+  archivo, no la opción `answers` de `exam.cls`. Se activa descomentando
+  `\toggletrue{icvclave}`, o sin tocar el archivo con
+  `latexmk -pretex='\def\icvclaveon{}' -usepretex -jobname=<nombre>-clave`.
+- **Incisos**: bajo PDF etiquetado (`phase-III`), `enumerate` **no** acepta
+  las claves de `enumitem` (`label=`, `itemsep=`...) -- falla con
+  «Package block Error: Some keys specified on the enumerate environment
+  are unknown». Usar `\item[\textbf{(a)}]` con etiquetas explícitas.
+- **Anexo gráfico** (diagramas, retículas de trazado): TikZ se carga
+  **local al documento** (`\usepackage{tikz}`), no en `icv.sty` -- ver
+  `docs/packages.md`. Todo diagrama lleva una descripción en prosa debajo
+  que cumple el papel del `alt=` obligatorio de `\icvincludegraphics`.
+  Si el diagrama usa exageración vertical, los símbolos (válvulas, bombas)
+  deben dibujarse en unidades absolutas (`pt`) y no en unidades de dato, o
+  salen deformados en esa misma proporción.
+
+Ejemplo dorado:
+`cursos/1930/1930 Hidráulica Aplicada/Pruebines/Pruebin 01/pruebin-01-lge-lgp.tex`.
 
 ### Project-spec (`templates/project-spec/project-spec.tex`)
 

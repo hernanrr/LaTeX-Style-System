@@ -26,13 +26,37 @@ nueva -- ver `STYLE.md` § Arquitectura para la excepción de la clase `exam`.
    `\hypersetup` a mano (ya es automático desde `\icvsetup`, ver
    `icv.sty`), nunca hardcodees el nombre de la universidad/escuela fuera
    de `\icvmaketitle`.
-5. **Compila con `latexmk -lualatex`** (`make <tipo>` desde la raíz, o
-   `latexmk archivo.tex` desde la carpeta del documento) y corrige
-   cualquier error antes de dar el documento por terminado. Un documento
-   que no compila no está listo, sin importar cuánto contenido tenga.
+5. **Compila con `latexmk -lualatex` SIEMPRE desde la raíz del repo**
+   (`make <tipo>`, o `make doc FILE=<ruta>` para un documento de `cursos/`).
+   No hagas `cd` a la carpeta del documento: latexmk no lee `.latexmkrc`
+   desde subcarpetas y la compilación falla con `icv.sty not found` -- ver
+   `STYLE.md` § Motor y compilación. Corrige cualquier error antes de dar
+   el documento por terminado: un documento que no compila no está listo,
+   sin importar cuánto contenido tenga.
 6. **Verifica el resultado visualmente** (renderiza el PDF a imagen y
    revísalo) antes de reportar que algo "ya funciona" -- un log limpio no
    garantiza que el layout se vea bien.
+
+## Compilar: señal de vida y diagnóstico
+
+Una compilación normal de este sistema tarda decenas de segundos. Sin salida
+en pantalla eso es indistinguible de un cuelgue -- y ese fue un incidente
+real, no una hipótesis.
+
+- **Nunca redirijas la compilación a `/dev/null`.** `latexmk` reporta cada
+  pasada y el motivo de cada rerun, y `.latexmkrc` añade banners
+  `[latexmk] === compilando/OK/FALLÓ ===`. Si la salida molesta, fíltrala
+  con `grep`; no la descartes.
+- **Compila un documento a la vez.** Varias compilaciones en paralelo se
+  disputan CPU y disco, y cualquier medición de tiempo sobre ellas es basura.
+- **Conoce el baseline antes de alarmarte** (tabla en `STYLE.md` § Motor y
+  compilación): ~1 s sin cambios, ~15-20 s una pasada, ~60-80 s un build
+  completo desde `make clean`. Si se pasa holgadamente, lee el `.log` en
+  `build/`; no adivines la causa.
+- **No diagnostiques rendimiento con una sola medición.** La primera
+  compilación tras `make clean`, o con la caché de fuentes fría, o con otra
+  compilación corriendo al lado, da números que no se parecen a los reales.
+  Mide en caliente, en serie, y repite.
 
 ## Si falta metadata
 

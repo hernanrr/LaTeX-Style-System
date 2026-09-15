@@ -15,6 +15,11 @@
 *.xdv
 build/
 
+# PDF generados. Se acotan a las carpetas donde se compila: legacy/ tiene
+# PDF versionados a propósito (ensayos de referencia) y no deben ignorarse.
+templates/**/*.pdf
+examples/*.pdf
+
 # --- Config local por máquina (ruta del logo institucional, etc.) ---
 # No se redistribuye el logo/manual de marca vía git; cada máquina
 # define su propia ruta en icv/icv-local.cfg.tex (ver icv/icv-local.cfg.tex.example).

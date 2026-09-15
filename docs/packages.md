@@ -42,7 +42,14 @@ porque ningún template los necesita aún. Al construir `exam`,
 `project-spec` o `slides`, evaluar si hacen falta -- no agregarlos por
 adelantado:
 
-- `pgfplots`, `pgfplotstable`, `tikz` -- gráficas y esquemas
+- `pgfplots`, `pgfplotstable` -- gráficas
+- `tikz` -- esquemas y diagramas. **Se carga local al documento**
+  (`\usepackage{tikz}` en el preámbulo del `.tex`), no en `icv.sty`: hasta
+  ahora solo lo necesita el anexo gráfico de `pruebin`, y `icv.sty` está
+  cerrado. Si más tipos de documento lo requieren, promoverlo al núcleo.
+  Nota: `tcolorbox` ya arrastra `tikz` de forma indirecta, pero los
+  documentos que lo usan lo declaran de todos modos, para dejar la
+  dependencia explícita.
 - `tabularx` -- tablas de ancho fijo
 - `pdflscape` -- anexos apaisados
 - `pdfpages` -- compilados/anexos de PDFs externos

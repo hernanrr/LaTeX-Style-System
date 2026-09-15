@@ -121,6 +121,11 @@
   output-decimal-marker = {.},
   group-separator       = {,},
   group-minimum-digits  = 4,
+  % Sin esto, siunitx aplica el separador de miles TAMBIÉN a la parte
+  % decimal: \num{0.1810} sale "0.181,0" y \num{16.6235} sale "16.623,5".
+  % `integer` limita el agrupamiento a la parte entera, que es lo que se
+  % quiere (\num{112400} -> "112,400", \num{0.1810} -> "0.1810").
+  group-digits          = integer,
   per-mode              = symbol,
 }
 

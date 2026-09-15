@@ -1,0 +1,93 @@
+\DocumentMetadata{lang=es-DO,testphase={phase-III,math}}
+% Plantilla de PRUEBÍN -- evaluación corta calificada (20-30 min, una o dos
+% preguntas). Ver STYLE.md § Reglas por tipo de documento.
+%
+% Sobre scrartcl, NO sobre la clase exam: un pruebín no necesita puntaje
+% automático ni selección múltiple, y sobre scrartcl sí se conserva el PDF
+% etiquetado (\DocumentMetadata), que exam.cls obliga a sacrificar.
+%
+% Diferencia con `assignment`: el pruebín se resuelve en el aula, así que
+% lleva cabecera de fecha/duración/puntaje y línea de Nombre/ID, y NO lleva
+% bloque de objetivos de aprendizaje.
+\documentclass[11pt]{scrartcl}
+\usepackage{icv}
+
+% Clave de respuestas. Dos formas de activarla:
+%   1. Descomentar \toggletrue{icvclave} aquí abajo, o
+%   2. Sin tocar el archivo, desde la raíz del repo:
+%      latexmk -pretex='\def\icvclaveon{}' -usepretex \
+%              -jobname=<nombre>-clave templates/pruebin/pruebin.tex
+\newtoggle{icvclave}
+\ifdefined\icvclaveon\toggletrue{icvclave}\fi
+%\toggletrue{icvclave}
+
+% -----------------------------------------------------------------------
+% Metadata -- reemplaza estos valores para cada pruebín nuevo.
+% -----------------------------------------------------------------------
+\icvsetup{
+  asignatura  = {ICV 441-T -- Hidráulica Aplicada},
+  titulocorto = {Pruebín N -- Tema},
+  titulo      = {Pruebín N},
+  subtitulo   = {Tema específico que se evalúa (opcional)},
+  profesor    = {Dr. Ricardo Hernández Moreira},
+  periodo     = \icvciclo{2026}{3},
+  version     = {v1},
+}
+
+\begin{document}
+\icvmaketitle
+
+% -- Cabecera del pruebín: fecha, duración y puntaje en una sola línea. --
+\vspace{-6pt}
+\begin{center}\small
+  \textbf{Fecha:} TODO: falta fecha \;\textbullet\;
+  \textbf{Duración:} TODO: falta duración \;\textbullet\;
+  \textbf{Puntaje total:} TODO: falta puntaje total
+\end{center}
+
+\vspace{-4pt}
+\makebox[\linewidth][l]{%
+  \textbf{Nombre:}\hspace{0.5em}\rule{0.46\linewidth}{0.4pt}%
+  \hspace{1em}\textbf{ID:}\hspace{0.5em}\hrulefill%
+}
+
+\begin{icvnote}[Instrucciones]
+Material permitido, valor de las constantes que deben usar, formato de
+respuesta y cualquier otra regla. Si el pruebín pide un trazado o un
+dibujo, especifica aquí cómo distinguir cada línea \textbf{por trazo y por
+rótulo de texto}, nunca solo por color --- ver STYLE.md § Accesibilidad
+para daltonismo.
+\end{icvnote}
+
+\begin{icvproblem}[points=20]{Título del problema}
+Enunciado. Los datos numéricos van en una tabla con columnas \texttt{S} de
+siunitx; los números, siempre con \verb|\num|/\verb|\qty|, nunca con formato
+manual.
+
+% Nota: bajo PDF etiquetado (phase-III), el entorno enumerate NO acepta las
+% claves de enumitem (label=, itemsep=...). Se usan etiquetas explícitas.
+\begin{enumerate}
+  \item[\textbf{(a)}] \textbf{(8 puntos)} Primer inciso.
+  \item[\textbf{(b)}] \textbf{(4 puntos)} Segundo inciso.
+  \item[\textbf{(c)}] \textbf{(8 puntos)} Tercer inciso.
+\end{enumerate}
+\end{icvproblem}
+
+% -- Anexo gráfico opcional (diagrama, retícula de trazado, tabla para
+%    llenar a mano). Va en su propia página; requiere \usepackage{tikz} en
+%    el preámbulo. Ver el ejemplo dorado:
+%    cursos/1930/1930 Hidráulica Aplicada/Pruebines/pruebin-01-lge-lgp.tex
+% \newpage
+% ...
+
+% -----------------------------------------------------------------------
+% Clave de respuestas -- solo si \toggletrue{icvclave} está activo.
+% -----------------------------------------------------------------------
+\iftoggle{icvclave}{%
+\newpage
+\begin{icvnote}[Clave de respuestas]
+Desarrollo y resultados numéricos de cada inciso.
+\end{icvnote}
+}{}
+
+\end{document}
