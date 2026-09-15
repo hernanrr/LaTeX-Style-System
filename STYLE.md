@@ -20,10 +20,20 @@ no sobre **proceso**.
   arriba en el árbol — solo lee el rc del sistema, `$HOME/.latexmkrc` y
   `./.latexmkrc` del directorio actual (verificado en latexmk 4.88). Desde una
   subcarpeta, `TEXINPUTS` no se configura e `icv.sty` no resuelve.
-- El `build/` se genera **junto al documento**, no en la raíz: `.latexmkrc`
-  fija `$do_cd = 1`, con lo que latexmk entra a la carpeta del `.tex` antes de
-  compilar.
-- `make clean` borra los `build/` generados. Nunca commitear `build/`.
+- **Entregables y auxiliares van separados**, ambos junto al documento
+  (`.latexmkrc` fija `$do_cd = 1`, con lo que latexmk entra a la carpeta del
+  `.tex` antes de compilar):
+
+  ```text
+  Pruebin 01/
+    pruebin-01-lge-lgp.tex       # fuente
+    pruebin-01-lge-lgp.pdf       # entregable    ($out_dir = '.')
+    build/                       # .aux .log .fls ($aux_dir = 'build')
+  ```
+
+- `make clean` borra los `build/` y los PDF generados. Nunca commitear
+  ninguno de los dos. `clean` solo toca archivos con un `.tex` hermano del
+  mismo nombre, así que no borra PDF de origen (los ensayos de `legacy/`).
 - `make lint` corre `chktex` (higiene básica: guiones, espaciado,
   comandos huérfanos) sobre `templates/` y `examples/`, usando
   `.chktexrc` -- ver ese archivo para qué advertencias se silenciaron y
@@ -288,7 +298,7 @@ evaluación puntual, no una asignación.
   salen deformados en esa misma proporción.
 
 Ejemplo dorado:
-`cursos/1930/1930 Hidráulica Aplicada/Pruebines/pruebin-01-lge-lgp.tex`.
+`cursos/1930/1930 Hidráulica Aplicada/Pruebines/Pruebin 01/pruebin-01-lge-lgp.tex`.
 
 ### Project-spec (`templates/project-spec/project-spec.tex`)
 

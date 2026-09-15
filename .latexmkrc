@@ -32,4 +32,12 @@ $ENV{'BIBINPUTS'} = $root . '/bib//:' . ( $ENV{'BIBINPUTS'} // '' ) . ':';
 # templates/ y examples/.
 $do_cd = 1;
 
-$out_dir = 'build'; # relativo al .tex gracias a $do_cd; gitignored
+# Entregables separados de la basura de compilación:
+#   $out_dir = '.'      -> el .pdf queda JUNTO al .tex, listo para abrir/imprimir
+#   $aux_dir = 'build'  -> .aux/.log/.fls/.fdb_latexmk se esconden en build/
+# Ambos son relativos al .tex gracias a $do_cd. Verificado en latexmk 4.88:
+# compila en 3 pasadas y la segunda invocación reporta up-to-date -- la
+# combinación aux_dir != out_dir no provoca bucle de recompilación aquí.
+# Los .pdf generados están en .gitignore; los de legacy/ no se tocan.
+$out_dir = '.';
+$aux_dir = 'build';

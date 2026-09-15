@@ -71,3 +71,9 @@ lint:
 clean:
 	@rm -rf build
 	@find templates examples cursos -type d -name build -exec rm -rf {} + 2>/dev/null || true
+	@# Borra los entregables generados y los auxiliares sueltos. Solo toca los
+	@# que tienen un .tex hermano del mismo nombre, así que nunca borra un PDF
+	@# de origen (p.ej. los ensayos versionados de legacy/, fuera de alcance).
+	@find templates examples cursos -name '*.tex' 2>/dev/null | while read -r f; do \
+	  rm -f "$${f%.tex}.pdf" "$${f%.tex}-clave.pdf" "$${f%.tex}.synctex.gz" "$${f%.tex}.aux"; \
+	done
