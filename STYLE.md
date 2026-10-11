@@ -158,6 +158,10 @@ comunes -- y tritanopia -- azul-amarillo, rara). Verificado por simulación
 ## Logo
 
 - Aparece **solo en la portada** (`\icvmaketitle`), nunca en cada página.
+  Excepción: láminas de referencia de una sola página sin portada (p.ej.
+  el diagrama de Moody) lo llevan en el pie, junto a la autoría y la
+  licencia, con la nota de que el logo no está cubierto por la licencia
+  CC del documento.
 - **Nunca se redistribuye dentro del repo** — es propiedad de PUCMM y el
   repo es público. Cada máquina configura su propia ruta en
   `icv/icv-local.cfg.tex` (gitignored; plantilla en

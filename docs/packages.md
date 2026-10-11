@@ -42,7 +42,16 @@ porque ningún template los necesita aún. Al construir `exam`,
 `project-spec` o `slides`, evaluar si hacen falta -- no agregarlos por
 adelantado:
 
-- `pgfplots`, `pgfplotstable` -- gráficas
+- `pgfplots`, `pgfplotstable` -- gráficas. `pgfplots` ya se usa **local al
+  documento** en el diagrama de Moody
+  (`cursos/1930/Hidráulica Básica/Diagrama de Moody/`). Ojo: en TeX Live
+  2026, `xmode=log` dentro de un estilo con nombre falla («I do not know
+  the key '/tikz/xmode'», reproducido con pgfplots solo, sin `icv` ni PDF
+  etiquetado) y dentro de un `\pgfplotsset` se ignora; ponerlo en línea
+  en las opciones de cada `axis`.
+- `ccicons` -- íconos Creative Commons (licencia de láminas publicables),
+  local al documento, igual que el diagrama de Moody. `doclicense` está
+  aprobado como alternativa pero no se usa todavía.
 - `tikz` -- esquemas y diagramas. **Se carga local al documento**
   (`\usepackage{tikz}` en el preámbulo del `.tex`), no en `icv.sty`: hasta
   ahora solo lo necesita el anexo gráfico de `pruebin`, y `icv.sty` está
