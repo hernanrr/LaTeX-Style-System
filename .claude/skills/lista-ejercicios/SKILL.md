@@ -37,8 +37,13 @@ Pregunta con AskUserQuestion solo lo que no esté en el mensaje del usuario:
 - **Sin FlowLab**: excluir todo problema que lo mencione **o lleve el ícono**
   (el ícono es una imagen; el texto extraído no lo muestra -- búscalo en el
   PDF, p.ej. con `pdfimages -list`, o por el hueco tras el número).
-- **Sin software obligatorio**: excluir estudios paramétricos que piden EES o
-  computadora.
+- **Problemas con ícono de EES permitidos**: márcalos con «†» (macro local
+  `\comp`, escrita `\comp{}` antes de `&` para no disparar el aviso 1 de
+  chktex) y explica en las instrucciones que se resuelven en Excel, GeoGebra
+  o Python (cuaderno de Jupyter o de marimo), entregando la hoja o el
+  cuaderno. El ícono de EES es un dibujo vectorial: `pdfimages` no lo lista;
+  se ve como un hueco tras el número o renderizando la página. FlowLab sigue
+  excluido.
 - **SI** preferente; unidades inglesas («I»/«E») solo si no hay alternativa.
 - Problemas conceptuales («C») permitidos con moderación.
 - **No transcribir enunciados ni figuras** (derechos de autor): solo
