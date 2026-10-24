@@ -284,6 +284,13 @@ Estructura esperada: Objetivos de aprendizaje → Introducción → desarrollo
 Estructura esperada: Objetivos de aprendizaje → Instrucciones → Problemas
 (`icvproblem`, con o sin `points=`).
 
+**Lista maestra de ejercicios** (variante de assignment): referencias a
+problemas de libros de texto (libro + número + enfoque, sin transcribir
+enunciados), una tabla por subtema del programa, en vez de `icvproblem`.
+Flujo y criterios en el skill `.claude/skills/lista-ejercicios/`. Ejemplo
+dorado:
+`cursos/1930/Hidráulica Básica/Assignments/lista-maestra-ejercicios-1930-hidraulica-basica.tex`.
+
 ### Exam (`templates/exam/exam.tex`)
 
 Usa la clase `exam` (no `scrartcl`), que también carga `icv.sty` -- ver
