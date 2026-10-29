@@ -287,7 +287,9 @@
   \begin{tabular}{ll}
     \toprule
     \textbf{Profesor:} & \icv@profesor \\
-    \textbf{Período académico:} & \icv@periodo \\
+    % Fila opcional: un documento que no cambia de un período a otro
+    % (p.ej. un handout reutilizable) puede omitir periodo.
+    \ifdefempty{\icv@periodo}{}{\textbf{Período académico:} & \icv@periodo \\}
     \textbf{Versión:} & \icv@version \\
     \bottomrule
   \end{tabular}

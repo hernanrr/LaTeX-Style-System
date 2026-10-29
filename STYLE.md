@@ -195,6 +195,11 @@ comunes -- y tritanopia -- azul-amarillo, rara). Verificado por simulación
   el punto conocido Ciclo 1930 = sep-dic 2026 (dato institucional, no
   inventado) -- ver el comentario junto a `\icvciclo` en `icv.sty` si
   hace falta ajustarla.
+- **Período opcional en material reutilizable**: un documento que se
+  reutiliza sin cambios de un período a otro (p.ej. los handouts de
+  ejemplos resueltos) puede omitir `periodo`; `\icvmaketitle` entonces no
+  imprime esa fila. Omitirlo es una decisión explícita, no un dato
+  faltante: no lleva `TODO`.
 - **Versión**: contador simple `vN`, reiniciado en cada período académico
   nuevo (no es una fecha ni un hash).
 - Códigos canónicos de asignatura:
