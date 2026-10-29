@@ -249,8 +249,40 @@ comunes -- y tritanopia -- azul-amarillo, rara). Verificado por simulación
   El valor numérico va crudo (`112400`), sin comas ni formato manual — la
   coma de miles la pone `\sisetup{group-separator={,}}`, ya configurado en
   `icv.sty`.
+- Porcentajes: `\num{98}\,\%`, no `\qty{98}{\percent}`. Bajo el PDF
+  etiquetado (luamml), el `%` dentro de matemática rompe la compilación
+  al releer el archivo de MathML («File ended while scanning use of
+  \mml»).
 - No escribir números con formato manual (`112,400` como texto literal) en
   ningún lugar del documento; siempre `\num{112400}` o una columna `S`.
+
+## Convenciones de notación (hidráulica)
+
+Preferencias del profesor para todo el material de hidráulica (handouts,
+asignaciones, exámenes), fijadas en la revisión de los handouts de la
+Unidad I de ICV 441-T. Un documento nuevo las sigue desde el principio.
+
+- **Nombres**: «número de Reynolds» en prosa (no «el Reynolds»; $\mathrm{Re}$
+  en las ecuaciones); «ecuación de Colebrook--White»; «ecuación de Swamee
+  y Jain» (no «fórmula»); el límite de turbulencia completa es la
+  «ecuación de Von Kármán» para tubería rugosa. $\varepsilon$ es la
+  rugosidad absoluta y $\varepsilon/D$ la relativa; no se usa $k_s$ para
+  la relativa.
+- **Pérdidas locales**: cada accesorio produce $h_k = K_L V^2/2g$; su suma
+  es $\sum h_k$ (no $h_m$). La pérdida total es $h_L = h_f + \sum h_k$.
+- **Área**: $\frac{\pi}{4}D^2$, no $\frac{\pi D^2}{4}$.
+- **Métodos iterativos**: «iteraciones», no «vueltas». Se itera hasta una
+  tolerancia fijada de antemano, y se comenta que más cifras que las que
+  justifica el ajuste empírico (y la incertidumbre de $\varepsilon$) son
+  precisión aparente.
+- **Continuidad en los nodos**: convención de volumen de control. Lo que
+  sale del nodo es positivo, lo que entra es negativo y la demanda sale
+  (positiva): $\sum Q_{\text{sale}} - \sum Q_{\text{entra}} + q_j = 0$. En
+  forma matricial, la matriz de incidencia lleva $+1$ si la tubería sale
+  del nodo y $-1$ si llega. En redes, las pérdidas se escriben
+  $KQ\lvert Q\rvert$ para que el sentido del flujo salga de la solución.
+- **Tablas de datos de redes**: tuberías y nodos en tablas separadas, no
+  en una sola tabla con columnas de ambos.
 
 ## Citas (opt-in)
 
@@ -283,6 +315,12 @@ encaja en `icvnote`/`icvwarning`, es una señal para extender `icv.sty`
 Estructura esperada: Objetivos de aprendizaje → Introducción → desarrollo
 (Ecuaciones/Procedimiento) → Ejemplo resuelto → Observaciones de uso. Ver
 `examples/handout-example.tex` para un caso real completo.
+
+Los handouts de ejemplos resueltos llevan, justo después de los
+objetivos, un `icvnote` «Cómo aprovechar este handout» que recomienda
+rehacer el ejemplo a mano o en Excel y comparar cada resultado
+intermedio. Son material reutilizable: omiten `periodo` (ver
+§ Metadata).
 
 ### Assignment (`templates/assignment/assignment.tex`)
 
