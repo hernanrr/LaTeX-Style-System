@@ -9,7 +9,7 @@ Produce un `handout` con una tabla por unidad del programa: *Tema | libro
 base | lecturas complementarias*, cada celda con sección y páginas del libro
 **impreso**. Es el trabajo de catalogar y **verificar páginas** lo que vale;
 el `.tex` es corto. Ejemplo de referencia (léelo antes de escribir nada):
-`cursos/1930/Hidráulica Básica/Handouts/lista-lectura-1930-hidraulica-basica.tex`.
+`cursos/1930/Hidráulica Básica/Handouts/Lista de lectura/lista-lectura-1930-hidraulica-basica.tex`.
 
 Sigue también `CLAUDE.md` y `STYLE.md`; este skill no los reemplaza.
 
@@ -73,7 +73,7 @@ Pregunta con AskUserQuestion solo lo que no esté en el mensaje del usuario:
    datos de la página de derechos (ISBN solo si está impreso), comentario
    de procedencia y de la diferencia con el programa. Si la edición
    difiere, clave nueva (`white2011` junto a `white2016`).
-6. **Escribe** `cursos/<ciclo>/<asignatura>/Handouts/lista-lectura-<ciclo>-<slug>.tex`
+6. **Escribe** `cursos/<ciclo>/<asignatura>/Handouts/Lista de lectura/lista-lectura-<ciclo>-<slug>.tex`
    copiando la estructura del ejemplo: `\usepackage[biblatex]{icv}` +
    `\addbibresource{referencias.bib}`; `icvobjectives`; introducción con
    `icvnote` «Cómo usar esta lista»; tabla de libros (clave, `\textcite`,

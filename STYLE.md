@@ -327,7 +327,7 @@ tabla *Tema | libro base | lecturas complementarias* con sección y páginas
 del libro impreso, 1-3 complementarias por tema. Material reutilizable:
 omite `periodo`. Flujo y criterios en el skill
 `.claude/skills/lista-lectura/`. Ejemplo dorado:
-`cursos/1930/Hidráulica Básica/Handouts/lista-lectura-1930-hidraulica-basica.tex`.
+`cursos/1930/Hidráulica Básica/Handouts/Lista de lectura/lista-lectura-1930-hidraulica-basica.tex`.
 
 ### Assignment (`templates/assignment/assignment.tex`)
 
