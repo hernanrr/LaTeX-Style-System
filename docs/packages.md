@@ -48,7 +48,11 @@ adelantado:
   2026, `xmode=log` dentro de un estilo con nombre falla («I do not know
   the key '/tikz/xmode'», reproducido con pgfplots solo, sin `icv` ni PDF
   etiquetado) y dentro de un `\pgfplotsset` se ignora; ponerlo en línea
-  en las opciones de cada `axis`.
+  en las opciones de cada `axis`. También se usa local en los handouts de
+  máquinas hidráulicas (curvas de bombas, curva del sistema) con
+  `\usepackage{pgfplots}` y `\pgfplotsset{compat=1.18}`; la leyenda va
+  debajo del gráfico y cada figura lleva su descripción en prosa (ver
+  `STYLE.md` § Figuras generadas).
 - `ccicons` -- íconos Creative Commons (licencia de láminas publicables),
   local al documento, igual que el diagrama de Moody. `doclicense` está
   aprobado como alternativa pero no se usa todavía.
@@ -58,7 +62,9 @@ adelantado:
   cerrado. Si más tipos de documento lo requieren, promoverlo al núcleo.
   Nota: `tcolorbox` ya arrastra `tikz` de forma indirecta, pero los
   documentos que lo usan lo declaran de todos modos, para dejar la
-  dependencia explícita.
+  dependencia explícita. `tikz` no trae la librería `calc`: sin
+  `\usetikzlibrary{calc}`, `($(A)+(1,0)$)` falla; basta con coordenadas de
+  pgfmath, `({x+r*cos(a)},{y+r*sin(a)})`.
 - `tabularx` -- tablas de ancho fijo
 - `pdflscape` -- anexos apaisados
 - `pdfpages` -- compilados/anexos de PDFs externos

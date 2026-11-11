@@ -229,6 +229,37 @@ comunes -- y tritanopia -- azul-amarillo, rara). Verificado por simulación
 - `alt=` es obligatorio: sin él, la compilación falla con un error
   explícito. No es opcional ni se puede omitir "por ahora".
 
+### Figuras generadas (pgfplots, TikZ)
+
+Las gráficas y esquemas que se dibujan en el propio documento no pasan por
+`\icvincludegraphics`, así que no tienen `alt=`. Su equivalente es una
+**descripción en prosa dentro del entorno `figure`**, justo debajo del
+título, en letra pequeña y justificada. Va *dentro* del `figure` para que
+nunca se separe de su figura cuando LaTeX la mueve de página, y se
+encabeza con «Descripción.» (no con el número, que el título ya da):
+
+```latex
+\begin{figure}[htbp]
+  \centering
+  \begin{tikzpicture} ... \end{tikzpicture}
+  \caption{Título de la figura.}
+  \label{fig:ejemplo}
+  \par\smallskip
+  {\small\leftskip=0pt\rightskip=0pt\parfillskip=0pt plus 1fil
+   \noindent\emph{Descripción.} Qué muestra la figura: ejes, curvas,
+   valores clave y dónde se cruzan.\par}
+\end{figure}
+```
+
+Los tres `\...skip` devuelven el párrafo a justificado (`\centering` lo
+deja centrado). La descripción da los números que importan (valores
+inicial y final, cruces, puntos marcados), no solo la forma. Las leyendas
+de pgfplots van debajo del gráfico
+(`legend style={at={(0.5,-0.2)}, anchor=north}`) para no tapar las curvas,
+y las curvas se distinguen también por trazo y marca, no solo por color
+(ver § Accesibilidad para daltonismo). `pgfplots` y `tikz` se cargan
+locales al documento (ver `docs/packages.md`).
+
 ## Unidades y tablas numéricas
 
 - **siunitx v3 exclusivamente** — `\qty{}{}`, `\unit{}`, `\num{}`. Nunca
@@ -252,9 +283,30 @@ comunes -- y tritanopia -- azul-amarillo, rara). Verificado por simulación
 - Porcentajes: `\num{98}\,\%`, no `\qty{98}{\percent}`. Bajo el PDF
   etiquetado (luamml), el `%` dentro de matemática rompe la compilación
   al releer el archivo de MathML («File ended while scanning use of
-  \mml»).
+  \mml») o con «Incompatible glue units». Esto cubre tres casos que ya
+  fallaron:
+  - **Nunca dentro de `$…$`**: `$\eta=\num{68.4}\,\%$` falla. Se saca del
+    modo matemático (`una eficiencia de \num{68.4}\,\%`) o se escribe el
+    valor decimal (`$\eta=\num{0.684}$`).
+  - **Encabezados de tabla**: `\unit{\percent}` también falla. Se escribe
+    `{$\eta$ (\%)}` en texto plano.
+  - Una columna `S` de porcentajes lleva la unidad en el encabezado, no en
+    cada celda.
 - No escribir números con formato manual (`112,400` como texto literal) en
   ningún lugar del documento; siempre `\num{112400}` o una columna `S`.
+
+### Títulos de tabla
+
+- El título va **arriba** de la tabla y se llama «Tabla», no «Cuadro»
+  (APA 7; `icv.sty` carga babel con `es-tabla`). En el texto se escribe
+  «tabla~\ref{tab:...}» en minúscula.
+- El espacio entre el título y la tabla lo fija `icv.sty`
+  (`\captionsetup[table]{belowskip=8pt}`). Es `\belowcaptionskip`, que
+  vale 0 pt por defecto, porque el título está arriba; la opción `skip=`
+  de `caption` no tiene efecto en este sistema (KOMA-Script y PDF
+  etiquetado), y `\setlength{\belowcaptionskip}{...}` global ensancharía
+  también el espacio bajo las figuras. No se parchea por documento con
+  `\vspace`.
 
 ## Convenciones de notación (hidráulica)
 
@@ -284,6 +336,33 @@ Unidad I de ICV 441-T. Un documento nuevo las sigue desde el principio.
 - **Tablas de datos de redes**: tuberías y nodos en tablas separadas, no
   en una sola tabla con columnas de ambos.
 
+### Máquinas hidráulicas (bombas y turbinas)
+
+Fijadas al escribir la serie de máquinas hidráulicas de ICV 441-T.
+
+- **Nombres**: «altura dinámica total» (TDH); «altura estática»
+  $H_{\mathrm{est}}$; «altura de cierre» (la altura a caudal nulo);
+  «punto de operación» (intersección de la curva de la bomba y la del
+  sistema); «punto de máxima eficiencia» (BEP, se define la primera vez);
+  «velocidad específica» $n_s$ y $\omega_s$; NPSHA (disponible) y NPSHR
+  (requerido); «curva del sistema».
+- **Coeficiente de pérdida de una válvula**: $K_{L,\mathrm{vál}}$, de la
+  misma familia que los $K_L$ de los accesorios. $K_v$ queda reservado al
+  coeficiente de caudal de los catálogos ($Q=K_v\sqrt{\Delta p}$); no se usa
+  para otra cosa.
+- **Números adimensionales con nombre propio** se nombran en prosa la
+  primera vez: «número de Froude $F_D$», «número de Reynolds».
+- **Velocidad específica**: siempre se dice en qué sistema de unidades
+  está ($n_s^{\mathrm{SI}}$: rpm, m³/s, m; $n_s^{\mathrm{US}}$: rpm, gpm, pies;
+  $n_s^{\mathrm{US}}=51.64\,n_s^{\mathrm{SI}}$). Un valor sin unidades no es
+  comparable.
+- **Eficiencias**: en fórmulas, el valor decimal ($\eta=\num{0.684}$); en
+  prosa, el porcentaje (`\num{68.4}\,\%`). Ver § Unidades.
+- **Datos de catálogo**: se dice de qué ficha salen, para qué velocidad y
+  diámetro de impulsor valen, y qué se calculó (p.ej. $\eta=\rho gQH/P$) y
+  qué se leyó. Los datos de un ejemplo inventado se declaran como tales en
+  una nota o advertencia del handout.
+
 ## Citas (opt-in)
 
 ```latex
@@ -292,7 +371,25 @@ Unidad I de ICV 441-T. Un documento nuevo las sigue desde el principio.
 
 - Activa `biblatex` + `biber`, estilo **APA 7**, español.
 - Opt-in por documento — la mayoría de handouts/asignaciones no citan.
-- `.bib` compartido entre materias: `bib/` (pendiente de poblar).
+- `.bib` compartido entre materias: `bib/referencias.bib`. `.latexmkrc` ya
+  agrega `bib/` a `BIBINPUTS`; el documento solo declara
+  `\addbibresource{referencias.bib}` y, al final,
+  `\printbibliography[title={Referencias}]`.
+- **Cómo citar**: `\parencite[p.\,10.9]{clave}` para «(Autor, año, p. 10.9)»
+  y `\textcite[ec.\,10.32]{clave}` para «Autor (año, ec. 10.32)». La
+  página o ecuación va entre corchetes; en un libro con paginación por
+  capítulo (p.ej. 10.14) se cita tal como se imprime.
+- **Una figura tomada de otra obra** se cita con las dos fuentes: «De
+  \textcite[cap.\,10]{original}, tomada de \textcite[fig.\,12.11]{intermedia}»,
+  y ambas entradas van en el `.bib`. Si no se ha visto la fuente original, se
+  anota en un comentario del `.bib`.
+- **Si la cita que da una fuente no coincide con el ejemplar en mano**
+  (autores, capítulo, obra contenedora), se usa lo que dice el ejemplar y se
+  deja la discrepancia en un comentario junto a la entrada del `.bib`. No se
+  silencia ni se «corrige» a memoria.
+- El `.bib` solo lleva metadatos de citas; no se sube ninguna figura ni
+  extracto de libros al repo público. Las figuras de terceros que un
+  material necesite viven en el repo privado de `cursos/`.
 
 ## Entornos semánticos disponibles
 
@@ -321,6 +418,26 @@ objetivos, un `icvnote` «Cómo aprovechar este handout» que recomienda
 rehacer el ejemplo a mano o en Excel y comparar cada resultado
 intermedio. Son material reutilizable: omiten `periodo` (ver
 § Metadata).
+
+Los handouts de una serie con ejemplo numérico (p.ej. la serie de
+máquinas hidráulicas de ICV 441-T) añaden, además:
+
+- **Problemas propuestos**, entre el ejemplo resuelto y las observaciones,
+  con la respuesta aproximada entre paréntesis al final de cada enunciado
+  numérico: `(Respuesta: aprox.\ \qty{25.9}{\liter\per\second}.)`. Una
+  lista `enumerate` simple, sin claves de `enumitem` (ver § PDF etiquetado).
+- **Referencias**, al final, con `\printbibliography[title={Referencias}]`
+  cuando el handout cita (ver § Citas).
+- Un **bloque de comentario al inicio del `.tex`**, antes de
+  `\documentclass`, con: de dónde salen los datos del ejemplo, qué supuestos
+  son del handout y no de una fuente, y la línea de compilación
+  (`make doc FILE=...`). Las cifras del ejemplo salen de un script fuera
+  del repo; el comentario avisa de que, si cambia un dato, hay que
+  recalcular todo.
+- **Hilo conductor**: si varios handouts de la serie comparten datos (la
+  bomba ANDRITZ ACP65-330.4S, el sistema de tuberías), cada uno los
+  repite o los remite por número de handout; no se asume que el lector
+  tiene los demás a mano.
 
 **Lista de lectura** (variante de handout): por unidad del programa, una
 tabla *Tema | libro base | lecturas complementarias* con sección y páginas
@@ -455,5 +572,12 @@ ni warnings, portada + objetivos + frame con revelado incremental
 - El soporte de etiquetado (`testphase=math`) es experimental y puede
   emitir warnings benignos de KOMA-Script sobre `\@startsection` — no son
   errores, no bloquean, no hace falta perseguirlos.
+- **Matemática en títulos de sección**: un `\section{Teorema $\Pi$ ...}`
+  rompe el marcador del PDF («Improper alphabetic constant»). Se escribe
+  `\section{Teorema \texorpdfstring{$\Pi$}{Pi} de Buckingham}`.
+- **Un `.aux` o `-luamml-mathml.html` truncado** (por una compilación
+  interrumpida o fallida) hace fallar la pasada siguiente con «File ended
+  while scanning use of \mml». Se borra el `build/` de ese documento y se
+  recompila; no es un error del contenido.
 - Exportar a HTML: descartado por ahora ("algún día", no un requisito
   activo de este sistema).

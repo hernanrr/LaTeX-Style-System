@@ -53,7 +53,8 @@
 % 3. Paquetes núcleo
 % ---------------------------------------------------------------------------
 \RequirePackage{fontspec}
-\RequirePackage[spanish,es-noshorthands]{babel}
+% es-tabla: «Tabla» en vez de «Cuadro» en los títulos de tabla (APA 7 usa «tabla»).
+\RequirePackage[spanish,es-noshorthands,es-tabla]{babel}
 \RequirePackage{geometry}
 \RequirePackage[expansion=false]{microtype}
 % ltx-talk ya carga amsmath+mathtools y matemática completa vía
@@ -74,6 +75,11 @@
 \RequirePackage[dvipsnames,table]{xcolor}
 \RequirePackage[breakable]{tcolorbox}
 \RequirePackage{caption}
+% Los títulos de tabla van arriba, y el espacio título--tabla es \belowcaptionskip,
+% que vale 0 pt por defecto; la opción skip= de caption no tiene efecto aquí
+% (verificado con KOMA-Script y PDF etiquetado). belowskip= solo toca las tablas:
+% \setlength{\belowcaptionskip}{...} también ensancharía el espacio bajo las figuras.
+\captionsetup[table]{belowskip=8pt}
 \RequirePackage{longtable}
 \RequirePackage{makecell}
 \RequirePackage{graphicx}

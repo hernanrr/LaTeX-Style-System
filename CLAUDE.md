@@ -57,6 +57,21 @@ real, no una hipótesis.
   compilación tras `make clean`, o con la caché de fuentes fría, o con otra
   compilación corriendo al lado, da números que no se parecen a los reales.
   Mide en caliente, en serie, y repite.
+- **No canalices `make`/`latexmk` a `head`.** Cortar la salida mata el
+  proceso a mitad de la compilación y deja un PDF truncado que después
+  `pdftoppm` rechaza («Couldn't find trailer dictionary»). Para filtrar,
+  usa `grep` sobre toda la salida o redirige a un archivo y léelo.
+- **Si el error es «File ended while scanning use of `\mml`»**, no busques
+  un fallo en el contenido: es un `-luamml-mathml.html` truncado de una
+  compilación anterior. Borra el `build/` de ese documento y recompila
+  (ver `STYLE.md` § PDF etiquetado). Si reaparece, entonces sí: busca un
+  `%` dentro de `$…$` (ver `STYLE.md` § Unidades).
+- **TikZ no trae la librería `calc`**: `($(A)+(1,0)$)` falla con «You need to
+  say \usetikzlibrary{calc}». Usa coordenadas de pgfmath,
+  `({x+r*cos(a)},{y+r*sin(a)})`, o declara la librería en el documento.
+- **Compila una figura nueva y mírala**: las leyendas de pgfplots, las
+  etiquetas de TikZ y las figuras flotantes se solapan o quedan sueltas en
+  una página con facilidad, y el log no lo dice.
 
 ## Si falta metadata
 
@@ -95,6 +110,7 @@ examples/                # documentos reales completos, ejemplo dorado por tipo
 legacy/                  # preámbulos/documentos previos del profesor, sin tocar --
                           # solo como referencia histórica, nunca como fuente para copiar/pegar sin pasar por icv.sty
 docs/packages.md          # lista cerrada de paquetes permitidos
+docs/curvas-de-fichas-tecnicas.md  # método para extraer curvas de una ficha técnica en PDF
 bib/                       # .bib compartido entre materias (citas opt-in)
 .latexmkrc, Makefile        # compilación -- ver STYLE.md § Motor y compilación
 ```
@@ -106,8 +122,13 @@ bib/                       # .bib compartido entre materias (citas opt-in)
 - ¿`chktex -l .chktexrc -q archivo.tex` (o `make lint`) sale limpio?
 - ¿La metadata (`\icvsetup`) está completa o tiene `TODO` explícito donde
   falta?
-- ¿Toda figura de contenido usa `\icvincludegraphics` con `alt=`?
-- ¿Los números usan `\num`/`\qty`/columnas `S`, no formato manual?
+- ¿Toda figura de contenido usa `\icvincludegraphics` con `alt=`? ¿Toda
+  figura generada (pgfplots/TikZ) lleva su «Descripción.» dentro del
+  `figure`? (`STYLE.md` § Figuras generadas)
+- ¿Los números usan `\num`/`\qty`/columnas `S`, no formato manual? ¿Hay
+  algún `%` dentro de `$…$`? (rompe el PDF etiquetado)
+- ¿Los datos que no vienen de una fuente están declarados como supuestos
+  del handout, y las citas dicen lo que dice el ejemplar en mano?
 - ¿Se usó un entorno semántico existente (`icvnote`, `icvwarning`,
   `icvobjectives`, `icvproblem`) en vez de maquetación ad hoc?
 - ¿Cualquier distinción por color (caja semántica nueva, resaltado)
