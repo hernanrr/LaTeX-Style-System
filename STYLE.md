@@ -229,6 +229,67 @@ comunes -- y tritanopia -- azul-amarillo, rara). Verificado por simulación
 - `alt=` es obligatorio: sin él, la compilación falla con un error
   explícito. No es opcional ni se puede omitir "por ahora".
 
+### Títulos y notas de figuras y tablas
+
+Estas reglas pertenecen al **material docente institucional**. No cambian
+su estructura, numeración ni alineación de encabezados. Los requisitos APA 7
+de estructura para una entrega estudiantil se explican en el contenido del
+curso cuando corresponda; no se trasladan automáticamente a estos documentos.
+
+- **Figura:** imagen o gráfica → título → nota o descripción.
+- **Tabla:** título → cuerpo de la tabla → nota.
+- El número y nombre («Figura 1», «Tabla 1») van en **negrita**, en una
+  línea propia. El título va en *cursiva* en la línea siguiente. Ambos
+  usan `\small` y se alinean a la izquierda, para distinguirlos del cuerpo.
+- Las notas usan `\small`, texto normal justificado y etiqueta inicial
+  en cursiva («Nota.» por defecto). No heredan el centrado de la figura.
+- `icv.sty` fija 8 pt antes y después del bloque de título; entre número
+  y título usa `\smallskip`. Las notas llevan `\medskip` antes y después.
+  La separación del flotante respecto al cuerpo es 18 pt (`\textfloatsep`)
+  o 16 pt (`\intextsep`), con elasticidad de ±2 pt.
+- La posición requiere colocar `\caption` en el lugar indicado en la
+  fuente: el paquete **no reordena** comandos ni mueve títulos existentes.
+- Las notas y descripciones van **dentro del mismo `figure` o `table`**
+  para mantenerse con la imagen o la tabla. Se escriben con
+  `\icvfloatnote[Etiqueta.]{Texto}`. No añadir parches de `\vspace`, fuentes
+  o `\captionsetup` por documento para reproducir estas reglas.
+
+```latex
+\begin{figure}[htbp]
+  \centering
+  \icvincludegraphics[width=8cm,alt={Descripción accesible.}]{figura.png}
+  \caption{Título de la figura}
+  \label{fig:ejemplo}
+  \icvfloatnote{Condición del ensayo y fuente de la imagen, si corresponde.}
+\end{figure}
+
+\begin{table}[htbp]
+  \centering
+  \caption{Título de la tabla}
+  \label{tab:ejemplo}
+  \begin{tabular}{l S[table-format=2.1]}
+    \toprule
+    {Condición} & {Caudal (L/min)} \\
+    \midrule
+    A & 10.0 \\
+    \bottomrule
+  \end{tabular}
+  \icvfloatnote{Tres repeticiones en la condición A.}
+\end{table}
+```
+
+`longtable` comparte la tipografía del título y sus 8 pt de separación
+antes del cuerpo. Su `\caption` va en las primeras filas; las notas pueden
+ir en el último pie de la tabla, dentro de una celda que abarque las columnas.
+Se conservan los encabezados repetidos y la división entre páginas.
+
+**Compatibilidad:** el renderizador experimental de PDF etiquetado de
+LaTeX sustituye `\@makecaption` y `\LT@makecaption` al inicializarse. El
+paquete aplica el formato después de esa inicialización y conserva los
+sockets de etiquetado de las figuras/tablas normales. Sin PDF etiquetado,
+`caption` gestiona el título normal y el mismo adaptador de `longtable`
+gestiona las tablas extensas. `ltx-talk` conserva su composición propia.
+
 ### Figuras generadas (pgfplots, TikZ)
 
 Las gráficas y esquemas que se dibujan en el propio documento no pasan por
@@ -244,15 +305,13 @@ encabeza con «Descripción.» (no con el número, que el título ya da):
   \begin{tikzpicture} ... \end{tikzpicture}
   \caption{Título de la figura.}
   \label{fig:ejemplo}
-  \par\smallskip
-  {\small\leftskip=0pt\rightskip=0pt\parfillskip=0pt plus 1fil
-   \noindent\emph{Descripción.} Qué muestra la figura: ejes, curvas,
-   valores clave y dónde se cruzan.\par}
+  \icvfloatnote[Descripción.]{Qué muestra la figura: ejes, curvas,
+    valores clave y dónde se cruzan.}
 \end{figure}
 ```
 
-Los tres `\...skip` devuelven el párrafo a justificado (`\centering` lo
-deja centrado). La descripción da los números que importan (valores
+`\icvfloatnote` devuelve el párrafo a justificado (`\centering` lo
+dejaría centrado). La descripción da los números que importan (valores
 inicial y final, cruces, puntos marcados), no solo la forma. Las leyendas
 de pgfplots van debajo del gráfico
 (`legend style={at={(0.5,-0.2)}, anchor=north}`) para no tapar las curvas,
@@ -297,16 +356,10 @@ locales al documento (ver `docs/packages.md`).
 
 ### Títulos de tabla
 
-- El título va **arriba** de la tabla y se llama «Tabla», no «Cuadro»
-  (APA 7; `icv.sty` carga babel con `es-tabla`). En el texto se escribe
-  «tabla~\ref{tab:...}» en minúscula.
-- El espacio entre el título y la tabla lo fija `icv.sty`
-  (`\captionsetup[table]{belowskip=8pt}`). Es `\belowcaptionskip`, que
-  vale 0 pt por defecto, porque el título está arriba; la opción `skip=`
-  de `caption` no tiene efecto en este sistema (KOMA-Script y PDF
-  etiquetado), y `\setlength{\belowcaptionskip}{...}` global ensancharía
-  también el espacio bajo las figuras. No se parchea por documento con
-  `\vspace`.
+El título va **arriba** y se llama «Tabla», no «Cuadro» (`icv.sty` carga
+babel con `es-tabla`). En el texto se escribe «tabla~\ref{tab:...}» en
+minúscula. La tipografía, las notas y el espaciado siguen las reglas comunes
+de «Títulos y notas de figuras y tablas». No se ajustan por documento.
 
 ## Convenciones de notación (hidráulica)
 
@@ -395,6 +448,7 @@ Fijadas al escribir la serie de máquinas hidráulicas de ICV 441-T.
 
 | Entorno | Uso | Color |
 |---|---|---|
+| `icvfloatnote[Etiqueta.]{Texto}` | Nota o descripción dentro de figura/tabla | Texto normal; etiqueta en cursiva |
 | `icvobjectives` | Lista de objetivos de aprendizaje (itemize implícito) | `icvcyan` |
 | `icvnote[Título]` | Nota informativa de título libre (reemplaza `\handoutintro`/`\excelnote` de legacy/) | `icvblue` |
 | `icvwarning[Título]` | Advertencia o resultado clave de título libre (reemplaza `\weightednote`/`\resultbox`) | `icvyellow` |

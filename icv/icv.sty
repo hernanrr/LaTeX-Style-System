@@ -10,7 +10,7 @@
 % \documentclass. Esto no puede vivir dentro de un \usepackage, así que se
 % define en cada plantilla (templates/*/*.tex), no aquí.
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{icv}[2026/08/31 v0.1 Sistema de estilo ICV -- PUCMM]
+\ProvidesPackage{icv}[2026/11/11 v0.2 Sistema de estilo ICV -- PUCMM]
 
 % ---------------------------------------------------------------------------
 % 0. Detección de clase base -- ANTES de cargar paquetes (§3 la necesita)
@@ -75,11 +75,6 @@
 \RequirePackage[dvipsnames,table]{xcolor}
 \RequirePackage[breakable]{tcolorbox}
 \RequirePackage{caption}
-% Los títulos de tabla van arriba, y el espacio título--tabla es \belowcaptionskip,
-% que vale 0 pt por defecto; la opción skip= de caption no tiene efecto aquí
-% (verificado con KOMA-Script y PDF etiquetado). belowskip= solo toca las tablas:
-% \setlength{\belowcaptionskip}{...} también ensancharía el espacio bajo las figuras.
-\captionsetup[table]{belowskip=8pt}
 \RequirePackage{longtable}
 \RequirePackage{makecell}
 \RequirePackage{graphicx}
@@ -322,6 +317,77 @@
        \string\icvincludegraphics[width=4cm,alt={Descripción...}]{ruta}}%
   }{}%
   \includegraphics[#1]{#2}%
+}
+
+% ---------------------------------------------------------------------------
+% 12b. Títulos y notas de figuras y tablas
+% ---------------------------------------------------------------------------
+% Títulos y notas de figuras/tablas. La ubicación de \caption sigue el orden
+% del documento: figura después de la imagen; tabla antes de tabular/longtable.
+% ltx-talk conserva su propio sistema de composición de diapositivas.
+\ificv@ltxtalk\else
+  \DeclareCaptionLabelSeparator{icvnewline}{\par\nobreak\smallskip}
+  \captionsetup{format=plain,font=small,labelfont=bf,textfont=it,
+    labelsep=icvnewline,justification=raggedright,singlelinecheck=false}
+  \captionsetup[figure]{position=bottom,aboveskip=8pt,belowskip=8pt}
+  \captionsetup[table]{position=top,aboveskip=8pt,belowskip=8pt}
+  \setlength{\textfloatsep}{18pt plus 2pt minus 2pt}
+  \setlength{\intextsep}{16pt plus 2pt minus 2pt}
+
+  % latex-lab reemplaza @makecaption al iniciar el documento e ignora el
+  % formato de caption/KOMA. Intervenimos DESPUÉS y conservamos sus sockets:
+  % Caption contiene Lbl (número) y P (título), sin párrafos anidados.
+  \AddToHook{begindocument/end}{%
+    \IfDocumentMetadataTF{%
+      \long\def\@makecaption#1#2{%
+        \par\vskip\abovecaptionskip%
+        \begingroup
+          \small\raggedright%
+          \UseTaggingSocket{caption/begin}{\@current@float@struct}%
+          \hb@xt@\hsize{%
+            \UseTaggingSocket{caption/label/begin}%
+            {\normalfont\small\bfseries #1}%
+            \UseTaggingSocket{caption/label/end}\hfil}%
+          \nobreak\smallskip
+          \UseTaggingSocket{para/begin}%
+          \tagpdfparaOff%
+          {\itshape\noindent #2\par}%
+          \tagpdfparaOn%
+          \UseTaggingSocket{para/end}%
+          \UseTaggingSocket{caption/end}%
+        \endgroup
+        \nobreak\vskip\belowcaptionskip}%
+    }{}%
+
+    % longtable tiene otro renderizador, también reemplazado por latex-lab.
+    % Se conserva su caja de ancho LTcapwidth y el selector #1 (caption*),
+    % sin alterar encabezados repetidos ni división entre páginas.
+    \long\def\LT@makecaption#1#2#3{%
+      \LT@mcol\LT@cols c{%
+        \IfDocumentMetadataTF{%
+          \IfSocketExistsTF{tagsupport/parbox/before}{%
+            \AssignTaggingSocketPlug{parbox/before}{noop}%
+            \AssignTaggingSocketPlug{parbox/after}{noop}%
+          }{}%
+        }{}%
+        \hb@xt@\z@{\hss\parbox[t]\LTcapwidth{%
+          \normalfont\small\raggedright%
+          #1{{\bfseries #2}\par\nobreak\smallskip}%
+          {\itshape #3\par}%
+          \nobreak\vskip8pt}%
+        \hss}}}%
+  }
+\fi
+
+% Nota dentro de figure/table, después del título de figura o del cuerpo de
+% tabla. El grupo restaura justificación incluso si el float usa \centering.
+% La etiqueta opcional permite \icvfloatnote[Descripción.]{...} en esquemas.
+\newcommand{\icvfloatnote}[2][Nota.]{%
+  \par\medskip
+  {\small\normalfont\leftskip=0pt\rightskip=0pt
+   \parfillskip=0pt plus 1fil
+   \noindent\emph{#1} #2\par}%
+  \medskip
 }
 
 % ---------------------------------------------------------------------------
