@@ -231,10 +231,14 @@ primero (están explícitas en `CLAUDE.md`): tocar `icv.sty`, agregar un
 paquete LaTeX no listado en `docs/packages.md`, cambiar colores o
 fuentes, o hacer commit/push sin que se lo pidas.
 
-**Si usas un agente que no auto-carga `CLAUDE.md`** (ChatGPT, u otra
-herramienta sin esa convención), dilo explícitamente al inicio del
-prompt: *"Lee `CLAUDE.md` y `STYLE.md` en la raíz de este repo antes de
-hacer nada, y sigue esas reglas al pie de la letra."*
+**Si usas un agente que no auto-carga `CLAUDE.md`** (ChatGPT/Codex u otra
+herramienta sin esa convención): el repo trae un `AGENTS.md` en la raíz y otro
+en `cursos/` (que es un repo aparte). Es el archivo que esos agentes leen
+solos y remite a `CLAUDE.md`, `STYLE.md` y `cursos/README.md`. Si tu
+herramienta no lo lee, dilo explícitamente al inicio del prompt: *"Lee
+`AGENTS.md`, `CLAUDE.md` y `STYLE.md` antes de hacer nada, y sigue esas
+reglas al pie de la letra."* Antes de comitear, `make check-cursos` verifica
+que `cursos/` siga la convención de carpetas.
 
 ## Estructura del repo
 

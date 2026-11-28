@@ -110,10 +110,29 @@ examples/                # documentos reales completos, ejemplo dorado por tipo
 legacy/                  # preámbulos/documentos previos del profesor, sin tocar --
                           # solo como referencia histórica, nunca como fuente para copiar/pegar sin pasar por icv.sty
 docs/packages.md          # lista cerrada de paquetes permitidos
+scripts/check-cursos.py   # verifica la convención de carpetas de cursos/ (make check-cursos)
 docs/curvas-de-fichas-tecnicas.md  # método para extraer curvas de una ficha técnica en PDF
 bib/                       # .bib compartido entre materias (citas opt-in)
 .latexmkrc, Makefile        # compilación -- ver STYLE.md § Motor y compilación
 ```
+
+## Estructura de `cursos/` (obligatoria)
+
+La convención completa está en [`cursos/README.md`](cursos/README.md); `make
+check-cursos` la verifica. Lo esencial para un agente:
+
+- `cursos/<ciclo>/<curso>/<Tipo>/<Documento NN>/`: **una carpeta por documento**
+  (`Exams/Parcial 02/`, `Pruebines/Pruebin 01/`). Nada suelto en la carpeta del tipo.
+- Dentro del documento: `<slug>.tex` (`parcial-02-<tema>.tex`), `clave/` (script
+  generador y tablas, versionado), `plantillas/` (lo que recibe el estudiante),
+  `build/` (ignorado). Los PDF y `.docx` generados no se versionan.
+- **Datos de estudiantes (listas, IDs, entregas, notas) NUNCA van en el repo.**
+  Viven en `~/Documents/Academics/00-PUCMM/02-Año/<ciclo>/<curso>/`, con la carpeta
+  `Parcial 02/` (`00-enunciado`, `01-clave`, `02-entregas`, `03-calificacion`,
+  `04-moodle`) como la de Hidráulica Aplicada.
+- No guardes transcripciones de chat, cachés (`__pycache__`, `.venv`) ni archivos
+  vacíos en `cursos/`. Antes de dar un documento por terminado, corre
+  `make check-cursos`.
 
 ## Verificación antes de dar algo por terminado
 

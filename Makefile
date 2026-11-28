@@ -12,6 +12,7 @@
 #   make all             # compila todas las plantillas
 #   make doc FILE=<ruta> # compila cualquier .tex del repo (p.ej. de cursos/)
 #   make lint            # corre chktex sobre templates/ y examples/
+#   make check-cursos    # verifica la convención de carpetas de cursos/
 #   make clean           # borra los build/ generados
 
 # `time_it` cronometra una compilación e imprime los segundos al terminar,
@@ -30,7 +31,7 @@ EXAMPLES  := $(wildcard examples/*.tex)
 NAMES     := $(basename $(notdir $(TEMPLATES)))
 EXNAMES   := $(basename $(notdir $(EXAMPLES)))
 
-.PHONY: all clean lint examples doc $(NAMES) $(EXNAMES)
+.PHONY: all clean lint check-cursos examples doc $(NAMES) $(EXNAMES)
 
 all: $(NAMES)
 
@@ -85,3 +86,8 @@ clean:
 	@find templates examples cursos -name '*.tex' 2>/dev/null | while read -r f; do \
 	  rm -f "$${f%.tex}.pdf" "$${f%.tex}-clave.pdf" "$${f%.tex}.synctex.gz" "$${f%.tex}.aux"; \
 	done
+
+# Convención de carpetas de cursos/ (ver cursos/README.md). Falla con errores
+# (datos de estudiantes, transcripciones, archivos sueltos); los avisos no fallan.
+check-cursos:
+	python3 -I scripts/check-cursos.py
