@@ -184,6 +184,10 @@ comunes -- y tritanopia -- azul-amarillo, rara). Verificado por simulación
 }
 ```
 
+- `filasextra` (opcional) añade filas al cuadro de información de
+  `\icvmaketitle`, p.ej. en un examen:
+  `filasextra={\textbf{Entrega:} & según la PVA \\ \textbf{Puntaje total:} & \numpoints\ puntos \\}`.
+  Cada fila lleva dos celdas y termina en `\\`. Sin la clave el cuadro es el de siempre.
 - `pdftitle`/`pdfauthor`/`pdfsubject` se derivan **automáticamente** de
   estos campos vía `\AtBeginDocument` — nunca declarar `\hypersetup` a
   mano en un documento para duplicar lo mismo.

@@ -151,6 +151,7 @@
 \newcommand{\icv@version}{v1}
 \newcommand{\icv@titulo}{}
 \newcommand{\icv@subtitulo}{}
+\newcommand{\icv@filasextra}{}
 
 \pgfkeys{
   /icv/.cd,
@@ -161,6 +162,7 @@
   version/.store in     = \icv@version,
   titulo/.store in      = \icv@titulo,
   subtitulo/.store in   = \icv@subtitulo,
+  filasextra/.store in  = \icv@filasextra,
 }
 \newcommand{\icvsetup}[1]{\pgfkeys{/icv/.cd,#1}}
 
@@ -284,6 +286,7 @@
     }
     {\color{icvblue}\rule{\linewidth}{2pt}}\\[6pt]
   \end{center}
+  \vspace{6pt}% aire entre la regla azul y el cuadro de información
   \begin{center}
   \begin{tabular}{ll}
     \toprule
@@ -292,6 +295,9 @@
     % (p.ej. un handout reutilizable) puede omitir periodo.
     \ifdefempty{\icv@periodo}{}{\textbf{Período académico:} & \icv@periodo \\}
     \textbf{Versión:} & \icv@version \\
+    % Filas opcionales extra (p.ej. Entrega, Duración, Puntaje en un
+    % examen): \icvsetup{filasextra={\textbf{Entrega:} & ... \\ ...}}.
+    \icv@filasextra
     \bottomrule
   \end{tabular}
   \end{center}
